@@ -211,6 +211,17 @@ header {
 
 .dropdown-menu:hover .dropdown-content {
   display: block;
+  animation: fadeIn 0.2s ease;
+}
+
+.dropdown-arrow {
+  display: inline-block;
+  transition: transform 0.3s ease;
+  margin-left: 0.25rem;
+}
+
+.dropdown-menu:hover .dropdown-arrow {
+  transform: rotate(180deg);
 }
 
 /* Hero & Route patterns (matching mockup background styling) */
@@ -697,7 +708,7 @@ header {
 }
 
 .bottom-nav-icon {
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   margin-bottom: 0.15rem;
 }
 
@@ -1133,14 +1144,17 @@ footer {
   }
   .hero {
     width: 100%;
-    padding: 0.25rem 0.5rem;
+    padding: 0 0.5rem;
     min-height: auto;
   }
   .hero-content {
     grid-template-columns: 1fr !important;
     padding: 0;
     width: 100%;
-    gap: 0.5rem;
+    gap: 0.25rem;
+  }
+  .ai-chat-bubble {
+    bottom: 85px;
   }
   .hero-left {
     text-align: center;
