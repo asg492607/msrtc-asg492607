@@ -73,7 +73,7 @@ body {
 .utility-bar {
   background-color: #031A30;
   color: #F8FAFC;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 0;
   font-size: 0.85rem;
   display: flex;
   justify-content: space-between;
@@ -120,7 +120,7 @@ header {
 .nav-container {
   max-width: 100%;
   margin: 0;
-  padding: 0.35rem 1rem;
+  padding: 0.75rem 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -214,9 +214,10 @@ header {
 .hero {
   background: linear-gradient(90deg, rgba(255,255,255,0.7) 10%, rgba(255,255,255,0.1) 60%, rgba(255,255,255,0) 100%), 
               url('msrtc_hero_bg.jpg') center right/cover;
-  padding: 2.5rem 1rem;
+  padding: 5rem 0;
   border-bottom: 1px solid var(--border);
-  margin-bottom: 0;
+  position: relative;
+  overflow: hidden;
 }
 
 .hero-content {
@@ -353,7 +354,7 @@ header {
   gap: 1.5rem;
   max-width: 100%;
   margin: 1rem 0;
-  padding: 0 1rem;
+  padding: 0;
 }
 
 .action-item-card {
@@ -403,7 +404,7 @@ header {
   gap: 2rem;
   max-width: 100%;
   margin: 2rem auto;
-  padding: 0 1rem;
+  padding: 0;
 }
 
 .panel-card {
@@ -712,7 +713,7 @@ header {
 main {
   max-width: 100%;
   margin: 0;
-  padding: 2rem 1rem;
+  padding: 2rem 0;
   flex: 1;
 }
 
