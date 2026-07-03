@@ -447,7 +447,7 @@ header {
   background: var(--bg-secondary);
   border: 1px solid var(--border);
   border-radius: 12px;
-  padding: 1rem;
+  padding: 0.75rem 1rem;
   box-shadow: var(--shadow);
   display: flex;
   flex-direction: column;
@@ -495,7 +495,7 @@ header {
 /* Update Item list format */
 .update-item {
   border-bottom: 1px solid var(--border);
-  padding: 0.6rem 0;
+  padding: 0.4rem 0;
   position: relative;
 }
 
@@ -527,7 +527,7 @@ header {
 
 .route-carousel-img {
   width: 100%;
-  height: 140px;
+  height: 110px;
   object-fit: cover;
 }
 
@@ -553,11 +553,11 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.6rem 0.8rem;
+  padding: 0.4rem 0.6rem;
   background: var(--bg-primary);
   border: 1px solid var(--border);
   border-radius: 8px;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.35rem;
 }
 
 .emergency-row strong {
