@@ -311,9 +311,9 @@ header {
   background: var(--bg-secondary);
   border: 1px solid var(--border);
   border-radius: 12px;
-  padding: 1rem 1.25rem;
+  padding: 0.75rem 1rem;
   box-shadow: var(--shadow-lg);
-  max-width: 450px;
+  max-width: 380px;
   width: 100%;
   justify-self: end;
 }
