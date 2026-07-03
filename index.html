@@ -130,11 +130,10 @@
               <div id="fromSuggestions" class="suggestions-dropdown"></div>
             </div>
 
-            <button type="button" class="hero-swap-btn" onclick="swapFromTo()">⇅</button>
-
-            <div class="hero-form-group" style="margin-top: 0.5rem; margin-bottom: 0.85rem;">
+            <div class="hero-form-group" style="margin-top: 0.5rem; margin-bottom: 0.85rem; position: relative;">
               <label for="searchTo" data-key="to">To</label>
               <input type="text" id="searchTo" placeholder="To City / Bus Stop" autocomplete="off" oninput="showSuggestions(this, 'to')" required>
+              <button type="button" class="hero-swap-btn" onclick="swapFromTo()" style="top: 32px; transform: none;">⇅</button>
               <div id="toSuggestions" class="suggestions-dropdown"></div>
             </div>
           </div>
