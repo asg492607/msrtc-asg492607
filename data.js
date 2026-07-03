@@ -82,8 +82,9 @@ const MSRTC_DATA = {
   ],
 
   announcements: [
-    { title: "Ashadhi Ekadashi Special Buses", desc: "MSRTC is launching 5,000 additional special buses to Pandharpur starting July 10th.", date: "July 04, 2026" },
-    { title: "Route Diversion near Mumbai-Pune Expressway", desc: "Due to maintenance work near Khandala Ghat, Shivneri buses might be delayed by 20-30 mins.", date: "July 03, 2026" }
+    { title: "Ashadhi Ekadashi Special Buses", desc: "MSRTC is launching 5,000 additional special buses to Pandharpur starting July 10th.", date: "July 04, 2026", category: "Festival Specials" },
+    { title: "Route Diversion near Mumbai-Pune Expressway", desc: "Due to maintenance work near Khandala Ghat, Shivneri buses might be delayed by 20-30 mins.", date: "July 03, 2026", category: "News" },
+    { title: "Smart Card concession renewal rules", desc: "New guidelines issued for digital smart cards verify checks.", date: "June 25, 2026", category: "Circulars" }
   ],
 
   news: [
@@ -230,7 +231,7 @@ const MSRTC_DATA = {
       faq: "अक्सर पूछे जाने वाले प्रश्न",
       contactUs: "संपर्क करें",
       login: "लॉगिन / साइन अप",
-      logout: "लॉगआउट",
+      logout: "लॉगआऊट",
       dashboard: "डैशबोर्ड",
       applyPass: "बस पास",
       complaintPortal: "शिकायत पोर्टल",

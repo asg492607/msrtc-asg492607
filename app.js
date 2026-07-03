@@ -8,6 +8,7 @@ let currentSelectedBus = null;
 let selectedSeats = [];
 let voiceActive = false;
 let discountApplied = false;
+let currentUpdateCategory = 'All';
 
 // Simulated State (In-Memory Database)
 let myBookings = [
@@ -57,10 +58,24 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 });
 
+// Toast notification helper
+function showToast(message, type = 'success') {
+  const container = document.getElementById('toastContainer');
+  if (!container) return;
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.innerHTML = `<span>💬</span> <span>${message}</span>`;
+  container.appendChild(toast);
+  setTimeout(() => {
+    toast.remove();
+  }, 4000);
+}
+
 // View Router
 function showSection(sectionId) {
   document.querySelectorAll('.view-section').forEach(sec => sec.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(link => link.classList.remove('active'));
+  document.querySelectorAll('.bottom-nav-item').forEach(link => link.classList.remove('active'));
   
   const targetSec = document.getElementById(`view-${sectionId}`);
   if (targetSec) {
@@ -74,6 +89,11 @@ function showSection(sectionId) {
       link.classList.add('active');
     }
   });
+
+  // Highlight mobile bottom tabs matching routing
+  if (sectionId === 'home') document.getElementById('bnav-home').classList.add('active');
+  if (sectionId === 'booking') document.getElementById('bnav-book').classList.add('active');
+  if (sectionId === 'dashboard') document.getElementById('bnav-profile').classList.add('active');
 
   const heroBanner = document.getElementById('hero-banner');
   if (heroBanner) {
@@ -93,7 +113,9 @@ function showSection(sectionId) {
 // Accessibility
 function toggleHighContrast() {
   const body = document.body;
-  body.setAttribute('data-theme', body.getAttribute('data-theme') === 'high-contrast' ? 'light' : 'high-contrast');
+  const current = body.getAttribute('data-theme');
+  body.setAttribute('data-theme', current === 'high-contrast' ? 'light' : 'high-contrast');
+  showToast("Contrast Theme Toggled", "success");
 }
 
 function changeFontSize() {
@@ -101,6 +123,7 @@ function changeFontSize() {
   body.classList.remove('text-scale-1', 'text-scale-2', 'text-scale-3');
   fontSizeState = (fontSizeState % 3) + 1;
   body.classList.add(`text-scale-${fontSizeState}`);
+  showToast("Font size adjusted", "success");
 }
 
 function dismissBanner() {
@@ -110,10 +133,12 @@ function dismissBanner() {
 // Language Translation Switch
 function changeLanguage(langCode) {
   currentLang = langCode;
-  document.getElementById('languageSelect').value = langCode;
+  const langSel = document.getElementById('languageSelect');
+  if (langSel) langSel.value = langCode;
   const setLangSel = document.getElementById('settingLanguageSelect');
   if (setLangSel) setLangSel.value = langCode;
   updateLangStrings();
+  showToast(`Language switched to: ${langCode.toUpperCase()}`, "success");
 }
 
 function updateLangStrings() {
@@ -130,17 +155,37 @@ function updateLangStrings() {
   });
 }
 
+// Category filter updates triggers
+function filterUpdatesByCategory(cat, buttonEl) {
+  currentUpdateCategory = cat;
+  buttonEl.parentElement.querySelectorAll('.filter-chip').forEach(btn => btn.classList.remove('active'));
+  buttonEl.classList.add('active');
+  renderAnnouncements();
+}
+
 // Data Renderers
 function renderAnnouncements() {
   const container = document.getElementById('announcementsList');
   if (!container) return;
-  container.innerHTML = MSRTC_DATA.announcements.map(ann => `
+  
+  let items = MSRTC_DATA.announcements;
+  if (currentUpdateCategory !== 'All') {
+    items = items.filter(ann => ann.category === currentUpdateCategory);
+  }
+
+  if (items.length === 0) {
+    container.innerHTML = `<p style="padding:1rem; color:var(--text-secondary);">No updates under category: ${currentUpdateCategory}</p>`;
+    return;
+  }
+
+  container.innerHTML = items.map(ann => `
     <div class="announcement-card">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.25rem;">
         <strong style="color:var(--primary);">${ann.title}</strong>
-        <small style="color:var(--text-secondary);">${ann.date}</small>
+        <span style="background:rgba(255,107,0,0.1); color:var(--primary); padding:0.15rem 0.4rem; border-radius:4px; font-size:0.7rem; font-weight:700;">${ann.category}</span>
       </div>
       <p style="font-size:0.9rem;">${ann.desc}</p>
+      <small style="color:var(--text-secondary); display:block; margin-top:0.4rem;">Published: ${ann.date}</small>
     </div>
   `).join('');
 }
@@ -208,6 +253,7 @@ function swapFromTo() {
   const toVal = document.getElementById('searchTo').value;
   document.getElementById('searchFrom').value = toVal;
   document.getElementById('searchTo').value = fromVal;
+  showToast("Locations Swapped", "success");
 }
 
 // Search Buses Flow
@@ -232,7 +278,18 @@ function handleBusSearch(event) {
   goBackToStep(1);
 
   document.getElementById('searchResultsTitle').innerHTML = `Buses from <span style="color:var(--primary);">${from}</span> to <span style="color:var(--primary);">${to}</span> on ${date}`;
-  renderBusResults();
+  
+  // Show Skeleton loading simulation
+  const skeleton = document.getElementById('busSkeletonLoader');
+  const busResults = document.getElementById('busResultsList');
+  
+  busResults.innerHTML = '';
+  skeleton.style.display = 'flex';
+  
+  setTimeout(() => {
+    skeleton.style.display = 'none';
+    renderBusResults();
+  }, 1000);
 }
 
 // Bus cards result render
@@ -357,7 +414,7 @@ function proceedToPassengerDetails() {
   container.innerHTML = selectedSeats.map((seat, index) => `
     <div style="background:var(--bg-primary); padding: 1rem; border-radius:8px; margin-bottom:1rem; border-left: 3px solid var(--primary);">
       <h5 style="margin-bottom:0.75rem;">Passenger ${index + 1} - Seat ${seat}</h5>
-      <div class="form-grid">
+      <div class="form-grid" style="grid-template-columns:1fr 1fr;">
         <div class="form-group">
           <label>Full Name</label>
           <input type="text" id="pName-${index}" required>
@@ -366,7 +423,7 @@ function proceedToPassengerDetails() {
           <label>Age</label>
           <input type="number" id="pAge-${index}" min="1" max="120" required>
         </div>
-        <div class="form-group">
+        <div class="form-group" style="margin-top:1rem;">
           <label>Gender</label>
           <select id="pGender-${index}">
             <option value="Male">Male</option>
@@ -430,10 +487,10 @@ function applyPromoCode() {
   const code = document.getElementById('promoCodeInput').value.trim().toUpperCase();
   if (code === 'DISCO50' || code === 'MSRTC50') {
     discountApplied = true;
-    alert("Promo code applied! 50% fare discount applied.");
+    showToast("Promo Code Applied! 50% discount", "success");
     updatePaymentFareBreakup();
   } else {
-    alert("Invalid promo code.");
+    showToast("Invalid Promo Code", "error");
   }
 }
 
@@ -474,6 +531,7 @@ function completeBooking(event) {
   document.querySelectorAll('.booking-flow-step').forEach(step => step.style.display = 'none');
   document.getElementById('booking-step-success').style.display = 'block';
   document.getElementById('step-node-4').classList.add('done');
+  showToast("Booking completed successfully!", "success");
 }
 
 function updateStepNodes(activeStepIndex) {
@@ -498,7 +556,7 @@ function goBackToStep(stepNum) {
 }
 
 function downloadTicketPDF() {
-  alert("Downloading secure PDF ticket reference file...");
+  showToast("Ticket PDF Download Started", "success");
 }
 
 // Authentication Tabs
@@ -540,7 +598,7 @@ function handleAuthSubmit(event) {
     if (otpContainer.style.display === 'none') {
       otpContainer.style.display = 'flex';
       submitBtn.innerText = 'Verify & Login';
-      alert("Verification Code Sent! Enter default key '1234' to verify.");
+      showToast("OTP Verification Code Sent to Mobile", "success");
     } else {
       const otpCode = document.getElementById('authOtp').value;
       if (otpCode === '1234') {
@@ -554,8 +612,9 @@ function handleAuthSubmit(event) {
         };
         updateAuthUI();
         showSection(isAdmin ? 'admin' : 'dashboard');
+        showToast("Login Successful", "success");
       } else {
-        alert("Invalid authorization OTP.");
+        showToast("Invalid OTP. Try 1234", "error");
       }
     }
   } else {
@@ -570,8 +629,9 @@ function handleAuthSubmit(event) {
       };
       updateAuthUI();
       showSection('dashboard');
+      showToast("Signed In via Email", "success");
     } else {
-      alert("Please enter a valid email and password.");
+      showToast("Verification Error", "error");
     }
   }
 }
@@ -587,7 +647,7 @@ function handleRegistrationSubmit(event) {
     role: "user"
   };
   
-  alert("Registration Successful! Account created.");
+  showToast("Account created successfully", "success");
   updateAuthUI();
   showSection('dashboard');
 }
@@ -597,11 +657,11 @@ function updateAuthUI() {
   if (userSession) {
     widget.innerHTML = `
       <span style="font-weight:600; color:var(--primary); font-size:0.95rem; margin-right:1rem;">Hi, ${userSession.name}</span>
-      <button onclick="handleLogout()" class="btn-secondary" data-key="logout">Logout</button>
+      <button onclick="handleLogout()" class="btn-secondary" data-key="logout" style="padding:0.4rem 1rem; font-size:0.85rem;">Logout</button>
     `;
   } else {
     widget.innerHTML = `
-      <button onclick="showSection('login')" class="btn-primary" data-key="login">Login / Sign Up</button>
+      <button onclick="showSection('login')" class="btn-primary" data-key="login" style="padding:0.4rem 1rem; font-size:0.85rem;">Login / Sign Up</button>
     `;
   }
   updateLangStrings();
@@ -611,6 +671,7 @@ function handleLogout() {
   userSession = null;
   updateAuthUI();
   showSection('home');
+  showToast("Logged Out Successfully", "success");
 }
 
 // User Dashboard Tabs & Functions
@@ -725,6 +786,7 @@ function cancelTicketSim(pnr) {
   if (confirm(`Cancel ticket booking PNR: ${pnr}?`)) {
     myBookings = myBookings.map(t => t.pnr === pnr ? { ...t, status: "Cancelled" } : t);
     renderDashboard();
+    showToast("Ticket Cancelled successfully", "success");
   }
 }
 
@@ -744,6 +806,7 @@ function submitPassApplication(event) {
   document.getElementById('passAppFormContainer').style.display = 'none';
   document.getElementById('passAppForm').reset();
   renderDashboard();
+  showToast("New smart pass issued", "success");
 }
 
 // Saved Passengers Actions
@@ -761,11 +824,13 @@ function saveNewPassenger(event) {
   document.getElementById('addPassengerFormContainer').style.display = 'none';
   document.getElementById('addPassengerForm').reset();
   renderDashboard();
+  showToast("Traveler profile saved", "success");
 }
 
 function deleteSavedPassenger(name) {
   savedPassengers = savedPassengers.filter(p => p.name !== name);
   renderDashboard();
+  showToast("Traveler profile removed", "success");
 }
 
 // Complaint filing Actions
@@ -784,6 +849,7 @@ function submitGrievance(event) {
   document.getElementById('complaintFormContainer').style.display = 'none';
   document.getElementById('complaintForm').reset();
   renderDashboard();
+  showToast("Grievance registered in database", "success");
 }
 
 // Parcel calculator & trackers
@@ -814,6 +880,7 @@ function handleParcelBooking(event) {
   
   alert(`Booking Confirmed! Reference Track ID: ${id}`);
   document.getElementById('parcelBookForm').reset();
+  showToast("Parcel booked successfully", "success");
 }
 
 function trackParcel() {
@@ -843,6 +910,7 @@ function trackParcel() {
   if (matchedParcel.status === 'delivered') {
     document.getElementById('p-node-delivered').classList.add('active');
   }
+  showToast("Parcel details loaded", "success");
 }
 
 // Schedule board filtering
@@ -1005,11 +1073,13 @@ function handleNewBus(event) {
   document.getElementById('addBusFormContainer').style.display = 'none';
   document.getElementById('addBusForm').reset();
   renderAdminPortal();
+  showToast("Bus added to database fleet", "success");
 }
 
 function removeBusFromFleet(busId) {
   MSRTC_DATA.buses = MSRTC_DATA.buses.filter(b => b.id !== busId);
   renderAdminPortal();
+  showToast("Bus removed from fleet", "success");
 }
 
 function showAddRouteForm() {
@@ -1027,6 +1097,7 @@ function handleNewRoute(event) {
   document.getElementById('addRouteFormContainer').style.display = 'none';
   document.getElementById('addRouteForm').reset();
   renderAdminPortal();
+  showToast("New route registered", "success");
 }
 
 function showAddTenderForm() {
@@ -1044,11 +1115,12 @@ function handleNewTender(event) {
   document.getElementById('addTenderForm').reset();
   renderAdminPortal();
   renderPublicTenders();
+  showToast("Tender notice published", "success");
 }
 
 function updateComplaintStatus(compId, val) {
   myComplaints = myComplaints.map(c => c.id === compId ? { ...c, status: val } : c);
-  alert(`Complaint ${compId} status changed to ${val}`);
+  showToast(`Grievance status changed to ${val}`, "success");
   renderAdminPortal();
 }
 
@@ -1115,7 +1187,7 @@ function renderPublicTenders() {
       <small style="color:var(--text-secondary); display:block; margin-bottom:0.25rem;">Ref: ${t.reference}</small>
       <h4 style="margin-bottom:0.5rem;">${t.title}</h4>
       <p style="font-size:0.85rem; color:var(--text-secondary);">Last Submission: ${t.submissionDate}</p>
-      <span style="display:inline-block; background:rgba(255, 61, 0, 0.05); color:var(--primary); font-size:0.75rem; padding:0.15rem 0.4rem; border-radius:4px; font-weight:bold; margin-top:0.5rem;">${t.status}</span>
+      <span style="display:inline-block; background:rgba(255, 107, 0, 0.05); color:var(--primary); font-size:0.75rem; padding:0.15rem 0.4rem; border-radius:4px; font-weight:bold; margin-top:0.5rem;">${t.status}</span>
     </div>
   `).join('');
 }
@@ -1172,7 +1244,6 @@ function sendChatMessage() {
     const reply = getAIResponse(text);
     appendMessage(reply, 'bot');
     
-    // Web Speech synthesis API audio triggers
     if (window.speechSynthesis) {
       const speech = new SpeechSynthesisUtterance(reply.replace(/<[^>]*>/g, ''));
       speech.lang = currentLang === 'mr' ? 'mr-IN' : currentLang === 'hi' ? 'hi-IN' : 'en-US';
@@ -1191,8 +1262,17 @@ function toggleVoiceInput() {
       input.value = "Show buses to Pune";
       input.placeholder = "Ask MSRTC AI...";
       voiceActive = false;
+      sendChatMessage();
     }, 2000);
   }
+}
+
+function triggerSuggestedPrompt(promptText) {
+  appendMessage(promptText, 'user');
+  setTimeout(() => {
+    const reply = getAIResponse(promptText);
+    appendMessage(reply, 'bot');
+  }, 600);
 }
 
 function appendMessage(text, sender) {
@@ -1219,6 +1299,12 @@ function getAIResponse(query) {
   if (q.includes('refund') || q.includes('cancel')) {
     return `All cancellations processed through the user dashboard are refunded automatically within 5-7 working days.`;
   }
+  if (q.includes('depot') || q.includes('nearest')) {
+    return `We connect 250+ depots across Maharashtra. The nearest major hubs are Mumbai Central Depot and Shivajinagar Pune Depot. You can filter the directory under the 'Bus Stops & Depots' tab in the navigation.`;
+  }
+  if (q.includes('complaint')) {
+    return `You can register your grievance on our passenger portal. Select the category, add bus number details, describe the problem, and our team will resolve it. <br><button onclick="showComplaintDashboard()" class="btn-primary" style="margin-top:0.5rem; font-size:0.8rem; padding:0.3rem 0.6rem;">File Complaint</button>`;
+  }
   if (q.includes('hello') || q.includes('hey') || q.includes('namaskar')) {
     return `Namaskar! I can guide you with bus timings, ticket refund policies, parcel deliveries, or pass forms. Ask me anything!`;
   }
@@ -1240,4 +1326,9 @@ function showPassDashboard() {
 function showComplaintDashboard() {
   showSection('dashboard');
   switchDashboardTab('my-complaints', document.querySelector('[onclick*="my-complaints"]'));
+}
+
+function showTicketsDashboard() {
+  showSection('dashboard');
+  switchDashboardTab('my-tickets', document.querySelector('[onclick*="my-tickets"]'));
 }
