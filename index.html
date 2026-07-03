@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MSRTC Smart Digital Transport Platform</title>
+  
+  <!-- Premium Font & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-theme="light" class="text-scale-2">
+
+  <!-- Main Navigation Header -->
+  <header>
+    <div class="nav-container">
+      <a href="#" onclick="showSection('home')" class="logo-section" id="logo-link">
+        <svg width="45" height="45" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="50" cy="50" r="48" fill="#FF3D00" stroke="#FF9100" stroke-width="4"/>
+          <path d="M25 70V30L50 50L75 30V70" stroke="white" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M50 50V80" stroke="#FF9100" stroke-width="8" stroke-linecap="round"/>
+        </svg>
+        <div class="logo-text">
+          <h1 id="nav-title">MSRTC</h1>
+          <p id="nav-tagline">Maharashtra State Road Transport Corporation</p>
+        </div>
+      </a>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="#" onclick="showSection('home')" class="nav-item active" data-key="home">🏠 Home</a></li>
+          <li><a href="#" onclick="showSection('booking')" class="nav-item" data-key="bookTickets">🎫 Book Tickets</a></li>
+          <li><a href="#" onclick="showSection('schedule')" class="nav-item" data-key="busSchedule">📅 Bus Schedule</a></li>
+          <li><a href="#" onclick="showSection('parcel')" class="nav-item" data-key="parcelServices">📦 Parcel Services</a></li>
+          <li><a href="#" onclick="showSection('dashboard')" class="nav-item" data-key="dashboard">👤 Dashboard</a></li>
+          
+          <li class="dropdown-menu">
+            <a href="#" class="nav-item">More ▾</a>
+            <div class="dropdown-content">
+              <a href="#" onclick="showSection('about')">About Us</a>
+              <a href="#" onclick="showSection('depots')">Bus Stops & Depots</a>
+              <a href="#" onclick="showSection('concessions')">Concession Schemes</a>
+              <a href="#" onclick="showSection('tenders')">Active Tenders</a>
+              <a href="#" onclick="showSection('recruitment')">Recruitments</a>
+              <a href="#" onclick="showSection('acts')">Acts & Rules</a>
+              <a href="#" onclick="showSection('circulars')">Circulars & Notices</a>
+              <a href="#" onclick="showSection('charter')">Citizen Charter</a>
+            </div>
+          </li>
+
+          <li><a href="#" onclick="showSection('admin')" class="nav-item" data-key="adminPortal">⚙️ Admin Portal</a></li>
+        </ul>
+      </nav>
+
+      <div class="action-bar">
+        <div class="access-control">
+          <button onclick="toggleHighContrast()" class="access-btn" title="Toggle High Contrast">🌓</button>
+          <button onclick="changeFontSize()" class="access-btn" title="Adjust Font Size">A+</button>
+        </div>
+
+        <select id="languageSelect" class="lang-selector" onchange="changeLanguage(this.value)">
+          <option value="en">English</option>
+          <option value="mr">मराठी</option>
+          <option value="hi">हिन्दी</option>
+        </select>
+
+        <div id="userWidget">
+          <button onclick="showSection('login')" class="btn-primary" data-key="login">Login / Sign Up</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="hero-banner" class="hero">
+    <div class="hero-content">
+      <h2>Your Journey, <br><span>Our Responsibility</span></h2>
+      <p id="hero-subtitle" data-key="tagline">Safe, Reliable & Comfortable Travel Across Maharashtra.</p>
+      <div style="display:flex; gap:1.5rem; font-size:0.85rem; font-weight:700; color:var(--text-secondary);">
+        <span>🏢 128+ Cities Connected</span>
+        <span>🛡️ Reliable Service</span>
+        <span>💰 Affordable Travel</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Live Dynamic Alerts Container -->
+  <div class="nav-container" style="padding: 0 2rem; margin-top: 1rem;">
+    <div class="notification-banner" id="systemBanner">
+      <div style="display:flex; align-items:center; gap:0.5rem;">
+        <span>🔔</span>
+        <p id="systemBannerText">Alert: Bookings are open for Ashadhi Ekadashi Special Buses to Pandharpur.</p>
+      </div>
+      <button onclick="dismissBanner()" style="background:none; border:none; color:inherit; cursor:pointer;">×</button>
+    </div>
+  </div>
+
+  <!-- Main View Container -->
+  <main>
+    
+    <!-- 1. Home View -->
+    <section id="view-home" class="view-section active">
+      <!-- Search Input Area -->
+      <div class="search-card" id="searchCard">
+        <form id="busSearchForm" onsubmit="handleBusSearch(event)">
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="searchFrom" data-key="from">From</label>
+              <input type="text" id="searchFrom" placeholder="From City / Bus Stop" autocomplete="off" oninput="showSuggestions(this, 'from')" required>
+              <div id="fromSuggestions" class="suggestions-dropdown"></div>
+            </div>
+            
+            <div style="position: relative; display: flex; justify-content: center; align-items: center;">
+              <button type="button" class="swap-btn" onclick="swapFromTo()">⇅</button>
+            </div>
+
+            <div class="form-group">
+              <label for="searchTo" data-key="to">To</label>
+              <input type="text" id="searchTo" placeholder="To City / Bus Stop" autocomplete="off" oninput="showSuggestions(this, 'to')" required>
+              <div id="toSuggestions" class="suggestions-dropdown"></div>
+            </div>
+
+            <div class="form-group">
+              <label for="searchDate" data-key="date">Journey Date</label>
+              <input type="date" id="searchDate" required>
+            </div>
+
+            <div class="form-group">
+              <label>Bus Type</label>
+              <select id="searchBusType">
+                <option value="all">All Types</option>
+                <option value="shivneri">Shivneri AC Volvo</option>
+                <option value="shivshahi">Shivshahi AC</option>
+                <option value="laldabba">Parivartan Ordinary</option>
+              </select>
+            </div>
+          </div>
+          <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;" data-key="searchBtn">Search Buses</button>
+        </form>
+      </div>
+
+      <!-- Quick Services Grid (Mockup Style Cards) -->
+      <div class="shortcuts-grid">
+        <div class="shortcut-card" onclick="showSection('booking')">
+          <span style="font-size:2rem;">🎟️</span>
+          <h4 data-key="bookTickets">My Tickets</h4>
+          <p style="font-size:0.75rem; color:var(--text-secondary);">View your bookings</p>
+        </div>
+        <div class="shortcut-card" onclick="showPassDashboard()">
+          <span style="font-size:2rem;">🪪</span>
+          <h4 data-key="applyPass">Passes</h4>
+          <p style="font-size:0.75rem; color:var(--text-secondary);">View & manage passes</p>
+        </div>
+        <div class="shortcut-card" onclick="openTrackBusPrompt()">
+          <span style="font-size:2rem;">📍</span>
+          <h4 data-key="trackBus">Live Tracking</h4>
+          <p style="font-size:0.75rem; color:var(--text-secondary);">Track your bus live</p>
+        </div>
+        <div class="shortcut-card" onclick="showSection('schedule')">
+          <span style="font-size:2rem;">📅</span>
+          <h4 data-key="busSchedule">Bus Schedule</h4>
+          <p style="font-size:0.75rem; color:var(--text-secondary);">Check bus timings</p>
+        </div>
+        <div class="shortcut-card" onclick="showComplaintDashboard()">
+          <span style="font-size:2rem;">⚠️</span>
+          <h4 data-key="complaintPortal">Complaint</h4>
+          <p style="font-size:0.75rem; color:var(--text-secondary);">Raise a complaint</p>
+        </div>
+        <div class="shortcut-card" onclick="showSection('parcel')">
+          <span style="font-size:2rem;">📦</span>
+          <h4 data-key="parcelServices">Parcel Service</h4>
+          <p style="font-size:0.75rem; color:var(--text-secondary);">Send parcel easily</p>
+        </div>
+      </div>
+
+      <!-- Info Sections (Announcements & News) -->
+      <div class="info-section">
+        <div>
+          <h3 data-key="emergencyAnnouncements" style="margin-bottom:1rem; color:var(--primary);">Emergency Announcements</h3>
+          <div class="announcements-container" id="announcementsList"></div>
+        </div>
+        <div>
+          <h3 data-key="latestNews" style="margin-bottom:1rem;">Latest Updates</h3>
+          <div class="announcements-container" id="newsList"></div>
+        </div>
+      </div>
+
+      <!-- Popular Routes Grid -->
+      <h3 style="margin-top: 3rem; margin-bottom: 1.5rem; text-align:center;" data-key="popularRoutes">Popular Routes</h3>
+      <div class="shortcuts-grid" id="popularRoutesContainer" style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));">
+      </div>
+
+      <!-- Mobile App Download Banner -->
+      <div class="archive-card" style="background: linear-gradient(135deg, rgba(248,250,252,0.9), rgba(241,245,249,0.9)); border-color:var(--border); text-align:center; padding: 2.5rem; margin: 3rem 0;">
+        <h3 style="margin-bottom: 0.5rem; color: var(--primary);">Get Our App</h3>
+        <p style="color:var(--text-secondary); margin-bottom:1.5rem;">Book tickets, track real-time locations and access passes on your device.</p>
+        <div style="display:flex; justify-content:center; gap:1rem; flex-wrap:wrap;">
+          <button class="btn-secondary" onclick="alert('Downloading Android App Package...')">🤖 Google Play Store</button>
+          <button class="btn-secondary" onclick="alert('Redirecting to iOS App Store...')">🍎 Apple App Store</button>
+        </div>
+      </div>
+
+      <!-- Live Operational Statistics -->
+      <h3 style="text-align: center; margin-top: 3rem;" data-key="statistics">Live Operational Statistics</h3>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <h4>Buses Run Daily</h4>
+          <p class="stat-number">15,420</p>
+          <span style="font-size: 0.85rem; color: var(--seat-avail);">● Active & Inspected</span>
+        </div>
+        <div class="stat-card">
+          <h4>Daily Commuters</h4>
+          <p class="stat-number">6.8M</p>
+          <span style="font-size: 0.85rem; color: var(--seat-avail);">● Safe Journeys</span>
+        </div>
+        <div class="stat-card">
+          <h4>Depots Covered</h4>
+          <p class="stat-number">250+</p>
+          <span style="font-size: 0.85rem; color: var(--seat-avail);">● Maharashtra State</span>
+        </div>
+        <div class="stat-card">
+          <h4>E-Bus Fleets</h4>
+          <p class="stat-number">1,200</p>
+          <span style="font-size: 0.85rem; color: var(--seat-avail);">● Zero Emission</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Booking View -->
+    <section id="view-booking" class="view-section">
+      <div class="booking-steps">
+        <div class="step-node active" id="step-node-1">1</div>
+        <div class="step-node" id="step-node-2">2</div>
+        <div class="step-node" id="step-node-3">3</div>
+        <div class="step-node" id="step-node-4">4</div>
+      </div>
+
+      <!-- step 1: Results -->
+      <div id="booking-step-results" class="booking-flow-step">
+        <h3 id="searchResultsTitle">Select Bus Journey</h3>
+        <div class="bus-list" id="busResultsList"></div>
+      </div>
+
+      <!-- step 2: Seats -->
+      <div id="booking-step-seats" class="booking-flow-step" style="display:none;">
+        <h3 style="margin-bottom: 1.5rem;" data-key="selectSeats">Select Seats</h3>
+        <div class="seat-selection-layout">
+          <div>
+            <div class="bus-cabin">
+              <div class="seats-grid" id="seatsGrid"></div>
+            </div>
+            
+            <div class="seat-legend">
+              <div class="legend-item"><div class="legend-color" style="background:var(--seat-avail);"></div><span>Available</span></div>
+              <div class="legend-item"><div class="legend-color" style="background:var(--seat-booked);"></div><span>Booked</span></div>
+              <div class="legend-item"><div class="legend-color" style="background:var(--seat-ladies);"></div><span>Ladies Reserved</span></div>
+              <div class="legend-item"><div class="legend-color" style="background:var(--seat-senior);"></div><span>Senior Priority</span></div>
+              <div class="legend-item"><div class="legend-color" style="background:var(--seat-selected);"></div><span>Selected</span></div>
+            </div>
+          </div>
+
+          <div class="summary-card">
+            <h4>Journey Summary</h4>
+            <hr style="border: 0; border-top: 1px solid var(--border); margin: 1rem 0;">
+            <p id="sumBusName">Shivneri AC Volvo</p>
+            
+            <div class="form-group" style="margin:1rem 0;">
+              <label>Boarding Point</label>
+              <select id="boardingPoint"></select>
+            </div>
+            <div class="form-group" style="margin-bottom:1rem;">
+              <label>Dropping Point</label>
+              <select id="droppingPoint"></select>
+            </div>
+
+            <p id="sumSeatsSelected" style="font-weight: bold; margin-top: 0.5rem;">Selected Seats: -</p>
+            <p id="sumFare" style="font-size: 1.3rem; color: var(--primary); margin: 1rem 0;">Total: ₹0</p>
+            
+            <button onclick="proceedToPassengerDetails()" class="btn-primary" style="width: 100%; justify-content: center;">Continue</button>
+            <button onclick="goBackToStep(1)" class="btn-secondary" style="width: 100%; margin-top: 0.5rem;">Back</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- step 3: Passenger Details -->
+      <div id="booking-step-passenger" class="booking-flow-step" style="display:none;">
+        <div class="form-card">
+          <h3 style="margin-bottom: 1.5rem;" data-key="passengerDetails">Passenger Details</h3>
+          <form id="passengerDetailsForm" onsubmit="proceedToPayment(event)">
+            <div style="background:var(--bg-primary); padding:1rem; border-radius:8px; margin-bottom:1.5rem; display:flex; justify-content:space-between; align-items:center;">
+              <div>
+                <strong>Autofill Passenger?</strong>
+                <p style="font-size:0.8rem; color:var(--text-secondary);">Fill form with saved traveler profiles</p>
+              </div>
+              <button type="button" class="btn-secondary" style="font-size:0.85rem; padding:0.4rem 0.8rem;" onclick="autofillSavedPassenger()">Autofill</button>
+            </div>
+
+            <div id="passengerFormsContainer"></div>
+            
+            <div class="form-group" style="margin-top:1.5rem;">
+              <label>Contact Mobile</label>
+              <input type="tel" id="contactMobile" placeholder="Enter 10-digit number" pattern="[0-9]{10}" required>
+            </div>
+            <div class="form-group" style="margin-top:1rem;">
+              <label>Contact Email</label>
+              <input type="email" id="contactEmail" required>
+            </div>
+            <div class="form-group" style="margin-top:1rem;">
+              <label>Emergency Contact No</label>
+              <input type="tel" id="emergencyContact" placeholder="Emergency relative contact" required>
+            </div>
+
+            <div style="display:flex; gap:1rem; margin-top:2rem;">
+              <button type="submit" class="btn-primary" style="flex:1; justify-content: center;">Proceed to Payment</button>
+              <button type="button" class="btn-secondary" onclick="goBackToStep(2)">Back</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- step 4: Simulated Payment -->
+      <div id="booking-step-payment" class="booking-flow-step" style="display:none;">
+        <div class="form-card" style="max-width: 500px;">
+          <h3 style="margin-bottom:1.5rem;" data-key="payment">Payment Portal</h3>
+          <div style="background: var(--bg-primary); padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem;">
+            <p id="payBus"></p>
+            <p id="paySeats"></p>
+            <div style="display:flex; justify-content:space-between; margin-top:0.5rem;">
+              <span>Base Ticket Price:</span>
+              <span id="payBaseFare">₹0</span>
+            </div>
+            <div style="display:flex; justify-content:space-between;">
+              <span>GST (5%):</span>
+              <span id="payGst">₹0</span>
+            </div>
+            <h4 id="payTotal" style="color: var(--primary); margin-top:0.5rem; border-top:1px solid var(--border); padding-top:0.5rem;"></h4>
+          </div>
+          
+          <form id="paymentForm" onsubmit="completeBooking(event)">
+            <div class="form-group" style="margin-bottom:1rem;">
+              <label>Promo Code</label>
+              <div style="display:flex; gap:0.5rem;">
+                <input type="text" id="promoCodeInput" placeholder="E.g. DISCO50">
+                <button type="button" class="btn-secondary" onclick="applyPromoCode()">Apply</button>
+              </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom:1rem;">
+              <label for="paymentMethod">Select Payment Method</label>
+              <select id="paymentMethod" onchange="togglePaymentInputs(this.value)">
+                <option value="upi">UPI (GPay / PhonePe / BHIM)</option>
+                <option value="card">Credit / Debit Card</option>
+                <option value="netbanking">Net Banking</option>
+                <option value="wallet">Digital Wallet</option>
+              </select>
+            </div>
+
+            <div id="upiInputContainer" class="form-group" style="margin-bottom:1.5rem;">
+              <label for="upiId">UPI ID</label>
+              <input type="text" id="upiId" placeholder="username@okaxis">
+            </div>
+
+            <div id="cardInputContainer" class="form-group" style="margin-bottom:1.5rem; display:none;">
+              <label for="cardNumber">Card Number</label>
+              <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456">
+              <div style="display:flex; gap:1rem; margin-top:1rem;">
+                <input type="text" placeholder="MM/YY" style="width: 50%;">
+                <input type="password" placeholder="CVV" style="width: 50%;">
+              </div>
+            </div>
+
+            <button type="submit" class="btn-primary" style="width:100%; justify-content: center;">Simulate Secure Payment</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Booking success -->
+      <div id="booking-step-success" class="booking-flow-step" style="display:none;">
+        <div style="text-align:center;">
+          <span style="font-size: 4rem; color:var(--seat-avail);">✓</span>
+          <h2 data-key="success" style="color: var(--seat-avail); margin-bottom: 1rem;">Booking Successful</h2>
+          
+          <div class="ticket-slip" id="ticketSlip">
+            <div class="ticket-header">
+              <strong style="color: var(--primary);">MSRTC SMART TICKET</strong>
+              <span id="ticketPnr" style="font-family: monospace; font-weight: bold;">PNR: -</span>
+            </div>
+            <div class="ticket-grid">
+              <div>
+                <small style="color: #64748b;">From</small>
+                <p id="tFrom" style="font-weight: bold;"></p>
+              </div>
+              <div>
+                <small style="color: #64748b;">To</small>
+                <p id="tTo" style="font-weight: bold;"></p>
+              </div>
+              <div>
+                <small style="color: #64748b;">Bus No / Type</small>
+                <p id="tBus" style="font-weight: bold;"></p>
+              </div>
+              <div>
+                <small style="color: #64748b;">Seat(s)</small>
+                <p id="tSeats" style="font-weight: bold;"></p>
+              </div>
+              <div>
+                <small style="color: #64748b;">Date</small>
+                <p id="tDate" style="font-weight: bold;"></p>
+              </div>
+              <div>
+                <small style="color: #64748b;">Fare Paid</small>
+                <p id="tFare" style="font-weight: bold; color: var(--primary);"></p>
+              </div>
+            </div>
+            
+            <div class="qr-placeholder">
+              <svg width="120" height="120" viewBox="0 0 100 100" fill="black">
+                <rect x="0" y="0" width="30" height="30"/>
+                <rect x="5" y="5" width="20" height="20" fill="white"/>
+                <rect x="70" y="0" width="30" height="30"/>
+                <rect x="75" y="5" width="20" height="20" fill="white"/>
+                <rect x="0" y="70" width="30" height="30"/>
+                <rect x="5" y="75" width="20" height="20" fill="white"/>
+                <rect x="40" y="40" width="20" height="20"/>
+              </svg>
+            </div>
+          </div>
+          
+          <button onclick="downloadTicketPDF()" class="btn-primary" data-key="downloadPdf">Download PDF Ticket</button>
+          <button onclick="showSection('dashboard')" class="btn-secondary" style="margin-left: 1rem;">Go to Dashboard</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Bus Schedule View -->
+    <section id="view-schedule" class="view-section">
+      <h3 style="margin-bottom: 1.5rem;" data-key="busSchedule">Bus Schedule</h3>
+      <div class="form-card" style="margin-bottom: 2rem;">
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Search by City / Depot</label>
+            <input type="text" id="scheduleSearch" placeholder="Type city (e.g. Pune, Mumbai)" oninput="filterSchedules()">
+          </div>
+          <div class="form-group">
+            <label>Bus Type</label>
+            <select id="scheduleBusType" onchange="filterSchedules()">
+              <option value="all">All Types</option>
+              <option value="shivneri">Shivneri Volvo AC</option>
+              <option value="shivshahi">Shivshahi AC</option>
+              <option value="laldabba">Parivartan (Lal Dabba)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="bus-list" id="scheduleList"></div>
+    </section>
+
+    <!-- 4. Parcel Services View -->
+    <section id="view-parcel" class="view-section">
+      <h3 style="margin-bottom: 1.5rem;" data-key="parcelServices">Parcel Services</h3>
+      <div class="panel-layout">
+        <div class="panel-sidebar">
+          <div class="panel-menu-item active" onclick="switchParcelTab('calculator', this)">Rate Calculator</div>
+          <div class="panel-menu-item" onclick="switchParcelTab('book', this)">Book Parcel</div>
+          <div class="panel-menu-item" onclick="switchParcelTab('track', this)">Track Parcel</div>
+        </div>
+        
+        <div class="panel-content">
+          <div id="parcel-calculator" class="parcel-tab-content">
+            <h4 style="margin-bottom: 1.2rem;" data-key="parcelRates">Parcel Rate Calculator</h4>
+            <div class="form-grid">
+              <div class="form-group">
+                <label>Weight (kg)</label>
+                <input type="number" id="pWeight" value="5" min="1" oninput="calcParcelPrice()">
+              </div>
+              <div class="form-group">
+                <label>Approx. Distance (km)</label>
+                <input type="number" id="pDistance" value="150" min="10" oninput="calcParcelPrice()">
+              </div>
+            </div>
+            <div style="background: var(--bg-primary); padding: 1.5rem; border-radius: 12px; margin-top: 1.5rem;">
+              <p>Estimated Charge:</p>
+              <h2 id="parcelEstPrice" style="color: var(--primary);">₹180</h2>
+              <small style="color: var(--text-secondary);">*Prices exclude standard GST & insurance charges.</small>
+            </div>
+          </div>
+
+          <div id="parcel-book" class="parcel-tab-content" style="display:none;">
+            <h4 style="margin-bottom: 1.2rem;">Book New Parcel</h4>
+            <form id="parcelBookForm" onsubmit="handleParcelBooking(event)">
+              <div class="form-grid">
+                <div class="form-group">
+                  <label>Sender Name</label>
+                  <input type="text" id="pbSender" required>
+                </div>
+                <div class="form-group">
+                  <label>Receiver Name</label>
+                  <input type="text" id="pbReceiver" required>
+                </div>
+                <div class="form-group">
+                  <label>Receiver Contact</label>
+                  <input type="tel" id="pbContact" pattern="[0-9]{10}" required>
+                </div>
+                <div class="form-group">
+                  <label>Service Mode</label>
+                  <select id="pbMode">
+                    <option value="standard">Standard Cargo</option>
+                    <option value="shivneri">Shivneri Express (Same Day)</option>
+                  </select>
+                </div>
+              </div>
+              <button type="submit" class="btn-primary" style="margin-top: 1rem;">Confirm & Pay Parcel Charges</button>
+            </form>
+          </div>
+
+          <div id="parcel-track" class="parcel-tab-content" style="display:none;">
+            <h4 style="margin-bottom: 1.2rem;">Track Parcel Delivery</h4>
+            <div style="display:flex; gap: 1rem; margin-bottom: 2rem;">
+              <input type="text" id="parcelTrackId" placeholder="Enter PNR or Parcel ID (e.g. MSR-P-992)" style="flex:1; background:var(--bg-primary); border:1px solid var(--border); color:var(--text-primary); padding: 0.8rem; border-radius:8px;">
+              <button class="btn-primary" onclick="trackParcel()">Search</button>
+            </div>
+
+            <div id="parcelTrackResult" style="display:none; background: var(--bg-primary); padding: 2rem; border-radius: 12px;">
+              <h5 id="pTrackStatusHeader" style="color: var(--primary); font-size: 1.15rem; margin-bottom: 1.5rem;">Status: In Transit</h5>
+              <div class="tracker-timeline">
+                <div class="tracker-node active" id="p-node-booked">
+                  <div class="tracker-dot"></div>
+                  <small>Booked</small>
+                </div>
+                <div class="tracker-node" id="p-node-dispatched">
+                  <div class="tracker-dot"></div>
+                  <small>Dispatched</small>
+                </div>
+                <div class="tracker-node" id="p-node-transit">
+                  <div class="tracker-dot"></div>
+                  <small>In Transit</small>
+                </div>
+                <div class="tracker-node" id="p-node-delivered">
+                  <div class="tracker-dot"></div>
+                  <small>Delivered</small>
+                </div>
+              </div>
+              <p id="pTrackDetails" style="margin-top: 1.5rem; font-size: 0.95rem;"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. User Login / Registration View -->
+    <section id="view-login" class="view-section">
+      <div class="form-card" style="max-width: 480px;">
+        <div class="auth-tabs">
+          <button type="button" class="auth-tab-btn active" id="tabBtnLogin" onclick="toggleAuthTab('login')">Sign In</button>
+          <button type="button" class="auth-tab-btn" id="tabBtnSignup" onclick="toggleAuthTab('signup')">Sign Up</button>
+        </div>
+
+        <div id="loginFormContainer">
+          <h3 style="margin-bottom: 1.5rem;">Sign In to MSRTC</h3>
+          
+          <div class="form-group" style="margin-bottom:1rem;">
+            <label>Login Method</label>
+            <select id="loginTypeSelect" onchange="toggleLoginMethod(this.value)">
+              <option value="otp">Mobile + OTP</option>
+              <option value="password">Email + Password</option>
+            </select>
+          </div>
+
+          <form id="authLoginForm" onsubmit="handleAuthSubmit(event)">
+            <div id="loginMobileGroup" class="form-group" style="margin-bottom:1rem;">
+              <label>Mobile Number</label>
+              <input type="tel" id="authMobile" placeholder="Enter 10-digit Mobile" pattern="[0-9]{10}">
+            </div>
+            
+            <div id="otpInputContainer" class="form-group" style="margin-bottom:1.5rem; display:none;">
+              <label>Enter 4-Digit OTP</label>
+              <input type="password" id="authOtp" placeholder="••••" maxlength="4">
+            </div>
+
+            <div id="loginPasswordGroup" class="form-group" style="margin-bottom:1rem; display:none;">
+              <label>Email Address</label>
+              <input type="email" id="authEmail" placeholder="name@example.com">
+              <label style="margin-top:1rem;">Password</label>
+              <input type="password" id="authPassword" placeholder="Enter Password">
+            </div>
+
+            <button type="submit" id="authSubmitBtn" class="btn-primary" style="width: 100%; justify-content: center;">Send OTP</button>
+          </form>
+        </div>
+
+        <div id="signupFormContainer" style="display:none;">
+          <h3 style="margin-bottom: 1.5rem;">Create Passenger Account</h3>
+          <form id="signupForm" onsubmit="handleRegistrationSubmit(event)">
+            <div class="form-group" style="margin-bottom:1rem;">
+              <label>Full Name</label>
+              <input type="text" id="regName" placeholder="E.g. Atharva K." required>
+            </div>
+            <div class="form-group" style="margin-bottom:1rem;">
+              <label>Mobile Number</label>
+              <input type="tel" id="regMobile" placeholder="Enter 10-digit number" pattern="[0-9]{10}" required>
+            </div>
+            <div class="form-group" style="margin-bottom:1rem;">
+              <label>Email Address</label>
+              <input type="email" id="regEmail" placeholder="name@example.com" required>
+            </div>
+            <div class="form-group" style="margin-bottom:1.5rem;">
+              <label>Password</label>
+              <input type="password" id="regPassword" placeholder="Create secure password" required>
+            </div>
+            <button type="submit" class="btn-primary" style="width:100%; justify-content:center;">Create Account & Login</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. User Dashboard View -->
+    <section id="view-dashboard" class="view-section">
+      <h3 style="margin-bottom: 1.5rem;" id="dashboardGreeting">Passenger Dashboard</h3>
+      
+      <div class="panel-layout">
+        <div class="panel-sidebar">
+          <div class="panel-menu-item active" onclick="switchDashboardTab('my-tickets', this)">My Tickets</div>
+          <div class="panel-menu-item" onclick="switchDashboardTab('my-passes', this)">Bus Passes</div>
+          <div class="panel-menu-item" onclick="switchDashboardTab('my-complaints', this)">My Complaints</div>
+          <div class="panel-menu-item" onclick="switchDashboardTab('favorites', this)">Favorite Routes</div>
+          <div class="panel-menu-item" onclick="switchDashboardTab('saved-passengers', this)">Saved Passengers</div>
+          <div class="panel-menu-item" onclick="switchDashboardTab('profile-settings', this)">Profile & Settings</div>
+        </div>
+
+        <div class="panel-content">
+          <div id="dash-my-tickets" class="dash-tab-content">
+            <h4 style="margin-bottom: 1rem;">Recent Ticket Bookings</h4>
+            <div class="bus-list" id="dashboardTicketsList"></div>
+          </div>
+
+          <div id="dash-my-passes" class="dash-tab-content" style="display:none;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
+              <h4>Active Bus Passes</h4>
+              <button class="btn-primary" onclick="showPassApplicationForm()">Apply New Pass</button>
+            </div>
+            
+            <div id="passAppFormContainer" style="display:none; background: var(--bg-primary); padding: 1.5rem; border-radius:12px; margin-bottom:2rem;">
+              <h5 style="margin-bottom:1rem; color:var(--primary);">Apply for MSRTC Smart Pass</h5>
+              <form id="passAppForm" onsubmit="submitPassApplication(event)">
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label>Passenger Name</label>
+                    <input type="text" id="passName" required>
+                  </div>
+                  <div class="form-group">
+                    <label>Pass Type</label>
+                    <select id="passType">
+                      <option value="Student Concession (Monthly)">Student Concession (Monthly)</option>
+                      <option value="Senior Citizen Free Pass">Senior Citizen Free Pass (75+)</option>
+                      <option value="Monthly Commuter Pass">Monthly Commuter Pass (General)</option>
+                      <option value="Daily Transit Card">Daily Transit Card</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label>Aadhaar / ID Card Proof Number</label>
+                    <input type="text" id="passIdProof" required>
+                  </div>
+                </div>
+                <button type="submit" class="btn-primary" style="margin-top: 1rem;">Submit & Issue QR Pass</button>
+              </form>
+            </div>
+
+            <div class="bus-list" id="dashboardPassesList"></div>
+          </div>
+
+          <div id="dash-my-complaints" class="dash-tab-content" style="display:none;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
+              <h4>Grievance Pipeline</h4>
+              <button class="btn-primary" onclick="showComplaintForm()">File Complaint</button>
+            </div>
+
+            <div id="complaintFormContainer" style="display:none; background: var(--bg-primary); padding:1.5rem; border-radius:12px; margin-bottom:2rem;">
+              <h5 style="margin-bottom:1rem; color:var(--primary);">Register Grievance</h5>
+              <form id="complaintForm" onsubmit="submitGrievance(event)">
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label>Category</label>
+                    <select id="compCategory">
+                      <option value="Bus Delay">Bus Delay</option>
+                      <option value="Staff Behaviour">Staff Behaviour</option>
+                      <option value="Cleanliness">Cleanliness</option>
+                      <option value="Refund Issue">Refund Issue</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label>Bus Number (Optional)</label>
+                    <input type="text" id="compBusNo" placeholder="E.g. MH-14-BT-3030">
+                  </div>
+                </div>
+                <div class="form-group" style="margin-top:1rem;">
+                  <label>Describe Grievance</label>
+                  <textarea id="compDesc" rows="4" style="width: 100%; background:var(--bg-primary); border:1px solid var(--border); color:var(--text-primary); border-radius:8px; padding:0.5rem;" required></textarea>
+                </div>
+                <button type="submit" class="btn-primary" style="margin-top: 1rem;">File Complaint</button>
+              </form>
+            </div>
+
+            <div class="bus-list" id="dashboardComplaintsList"></div>
+          </div>
+
+          <div id="dash-favorites" class="dash-tab-content" style="display:none;">
+            <h4>Favorite & Saved Routes</h4>
+            <div class="bus-list" id="dashboardFavoritesList" style="margin-top:1rem;"></div>
+          </div>
+
+          <div id="dash-saved-passengers" class="dash-tab-content" style="display:none;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
+              <h4>Saved Passenger List</h4>
+              <button class="btn-primary" onclick="showAddPassengerForm()">Add Traveler</button>
+            </div>
+            
+            <div id="addPassengerFormContainer" style="display:none; background:var(--bg-primary); padding:1.5rem; border-radius:12px; margin-bottom:1.5rem;">
+              <form id="addPassengerForm" onsubmit="saveNewPassenger(event)">
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" id="spName" required>
+                  </div>
+                  <div class="form-group">
+                    <label>Age</label>
+                    <input type="number" id="spAge" required>
+                  </div>
+                  <div class="form-group">
+                    <label>Gender</label>
+                    <select id="spGender">
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
+                </div>
+                <button type="submit" class="btn-primary" style="margin-top:1rem;">Save Profile</button>
+              </form>
+            </div>
+
+            <div class="bus-list" id="dashboardPassengersList"></div>
+          </div>
+
+          <div id="dash-profile-settings" class="dash-tab-content" style="display:none;">
+            <h4>Profile & System Preferences</h4>
+            <div style="background:var(--bg-primary); padding:1.5rem; border-radius:12px; margin-top:1.5rem;">
+              <div class="form-group" style="margin-bottom:1rem;">
+                <label>Preferred Language</label>
+                <select id="settingLanguageSelect" onchange="changeLanguage(this.value)">
+                  <option value="en">English</option>
+                  <option value="mr">मराठी</option>
+                  <option value="hi">हिन्दी</option>
+                </select>
+              </div>
+              <div class="form-group" style="margin-bottom:1.5rem;">
+                <label>Notification Alerts Preference</label>
+                <div style="display:flex; gap:1.5rem; margin-top:0.5rem;">
+                  <label><input type="checkbox" checked> SMS confirmation</label>
+                  <label><input type="checkbox" checked> Email receipt</label>
+                </div>
+              </div>
+              <button class="btn-primary" onclick="alert('Preferences saved!')">Save Preferences</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. Admin Portal View -->
+    <section id="view-admin" class="view-section">
+      <h3 style="margin-bottom: 1.5rem;" data-key="adminTitle">MSRTC Admin Panel</h3>
+      <div class="panel-layout">
+        <div class="panel-sidebar">
+          <div class="panel-menu-item active" onclick="switchAdminTab('bus-manage', this)">Manage Fleet</div>
+          <div class="panel-menu-item" onclick="switchAdminTab('route-manage', this)">Manage Routes</div>
+          <div class="panel-menu-item" onclick="switchAdminTab('complaints-manage', this)">Grievance Pipeline</div>
+          <div class="panel-menu-item" onclick="switchAdminTab('tenders-manage', this)">Tenders & News</div>
+          <div class="panel-menu-item" onclick="switchAdminTab('reports-manage', this)">Analytical Reports</div>
+        </div>
+
+        <div class="panel-content">
+          <div id="admin-bus-manage" class="admin-tab-content">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 1.5rem;">
+              <h4>Active Fleet</h4>
+              <button class="btn-primary" onclick="showAddBusForm()">Add Bus</button>
+            </div>
+            
+            <div id="addBusFormContainer" style="display:none; background:var(--bg-primary); padding:1.5rem; border-radius:12px; margin-bottom:1.5rem;">
+              <form id="addBusForm" onsubmit="handleNewBus(event)">
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label>Bus ID</label>
+                    <input type="text" id="abId" required>
+                  </div>
+                  <div class="form-group">
+                    <label>From</label>
+                    <input type="text" id="abFrom" required>
+                  </div>
+                  <div class="form-group">
+                    <label>To</label>
+                    <input type="text" id="abTo" required>
+                  </div>
+                  <div class="form-group">
+                    <label>Departure</label>
+                    <input type="text" id="abDept" placeholder="08:00" required>
+                  </div>
+                </div>
+                <button type="submit" class="btn-primary" style="margin-top:1rem;">Add to Fleet</button>
+              </form>
+            </div>
+
+            <div class="bus-list" id="adminBusList"></div>
+          </div>
+
+          <div id="admin-route-manage" class="admin-tab-content" style="display:none;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 1.5rem;">
+              <h4>Active Routes Database</h4>
+              <button class="btn-primary" onclick="showAddRouteForm()">Add Route</button>
+            </div>
+            
+            <div id="addRouteFormContainer" style="display:none; background:var(--bg-primary); padding:1.5rem; border-radius:12px; margin-bottom:1.5rem;">
+              <form id="addRouteForm" onsubmit="handleNewRoute(event)">
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label>Route ID</label>
+                    <input type="text" id="arId" placeholder="R-100" required>
+                  </div>
+                  <div class="form-group">
+                    <label>From</label>
+                    <input type="text" id="arFrom" required>
+                  </div>
+                  <div class="form-group">
+                    <label>To</label>
+                    <input type="text" id="arTo" required>
+                  </div>
+                  <div class="form-group">
+                    <label>Via stops</label>
+                    <input type="text" id="arVia" required>
+                  </div>
+                </div>
+                <button type="submit" class="btn-primary" style="margin-top:1rem;">Add Route</button>
+              </form>
+            </div>
+
+            <div class="bus-list" id="adminRouteList"></div>
+          </div>
+
+          <div id="admin-complaints-manage" class="admin-tab-content" style="display:none;">
+            <h4>All Grievances Filed</h4>
+            <div class="bus-list" id="adminComplaintsList" style="margin-top: 1.5rem;"></div>
+          </div>
+
+          <div id="admin-tenders-manage" class="admin-tab-content" style="display:none;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 1.5rem;">
+              <h4>Tenders & News Board</h4>
+              <button class="btn-primary" onclick="showAddTenderForm()">Publish Tender</button>
+            </div>
+
+            <div id="addTenderFormContainer" style="display:none; background:var(--bg-primary); padding:1.5rem; border-radius:12px; margin-bottom:1.5rem;">
+              <form id="addTenderForm" onsubmit="handleNewTender(event)">
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label>Ref No</label>
+                    <input type="text" id="atRef" required>
+                  </div>
+                  <div class="form-group">
+                    <label>Title</label>
+                    <input type="text" id="atTitle" required>
+                  </div>
+                  <div class="form-group">
+                    <label>Submission Date</label>
+                    <input type="date" id="atDate" required>
+                  </div>
+                </div>
+                <button type="submit" class="btn-primary" style="margin-top:1rem;">Publish Tender</button>
+              </form>
+            </div>
+
+            <div class="bus-list" id="adminTenderList"></div>
+          </div>
+
+          <div id="admin-reports-manage" class="admin-tab-content" style="display:none;">
+            <h4>Monthly Analytical Snapshot</h4>
+            <div style="background:var(--bg-primary); padding:1.5rem; border-radius:12px; margin-top:1.5rem;">
+              <p>Total Bookings (July 2026): <strong>1,492,020</strong></p>
+              <p>Occupancy Rate: <strong>82.4%</strong></p>
+              <p>Revenue Generated: <strong>₹82.4M</strong></p>
+              <p>Resolved Complaints: <strong>94%</strong></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. About Us -->
+    <section id="view-about" class="view-section">
+      <h3 style="margin-bottom:1.5rem; text-align:center;">About MSRTC</h3>
+      <div class="archive-card" style="margin-bottom:2rem;">
+        <h4 style="color:var(--primary); margin-bottom:0.5rem;">Our History</h4>
+        <p id="aboutHistory"></p>
+      </div>
+      <div class="form-grid">
+        <div class="archive-card">
+          <h4 style="color:var(--primary); margin-bottom:0.5rem;">Our Mission</h4>
+          <p id="aboutMission"></p>
+        </div>
+        <div class="archive-card">
+          <h4 style="color:var(--primary); margin-bottom:0.5rem;">Our Vision</h4>
+          <p id="aboutVision"></p>
+        </div>
+      </div>
+      <h3 style="margin-top:3rem; margin-bottom:1.5rem; text-align:center;">MSRTC Leadership</h3>
+      <div class="archive-grid" id="leadershipGrid"></div>
+    </section>
+
+    <!-- 9. Bus Stops & Depots -->
+    <section id="view-depots" class="view-section">
+      <h3 style="margin-bottom:1.5rem;">Bus Stops & Depots Directory</h3>
+      <div class="form-card" style="margin-bottom:2rem;">
+        <div class="form-group">
+          <label>Filter Depots by Name</label>
+          <input type="text" id="depotSearchInput" placeholder="Enter Depot City Name" oninput="filterDepotsList()">
+        </div>
+      </div>
+      <div class="archive-grid" id="depotsContainer"></div>
+    </section>
+
+    <!-- 10. Concessions -->
+    <section id="view-concessions" class="view-section">
+      <h3 style="margin-bottom:1.5rem; text-align:center;">Concession Schemes</h3>
+      <div class="archive-grid" id="concessionsContainer"></div>
+    </section>
+
+    <!-- 11. Tenders -->
+    <section id="view-tenders" class="view-section">
+      <h3 style="margin-bottom:1.5rem;" data-key="tendersList">Active Tenders</h3>
+      <div class="archive-grid" id="publicTendersContainer"></div>
+    </section>
+
+    <!-- 12. Recruitments -->
+    <section id="view-recruitment" class="view-section">
+      <h3 style="margin-bottom:1.5rem;" data-key="recruitmentList">Recruitment Opportunities</h3>
+      <div class="archive-grid" id="publicRecruitmentsContainer"></div>
+    </section>
+
+    <!-- 13. Acts & Rules -->
+    <section id="view-acts" class="view-section">
+      <h3 style="margin-bottom:1.5rem;" data-key="actsRules">Acts & Rules</h3>
+      <div class="archive-card" style="margin-bottom:1.5rem;">
+        <h4 style="color:var(--primary);">Road Transport Corporations Act, 1950</h4>
+        <p>Enacted by the Parliament to establish statutory corporations to provide efficient road transport services in the states.</p>
+      </div>
+      <div class="archive-card">
+        <h4 style="color:var(--primary);">Maharashtra Motor Vehicles Rules, 1989</h4>
+        <p>Direct laws governing registration, licensing, speed limits, vehicle emissions, passenger safety precautions, and conductor duties.</p>
+      </div>
+    </section>
+
+    <!-- 14. Circulars -->
+    <section id="view-circulars" class="view-section">
+      <h3 style="margin-bottom:1.5rem;" data-key="circularsList">Department Circulars</h3>
+      <div class="bus-list" id="circularsContainer"></div>
+    </section>
+
+    <!-- 15. Citizen Charter -->
+    <section id="view-charter" class="view-section">
+      <h3 style="margin-bottom:1.5rem;" data-key="citizenCharter">Citizen Charter</h3>
+      <div class="archive-card" style="margin-bottom:1.5rem;">
+        <h4 style="color:var(--primary);">Passenger Rights & Commuter Guarantees</h4>
+        <p>1. Right to safe, clean, reliable and timely bus transport services.<br>
+           2. Access to clear schedule charts and fare grids across every depot.<br>
+           3. Right to prompt grievance resolution within 14 working days of filing a complaint.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Floating Chatbot Widget (Assistant layout container) -->
+  <div class="ai-chat-bubble" onclick="toggleAIChat()" aria-label="Ask MSRTC Assistant">💬</div>
+  
+  <div class="ai-chat-window" id="aiChatWindow">
+    <div class="chat-header">
+      <div style="display:flex; align-items:center; gap:0.5rem;">
+        <span style="font-size: 1.5rem;">🤖</span>
+        <div>
+          <strong style="display:block; font-size:0.95rem;">MSRTC AI Assistant</strong>
+          <div style="font-size:0.75rem; display:flex; gap:0.4rem;">
+            <span onclick="changeLanguage('en')" style="cursor:pointer;">English</span> | 
+            <span onclick="changeLanguage('mr')" style="cursor:pointer;">मराठी</span> | 
+            <span onclick="changeLanguage('hi')" style="cursor:pointer;">हिन्दी</span>
+          </div>
+        </div>
+      </div>
+      <button onclick="toggleAIChat()" style="background:none; border:none; color:white; font-size:1.2rem; cursor:pointer;">×</button>
+    </div>
+    
+    <div class="chat-messages" id="chatMessages">
+      <div class="chat-bubble bot">
+        Hello! I'm your MSRTC AI Assistant. How can I help you today?
+      </div>
+      
+      <!-- Mockup Quick Action Command Chips inside Bot window -->
+      <div class="chat-chips-grid">
+        <div class="chat-chip" onclick="showSection('booking')">📙 Book Ticket</div>
+        <div class="chat-chip" onclick="openTrackBusPrompt()">🗺️ Track Bus</div>
+        <div class="chat-chip" onclick="showPassDashboard()">🎫 Bus Pass</div>
+        <div class="chat-chip" onclick="showSection('parcel')">📦 Parcel Service</div>
+        <div class="chat-chip" onclick="showComplaintDashboard()">⚠️ Complaint</div>
+        <div class="chat-chip" onclick="alert('Help: Call toll free 1800 22 1250')">❓ FAQs</div>
+      </div>
+    </div>
+    
+    <div class="chat-input-area">
+      <input type="text" id="chatInput" placeholder="Type your query..." onkeypress="handleChatKey(event)">
+      <button onclick="toggleVoiceInput()" style="background:none; border:none; font-size:1.2rem; cursor:pointer; margin-right: 0.25rem;" title="Voice input">🎤</button>
+      <button class="btn-primary" onclick="sendChatMessage()" style="padding: 0.4rem 0.8rem; border-radius:50%; width:32px; height:32px; display:flex; justify-content:center; align-items:center;">➔</button>
+    </div>
+  </div>
+
+  <!-- Footer Area -->
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4 data-key="aboutUs">About MSRTC</h4>
+        <ul>
+          <li><a href="#" onclick="showSection('about')">About Us</a></li>
+          <li><a href="#" onclick="alert('Careers dashboard opening soon')">Careers</a></li>
+          <li><a href="#" onclick="showSection('tenders')">Tenders</a></li>
+          <li><a href="#" onclick="showSection('charter')">Contact Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4 data-key="information">Information</h4>
+        <ul>
+          <li><a href="#">Terms & Conditions</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Refund Policy</a></li>
+          <li><a href="#">FAQ</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Connect With Us</h4>
+        <p style="margin-bottom:0.5rem; font-size:0.9rem;">🏢 Mumbai Central, Mumbai 400008</p>
+        <p style="margin-bottom:0.5rem; font-size:0.9rem;">📞 1800 22 1250 (Toll Free)</p>
+        <div style="display:flex; gap:0.5rem; margin-top:0.5rem; font-size:1.2rem;">
+          <span>📘</span> <span>🐦</span> <span>📸</span> <span>📺</span>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Get Our App</h4>
+        <button class="btn-secondary" style="font-size:0.75rem; padding:0.4rem; width:100%; margin-bottom:0.5rem;" onclick="alert('Downloading Android App...')">🤖 Google Play</button>
+        <button class="btn-secondary" style="font-size:0.75rem; padding:0.4rem; width:100%;" onclick="alert('Redirecting to App Store...')">🍎 App Store</button>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <p>&copy; 2026 MSRTC. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
