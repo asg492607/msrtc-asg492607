@@ -109,7 +109,9 @@ body {
 
 /* Header & navigation */
 header {
-  background: var(--bg-secondary);
+  background: rgba(255,255,255,.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
   position: sticky;
   top: 0;
@@ -160,13 +162,14 @@ header {
   text-decoration: none;
   font-weight: 600;
   font-size: 0.92rem;
-  transition: var(--transition);
+  transition: all 0.3s ease;
   padding: 0.5rem 0.8rem;
-  border-radius: 6px;
+  border-bottom: 2px solid transparent;
 }
 
 .nav-links a:hover, .nav-links a.active {
   color: var(--primary);
+  border-bottom-color: var(--primary);
 }
 
 /* Dropdown menu */
