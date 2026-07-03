@@ -404,7 +404,7 @@ header {
   background: var(--bg-secondary);
   border: 1px solid var(--border);
   border-radius: 12px;
-  padding: 1.5rem;
+  padding: 1rem;
   box-shadow: var(--shadow);
   display: flex;
   flex-direction: column;
@@ -414,7 +414,7 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.2rem;
+  margin-bottom: 0.75rem;
 }
 
 .panel-card-header h3 {
@@ -427,7 +427,7 @@ header {
 .category-filters {
   display: flex;
   gap: 0.4rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
   flex-wrap: wrap;
 }
 
@@ -452,7 +452,7 @@ header {
 /* Update Item list format */
 .update-item {
   border-bottom: 1px solid var(--border);
-  padding: 1rem 0;
+  padding: 0.6rem 0;
   position: relative;
 }
 
@@ -470,7 +470,7 @@ header {
   font-size: 0.7rem;
   font-weight: 700;
   display: inline-block;
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.25rem;
 }
 
 /* Carousel Routes layout styling */
@@ -510,11 +510,11 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.8rem 1rem;
+  padding: 0.6rem 0.8rem;
   background: var(--bg-primary);
   border: 1px solid var(--border);
   border-radius: 8px;
-  margin-bottom: 0.6rem;
+  margin-bottom: 0.5rem;
 }
 
 .emergency-row strong {
