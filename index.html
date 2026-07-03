@@ -165,11 +165,11 @@
           <div style="display:flex; gap:1rem;">
             <div class="hero-form-group" style="width: 50%;">
               <label for="searchDate" data-key="date">Journey Date</label>
-              <input type="date" id="searchDate" required>
+              <input type="date" id="searchDate" required onclick="this.showPicker()">
             </div>
             <div class="hero-form-group" style="width: 50%;">
               <label>Return Date (Optional)</label>
-              <input type="date" id="searchReturnDate">
+              <input type="date" id="searchReturnDate" onclick="this.showPicker()">
             </div>
           </div>
 

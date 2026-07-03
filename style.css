@@ -358,6 +358,11 @@ header {
   background: #FFF;
 }
 
+.hero-form-group input::placeholder {
+  color: #64748b;
+  opacity: 1;
+}
+
 .hero-swap-btn {
   position: absolute;
   right: 15px;
