@@ -1064,21 +1064,56 @@ footer {
   }
   .hero {
     width: 100%;
-    padding: 2rem 1rem;
+    padding: 1.5rem 0.5rem;
+    min-height: auto;
   }
   .hero-content {
     grid-template-columns: 1fr !important;
     padding: 0;
     width: 100%;
-    gap: 1.5rem;
+    gap: 1rem;
+  }
+  .hero-left {
+    text-align: center;
   }
   .hero-left h2 {
-    font-size: 2.2rem;
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+  }
+  .hero-left p {
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+  }
+  .trust-badges {
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+  .badge-item {
+    font-size: 0.75rem;
+    padding: 0.4rem 0.6rem;
   }
   .search-card-hero {
     max-width: 100%;
-    margin-top: 1rem;
-    padding: 1.25rem 1rem;
+    margin-top: 0.5rem;
+    padding: 1rem 0.75rem;
+    border-radius: 12px;
+  }
+  .search-card-hero h3 {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+  }
+  .hero-form-group {
+    margin-bottom: 0.75rem;
+  }
+  .hero-form-group input, .hero-form-group select {
+    padding: 0.6rem 0.75rem;
+    font-size: 0.88rem;
+  }
+  .hero-swap-btn {
+    top: 22px;
+    width: 28px;
+    height: 28px;
   }
   .quick-actions-row {
     grid-template-columns: repeat(2, 1fr);
