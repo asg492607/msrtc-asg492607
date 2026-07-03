@@ -27,15 +27,18 @@
       
       <span style="margin-left:1.5rem; color:#94A3B8;">|</span>
       
-      <!-- Accessibility Font Controls -->
-      <button onclick="changeFontSize()" class="utility-btn" style="margin-left:1rem;">A-</button>
-      <button onclick="changeFontSize()" class="utility-btn" style="font-weight:bold;">A</button>
-      <button onclick="changeFontSize()" class="utility-btn">A+</button>
-      
-      <span style="margin-left:1rem; color:#94A3B8;">|</span>
-      
-      <button onclick="toggleHighContrast()" class="utility-btn" style="margin-left:1rem;">🌓 High Contrast</button>
-      <button onclick="alert('Screen reader instructions activated')" class="utility-btn" style="margin-left:1rem;">🔊 Screen Reader Access</button>
+
+      <!-- Accessibility Dropdown -->
+      <div class="dropdown-menu" style="margin-left:1rem;">
+        <button class="utility-btn" style="font-weight:bold; cursor:pointer; background:none; border:none; color:inherit;">Accessibility ▾</button>
+        <div class="dropdown-content" style="left:0; min-width: 180px; text-align:left;">
+          <a href="#" onclick="changeFontSize(); return false;">A- (Decrease Font)</a>
+          <a href="#" onclick="changeFontSize(); return false;">A (Normal Font)</a>
+          <a href="#" onclick="changeFontSize(); return false;">A+ (Increase Font)</a>
+          <a href="#" onclick="toggleHighContrast(); return false;">🌓 High Contrast</a>
+          <a href="#" onclick="alert('Screen reader instructions activated'); return false;">🔊 Screen Reader</a>
+        </div>
+      </div>
     </div>
     <div class="utility-right">
       <span style="font-weight:700; color:#FF9100;">📞 Emergency Helpline: 1800 22 1250</span>
