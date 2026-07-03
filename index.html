@@ -315,53 +315,68 @@
         </div>
       </div>
 
-      <!-- Lower Statistics Banner Row -->
-      <div class="stat-banner-row">
-        <div class="stat-banner-col">
-          <p class="stat-banner-number">8,000+</p>
-          <small style="color:var(--text-secondary); font-weight:700;">Buses Active</small>
-        </div>
-        <div class="stat-banner-col">
-          <p class="stat-banner-number">1,050+</p>
-          <small style="color:var(--text-secondary); font-weight:700;">Routes Covered</small>
-        </div>
-        <div class="stat-banner-col">
-          <p class="stat-banner-number">5.2 Crore+</p>
-          <small style="color:var(--text-secondary); font-weight:700;">Happy Passengers</small>
-        </div>
-        <div class="stat-banner-col">
-          <p class="stat-banner-number">6.5 Lakh+</p>
-          <small style="color:var(--text-secondary); font-weight:700;">Trips Every Day Pune</small>
-        </div>
-      </div>
-
-      <!-- App Download block with Mockup Render Layout -->
-      <div class="app-block-container">
-        <div style="display:flex; align-items:center; gap:1.5rem;">
-          <div style="width:70px; height:70px; background:var(--primary); border-radius:16px; display:flex; justify-content:center; align-items:center; font-size:2rem; color:white; font-weight:bold;">ST</div>
-          <div>
-            <h3 style="color:#031A30; font-weight:800; font-size:1.4rem;">MSRTC Mobile App</h3>
-            <p style="color:var(--text-secondary); font-size:0.9rem;">Your Travel Companion. Download now and travel smarter!</p>
-            
-            <div style="display:flex; gap:0.5rem; margin-top:1rem;">
-              <button class="btn-secondary" style="font-size:0.75rem; padding:0.4rem 0.8rem;" onclick="alert('Redirecting to Google Play...')">🤖 Google Play</button>
-              <button class="btn-secondary" style="font-size:0.75rem; padding:0.4rem 0.8rem;" onclick="alert('Redirecting to App Store...')">🍎 App Store</button>
+      <!-- Combined Statistics and App Download Row -->
+      <div class="bottom-combined-row">
+        
+        <div class="stat-banner-row">
+          <div class="stat-banner-col">
+            <img src="trust_icon_2.png" alt="Bus" style="width: 32px; height: 32px; object-fit: contain;">
+            <div class="stat-text">
+              <span class="stat-number">8,000+</span>
+              <span class="stat-label">Buses</span>
+            </div>
+          </div>
+          <div class="stat-banner-col">
+            <img src="trust_icon_1.png" alt="Location" style="width: 32px; height: 32px; object-fit: contain;">
+            <div class="stat-text">
+              <span class="stat-number">1,050+</span>
+              <span class="stat-label">Routes</span>
+            </div>
+          </div>
+          <div class="stat-banner-col">
+            <img src="trust_icon_4.png" alt="People" style="width: 32px; height: 32px; object-fit: contain;">
+            <div class="stat-text">
+              <span class="stat-number">5.2 Crore+</span>
+              <span class="stat-label">Happy Passengers</span>
+            </div>
+          </div>
+          <div class="stat-banner-col">
+            <img src="trust_icon_3.png" alt="Map" style="width: 32px; height: 32px; object-fit: contain;">
+            <div class="stat-text">
+              <span class="stat-number">6.5 Lakh+</span>
+              <span class="stat-label">Trips Every Day Pune</span>
             </div>
           </div>
         </div>
 
-        <div style="display:flex; align-items:center; gap:1.5rem;">
-          <div style="text-align:right;">
-            <strong style="display:block; color:#031A30;">Hi! I'm MSRTC AI</strong>
-            <small style="color:var(--text-secondary);">How can I help you?</small>
+        <div class="app-block-container">
+          <div style="display:flex; align-items:center; gap:1.2rem;">
+            <div style="width:64px; height:64px; background:var(--primary); border-radius:12px; display:flex; justify-content:center; align-items:center; font-size:1.5rem; color:white; font-weight:bold;">ST</div>
+            <div>
+              <h3 style="color:#031A30; font-weight:800; font-size:1.1rem; margin-bottom:0.15rem;">MSRTC Mobile App</h3>
+              <p style="color:var(--text-secondary); font-size:0.75rem; margin-bottom:0.75rem;">Your Travel Companion. Download now!</p>
+              
+              <div style="display:flex; gap:0.4rem;">
+                <button class="btn-secondary" style="font-size:0.7rem; padding:0.3rem 0.6rem;" onclick="alert('Redirecting to Google Play...')">🤖 Google Play</button>
+                <button class="btn-secondary" style="font-size:0.7rem; padding:0.3rem 0.6rem;" onclick="alert('Redirecting to App Store...')">🍎 App Store</button>
+              </div>
+            </div>
           </div>
-          <!-- QR Code Placeholder -->
-          <svg width="70" height="70" viewBox="0 0 100 100" fill="black" style="background:#FFF; padding:0.25rem; border:1px solid var(--border); border-radius:8px;">
-            <rect x="0" y="0" width="30" height="30"/><rect x="70" y="0" width="30" height="30"/><rect x="0" y="70" width="30" height="30"/>
-            <rect x="40" y="40" width="20" height="20"/>
-          </svg>
+
+          <div style="display:flex; align-items:center; gap:1rem;">
+            <div style="text-align:left; background: #FFF; border: 1px solid #E2E8F0; border-radius: 12px; padding: 0.5rem 0.75rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05); position: relative;">
+              <strong style="display:block; color:#031A30; font-size: 0.85rem;">Hi! I'm MSRTC AI</strong>
+              <small style="color:var(--text-secondary); font-size: 0.75rem;">How can I help you?</small>
+            </div>
+            <!-- AI Icon inside app block like screenshot -->
+            <div style="width: 48px; height: 48px; background: #FF6B00; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: white; font-size: 1.5rem; box-shadow: 0 4px 10px rgba(255,107,0,0.4); cursor: pointer;">
+              🤖
+            </div>
+          </div>
         </div>
+
       </div>
+
 
     </section>
 
