@@ -214,7 +214,7 @@ header {
 .hero {
   background: linear-gradient(90deg, rgba(255,255,255,0.7) 10%, rgba(255,255,255,0.1) 60%, rgba(255,255,255,0) 100%), 
               url('msrtc_hero_bg.jpg') center right/cover;
-  padding: 2rem 0 3rem 0;
+  padding: 0.5rem 0 2rem 0;
   border-bottom: 1px solid var(--border);
   position: relative;
   overflow: hidden;
