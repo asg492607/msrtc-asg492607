@@ -123,17 +123,20 @@
       <div class="search-card-hero" id="searchCard">
         <h3>Book Your Bus Ticket</h3>
         <form id="busSearchForm" onsubmit="handleBusSearch(event)">
-          <div class="hero-form-group">
-            <label for="searchFrom" data-key="from">From</label>
-            <input type="text" id="searchFrom" placeholder="From City / Bus Stop" autocomplete="off" oninput="showSuggestions(this, 'from')" required>
-            <div id="fromSuggestions" class="suggestions-dropdown"></div>
-            <button type="button" class="hero-swap-btn" onclick="swapFromTo()">⇅</button>
-          </div>
+          <div style="position:relative;">
+            <div class="hero-form-group">
+              <label for="searchFrom" data-key="from">From</label>
+              <input type="text" id="searchFrom" placeholder="From City / Bus Stop" autocomplete="off" oninput="showSuggestions(this, 'from')" required>
+              <div id="fromSuggestions" class="suggestions-dropdown"></div>
+            </div>
 
-          <div class="hero-form-group">
-            <label for="searchTo" data-key="to">To</label>
-            <input type="text" id="searchTo" placeholder="To City / Bus Stop" autocomplete="off" oninput="showSuggestions(this, 'to')" required>
-            <div id="toSuggestions" class="suggestions-dropdown"></div>
+            <button type="button" class="hero-swap-btn" onclick="swapFromTo()">⇅</button>
+
+            <div class="hero-form-group" style="margin-top: 0.5rem; margin-bottom: 0.85rem;">
+              <label for="searchTo" data-key="to">To</label>
+              <input type="text" id="searchTo" placeholder="To City / Bus Stop" autocomplete="off" oninput="showSuggestions(this, 'to')" required>
+              <div id="toSuggestions" class="suggestions-dropdown"></div>
+            </div>
           </div>
 
           <div style="display:flex; gap:1rem;">
