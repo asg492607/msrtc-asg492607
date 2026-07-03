@@ -226,7 +226,7 @@ header {
 
 /* Hero & Route patterns (matching mockup background styling) */
 .hero {
-  background: linear-gradient(90deg, rgba(255,255,255,0.7) 10%, rgba(255,255,255,0.1) 60%, rgba(255,255,255,0) 100%), 
+  background: linear-gradient(rgba(11,60,93,.45), rgba(11,60,93,.15)),
               url('msrtc_hero_bg.jpg') center right/cover;
   padding: 0.5rem 0 2rem 0;
   border-bottom: 1px solid var(--border);
@@ -248,19 +248,21 @@ header {
   font-size: 3.2rem;
   font-weight: 800;
   line-height: 1.1;
-  color: #031A30;
+  color: #FFFFFF;
   margin-bottom: 1rem;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
 
 .hero-left h2 span {
-  color: var(--primary);
+  color: #FFB347;
 }
 
 .hero-left p {
-  color: var(--text-secondary);
+  color: rgba(255,255,255,0.88);
   font-size: 1.15rem;
   margin-bottom: 2rem;
   font-weight: 500;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.2);
 }
 
 /* Trust Badges */
@@ -429,8 +431,13 @@ header {
 }
 
 .action-item-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+  transform: translateY(-6px);
+  box-shadow: 0 12px 32px rgba(255,107,0,0.12);
+  border-color: var(--primary);
+}
+
+.action-item-card:hover .action-circle-icon {
+  transform: scale(1.1);
 }
 
 .action-circle-icon {
@@ -466,9 +473,9 @@ header {
 .panel-card {
   background: var(--bg-secondary);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: 18px;
   padding: 0.75rem 1rem;
-  box-shadow: var(--shadow);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.06);
   display: flex;
   flex-direction: column;
 }
@@ -1233,4 +1240,103 @@ footer {
     bottom: 140px;
     width: calc(100% - 50px);
   }
+}
+
+/* Quick Date Chips */
+.quick-chip {
+  background: var(--bg-primary);
+  border: 1.5px solid var(--border);
+  color: var(--text-secondary);
+  padding: 0.3rem 0.85rem;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-family: 'Outfit', sans-serif;
+}
+.quick-chip:hover, .quick-chip.active {
+  background: var(--primary);
+  color: #FFF;
+  border-color: var(--primary);
+}
+
+/* Scroll Reveal Animations */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Floating Accessibility Widget */
+.accessibility-fab {
+  position: fixed;
+  left: 16px;
+  bottom: 80px;
+  z-index: 200;
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  gap: 0.4rem;
+}
+.accessibility-fab-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: white;
+  border: none;
+  font-size: 1.3rem;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(255,107,0,0.35);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+.accessibility-fab-btn:hover { transform: scale(1.1); }
+.accessibility-fab-panel {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 0.6rem;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+  display: none;
+  flex-direction: column;
+  gap: 0.4rem;
+  min-width: 130px;
+  margin-bottom: 0.5rem;
+}
+.accessibility-fab-panel.open { display: flex; }
+.acc-panel-btn {
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  padding: 0.35rem 0.6rem;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s ease;
+  font-family: 'Outfit', sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.acc-panel-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
+
+/* Consistent border-radius for all main cards */
+.badge-item, .action-item-card { border-radius: 18px; }
+
+/* Footer grid: 6 columns */
+.footer-grid { grid-template-columns: 1.1fr 1fr 1fr 1fr 1fr 1fr; }
+
+@media (max-width: 900px) {
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+  .accessibility-fab { bottom: 90px; }
 }
