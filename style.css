@@ -211,6 +211,7 @@ header {
               url('msrtc_hero_bg.jpg') center right/cover;
   padding: 5rem 1rem;
   border-bottom: 1px solid var(--border);
+  margin-bottom: 0;
 }
 
 .hero-content {
