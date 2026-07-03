@@ -9,10 +9,11 @@ let selectedSeats = [];
 let voiceActive = false;
 let discountApplied = false;
 let currentUpdateCategory = 'All';
+let currentCarouselIndex = 0;
 
 // Simulated State (In-Memory Database)
 let myBookings = [
-  { pnr: "PNR9938210", from: "Mumbai (Mumbai Central)", to: "Pune (Shivajinagar)", busNo: "MSR-101", seats: ["A1", "A2"], date: "2026-07-15", fare: 1100, status: "Active" }
+  { pnr: "PNR9938210", from: "Pune", to: "Mumbai", busNo: "MSR-101", seats: ["A1", "A2"], date: "2026-07-15", fare: 1100, status: "Active" }
 ];
 
 let myPasses = [
@@ -33,15 +34,15 @@ let savedPassengers = [
 ];
 
 let favoriteRoutes = [
-  { from: "Mumbai (Mumbai Central)", to: "Pune (Shivajinagar)" },
-  { from: "Pune (Swargate)", to: "Kolhapur (CBS)" }
+  { from: "Pune", to: "Mumbai" },
+  { from: "Mumbai", to: "Nashik" }
 ];
 
 // Initial Setup
 window.addEventListener('DOMContentLoaded', () => {
   renderAnnouncements();
   renderNews();
-  renderPopularRoutes();
+  renderCarouselRoute();
   renderAboutSection();
   renderDepotsList();
   renderConcessionsList();
@@ -97,7 +98,7 @@ function showSection(sectionId) {
 
   const heroBanner = document.getElementById('hero-banner');
   if (heroBanner) {
-    heroBanner.style.display = (sectionId === 'home') ? 'flex' : 'none';
+    heroBanner.style.display = (sectionId === 'home') ? 'grid' : 'none';
   }
 
   // Reload views dynamically
@@ -133,8 +134,6 @@ function dismissBanner() {
 // Language Translation Switch
 function changeLanguage(langCode) {
   currentLang = langCode;
-  const langSel = document.getElementById('languageSelect');
-  if (langSel) langSel.value = langCode;
   const setLangSel = document.getElementById('settingLanguageSelect');
   if (setLangSel) setLangSel.value = langCode;
   updateLangStrings();
@@ -178,39 +177,64 @@ function renderAnnouncements() {
     return;
   }
 
-  container.innerHTML = items.map(ann => `
-    <div class="announcement-card">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.25rem;">
-        <strong style="color:var(--primary);">${ann.title}</strong>
-        <span style="background:rgba(255,107,0,0.1); color:var(--primary); padding:0.15rem 0.4rem; border-radius:4px; font-size:0.7rem; font-weight:700;">${ann.category}</span>
+  container.innerHTML = items.map(ann => {
+    let badgeClass = 'badge-service';
+    if (ann.category === 'Routes') badgeClass = 'badge-routes';
+    if (ann.category === 'Alerts') badgeClass = 'badge-alerts';
+
+    return `
+      <div class="update-item">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <span class="badge-tag ${badgeClass}">${ann.category}</span>
+          <small style="color:var(--text-secondary);">${ann.date}</small>
+        </div>
+        <strong>${ann.title}</strong>
+        <p style="font-size:0.85rem; color:var(--text-secondary); margin-top:0.25rem;">${ann.desc}</p>
       </div>
-      <p style="font-size:0.9rem;">${ann.desc}</p>
-      <small style="color:var(--text-secondary); display:block; margin-top:0.4rem;">Published: ${ann.date}</small>
-    </div>
-  `).join('');
+    `;
+  }).join('');
 }
 
 function renderNews() {
   const container = document.getElementById('newsList');
   if (!container) return;
   container.innerHTML = MSRTC_DATA.news.map(n => `
-    <div class="announcement-card" style="border-left-color: var(--secondary);">
-      <strong>${n.title}</strong>
-      <p style="font-size:0.85rem; color:var(--text-secondary); margin-top:0.25rem;">${n.desc}</p>
+    <div class="announcement-card" style="border-left-color: var(--secondary); padding: 0.75rem;">
+      <strong style="font-size: 0.9rem;">${n.title}</strong>
+      <p style="font-size:0.8rem; color:var(--text-secondary); margin-top:0.2rem;">${n.desc}</p>
     </div>
   `).join('');
 }
 
-function renderPopularRoutes() {
-  const container = document.getElementById('popularRoutesContainer');
+function renderCarouselRoute() {
+  const container = document.getElementById('carouselContainer');
   if (!container) return;
-  container.innerHTML = MSRTC_DATA.popularRoutes.map(route => `
-    <div class="shortcut-card" onclick="bookPopularRoute('${route.from}', '${route.to}')">
-      <span style="color:var(--primary); font-weight:800;">📍 Route</span>
-      <h4 style="margin: 0.5rem 0; font-size:1rem;">${route.from.split(' ')[0]} to ${route.to.split(' ')[0]}</h4>
-      <p style="font-size:0.85rem; color:var(--text-secondary);">${route.time} | <strong>${route.fare}</strong></p>
+  
+  const route = MSRTC_DATA.popularRoutes[currentCarouselIndex];
+  container.innerHTML = `
+    <div style="position:relative;">
+      <img src="${route.image}" class="route-carousel-img" alt="Route Image">
+      <button class="carousel-nav-btn" style="left:10px;" onclick="shiftCarousel(-1)">◀</button>
+      <button class="carousel-nav-btn" style="right:10px;" onclick="shiftCarousel(1)">▶</button>
     </div>
-  `).join('');
+    <div style="padding:1rem;">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <strong style="font-size:1.1rem; color:#031A30;">${route.from} ➔ ${route.to}</strong>
+        <span style="color:var(--primary); font-weight:800; font-size:1.15rem;">${route.fare}</span>
+      </div>
+      <p style="font-size:0.82rem; color:var(--text-secondary); margin-top:0.25rem;">Timings & Buses running daily on this corridor | Duration: ${route.time}</p>
+      <button class="btn-primary" style="width:100%; margin-top:1rem; padding:0.5rem; font-size:0.85rem;" onclick="bookPopularRoute('${route.from}', '${route.to}')">Book Journey</button>
+    </div>
+  `;
+}
+
+function shiftCarousel(dir) {
+  currentCarouselIndex = (currentCarouselIndex + dir + MSRTC_DATA.popularRoutes.length) % MSRTC_DATA.popularRoutes.length;
+  renderCarouselRoute();
+}
+
+function renderPopularRoutes() {
+  // Renders popular routes cards backup if needed
 }
 
 function bookPopularRoute(from, to) {
@@ -218,6 +242,12 @@ function bookPopularRoute(from, to) {
   document.getElementById('searchTo').value = to;
   showSection('home');
   document.getElementById('searchCard').scrollIntoView({ behavior: 'smooth' });
+}
+
+function autofillPopularSearch(from, to) {
+  document.getElementById('searchFrom').value = from;
+  document.getElementById('searchTo').value = to;
+  showToast(`Autofilled: ${from} to ${to}`, "success");
 }
 
 // Autocomplete suggestions
@@ -315,12 +345,12 @@ function renderBusResults() {
         <div class="bus-timing">
           <h4>${bus.dept}</h4>
           <p>Departure</p>
-          <span style="font-size: 0.8rem; color:var(--text-secondary);">${bus.from.split(' ')[0]}</span>
+          <span style="font-size: 0.8rem; color:var(--text-secondary);">${bus.from}</span>
         </div>
         <div class="bus-timing">
           <h4>${bus.arr}</h4>
           <p>${bus.duration} (${bus.distance})</p>
-          <span style="font-size: 0.8rem; color:var(--text-secondary);">${bus.to.split(' ')[0]}</span>
+          <span style="font-size: 0.8rem; color:var(--text-secondary);">${bus.to}</span>
         </div>
         <div class="bus-pricing">
           <h4>₹${bus.baseFare}</h4>
@@ -555,6 +585,7 @@ function goBackToStep(stepNum) {
   updateStepNodes(stepNum);
 }
 
+// Verification Toast Output
 function downloadTicketPDF() {
   showToast("Ticket PDF Download Started", "success");
 }
@@ -656,12 +687,12 @@ function updateAuthUI() {
   const widget = document.getElementById('userWidget');
   if (userSession) {
     widget.innerHTML = `
-      <span style="font-weight:600; color:var(--primary); font-size:0.95rem; margin-right:1rem;">Hi, ${userSession.name}</span>
-      <button onclick="handleLogout()" class="btn-secondary" data-key="logout" style="padding:0.4rem 1rem; font-size:0.85rem;">Logout</button>
+      <span style="font-weight:600; color:var(--primary); font-size:0.85rem; margin-right:1rem;">Hi, ${userSession.name}</span>
+      <button onclick="handleLogout()" class="btn-secondary" style="padding:0.25rem 0.5rem; font-size:0.75rem;">Logout</button>
     `;
   } else {
     widget.innerHTML = `
-      <button onclick="showSection('login')" class="btn-primary" data-key="login" style="padding:0.4rem 1rem; font-size:0.85rem;">Login / Sign Up</button>
+      <button onclick="showSection('login')" class="btn-primary" style="padding:0.4rem 1rem; font-size:0.85rem;">Login / Sign Up</button>
     `;
   }
   updateLangStrings();
@@ -696,7 +727,7 @@ function renderDashboard() {
   ticketCont.innerHTML = myBookings.map(t => `
     <div class="bus-card">
       <div class="bus-info">
-        <h3>${t.from.split(' ')[0]} ➔ ${t.to.split(' ')[0]}</h3>
+        <h3>${t.from} ➔ ${t.to}</h3>
         <p style="color:var(--text-secondary); font-size:0.9rem;">Journey Date: ${t.date} | Seats: ${t.seats.join(', ')}</p>
         <span class="bus-tag">${t.pnr}</span>
       </div>
@@ -759,8 +790,7 @@ function renderDashboard() {
   favCont.innerHTML = favoriteRoutes.map(route => `
     <div class="bus-card" style="padding:1rem;">
       <div>
-        <strong>${route.from.split(' ')[0]} to ${route.to.split(' ')[0]}</strong>
-        <p style="font-size:0.8rem; color:var(--text-secondary);">${route.from} ➔ ${route.to}</p>
+        <strong>${route.from} to ${route.to}</strong>
       </div>
       <div style="text-align:right;">
         <button class="btn-primary" style="font-size:0.8rem; padding:0.4rem 0.8rem;" onclick="bookPopularRoute('${route.from}', '${route.to}')">Book</button>
@@ -920,7 +950,7 @@ function renderSchedulesList() {
   container.innerHTML = MSRTC_DATA.buses.map(bus => `
     <div class="bus-card">
       <div class="bus-info">
-        <h3>${bus.from.split(' ')[0]} ➔ ${bus.to.split(' ')[0]}</h3>
+        <h3>${bus.from} ➔ ${bus.to}</h3>
         <p style="color:var(--text-secondary); font-size:0.9rem;">Runs: ${bus.runsOn} | Details: ${bus.distance} @ ${bus.duration}</p>
         <span class="bus-tag">${MSRTC_DATA.busTypes.find(t => t.id === bus.type).name}</span>
       </div>
@@ -953,7 +983,7 @@ function filterSchedules() {
   container.innerHTML = filtered.map(bus => `
     <div class="bus-card">
       <div class="bus-info">
-        <h3>${bus.from.split(' ')[0]} ➔ ${bus.to.split(' ')[0]}</h3>
+        <h3>${bus.from} ➔ ${bus.to}</h3>
         <p style="color:var(--text-secondary); font-size:0.9rem;">Runs: ${bus.runsOn} | Details: ${bus.distance} @ ${bus.duration}</p>
         <span class="bus-tag">${MSRTC_DATA.busTypes.find(t => t.id === bus.type).name}</span>
       </div>

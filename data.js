@@ -1,20 +1,18 @@
 // Expanded MSRTC Database, Information pages, and Translations
 const MSRTC_DATA = {
   locations: [
-    "Mumbai (Mumbai Central)",
-    "Pune (Shivajinagar)",
-    "Pune (Swargate)",
-    "Nashik (Thakkar Bazaar)",
-    "Nagpur (Ganeshpeth)",
-    "Kolhapur (CBS)",
-    "Aurangabad (Chhatrapati Sambhajinagar)",
+    "Pune",
+    "Mumbai",
+    "Nashik",
+    "Nagpur",
+    "Kolhapur",
+    "Aurangabad",
+    "Wardhe",
     "Solapur",
     "Thane",
     "Ratnagiri",
     "Nanded",
-    "Jalgaon",
-    "Ahmednagar",
-    "Satara"
+    "Jalgaon"
   ],
 
   depots: [
@@ -28,19 +26,20 @@ const MSRTC_DATA = {
   busTypes: [
     { id: "shivneri", name: "Shivneri (Volvo AC)", fareMultiplier: 2.2, amenities: ["AC", "Water Bottle", "Charging Point", "WiFi", "Reclining Seats"] },
     { id: "shivshahi", name: "Shivshahi (AC Seater)", fareMultiplier: 1.5, amenities: ["AC", "Charging Point", "Reclining Seats"] },
-    { id: "laldabba", name: "Parivartan (Ordinary/Lal Dabba)", fareMultiplier: 0.9, amenities: ["Standard Seats", "Window Shutters"] },
-    { id: "sheetal", name: "Sheetal (Semi-Luxury)", fareMultiplier: 1.2, amenities: ["Charging Point", "Push-back Seats"] }
+    { id: "laldabba", name: "Parivartan (Ordinary/Lal Dabba)", fareMultiplier: 0.9, amenities: ["Standard Seats", "Window Shutters"] }
   ],
 
   buses: [
-    { id: "MSR-101", name: "Shivneri AC Volvo", type: "shivneri", from: "Mumbai (Mumbai Central)", to: "Pune (Shivajinagar)", dept: "06:00", arr: "09:30", baseFare: 550, duration: "3h 30m", distance: "150 km", rating: 4.8, runsOn: "Daily" },
-    { id: "MSR-102", name: "Shivneri AC Volvo", type: "shivneri", from: "Mumbai (Mumbai Central)", to: "Pune (Shivajinagar)", dept: "08:00", arr: "11:30", baseFare: 550, duration: "3h 30m", distance: "150 km", rating: 4.7, runsOn: "Daily" },
-    { id: "MSR-103", name: "Shivshahi AC", type: "shivshahi", from: "Mumbai (Mumbai Central)", to: "Pune (Shivajinagar)", dept: "09:15", arr: "13:00", baseFare: 380, duration: "3h 45m", distance: "150 km", rating: 4.2, runsOn: "Daily" },
-    { id: "MSR-104", name: "Parivartan Ordinary", type: "laldabba", from: "Mumbai (Mumbai Central)", to: "Pune (Shivajinagar)", dept: "10:30", arr: "14:45", baseFare: 220, duration: "4h 15m", distance: "150 km", rating: 3.9, runsOn: "Daily" },
-    { id: "MSR-201", name: "Shivneri AC Volvo", type: "shivneri", from: "Pune (Shivajinagar)", to: "Mumbai (Mumbai Central)", dept: "07:00", arr: "10:30", baseFare: 550, duration: "3h 30m", distance: "150 km", rating: 4.9, runsOn: "Daily" },
-    { id: "MSR-202", name: "Shivshahi AC", type: "shivshahi", from: "Pune (Shivajinagar)", to: "Mumbai (Mumbai Central)", dept: "12:00", arr: "15:45", baseFare: 380, duration: "3h 45m", distance: "150 km", rating: 4.1, runsOn: "Daily" },
-    { id: "MSR-301", name: "Shivneri AC Volvo", type: "shivneri", from: "Mumbai (Mumbai Central)", to: "Nashik (Thakkar Bazaar)", dept: "06:30", arr: "10:30", baseFare: 620, duration: "4h 00m", distance: "170 km", rating: 4.6, runsOn: "Daily" },
-    { id: "MSR-401", name: "Shivshahi AC", type: "shivshahi", from: "Pune (Swargate)", to: "Kolhapur (CBS)", dept: "06:15", arr: "11:30", baseFare: 480, duration: "5h 15m", distance: "230 km", rating: 4.4, runsOn: "Daily" }
+    { id: "MSR-101", name: "Shivneri AC Volvo", type: "shivneri", from: "Pune", to: "Mumbai", dept: "06:00", arr: "09:30", baseFare: 550, duration: "3h 30m", distance: "150 km", rating: 4.8, runsOn: "Daily" },
+    { id: "MSR-102", name: "Shivneri AC Volvo", type: "shivneri", from: "Pune", to: "Mumbai", dept: "08:00", arr: "11:30", baseFare: 550, duration: "3h 30m", distance: "150 km", rating: 4.7, runsOn: "Daily" },
+    { id: "MSR-103", name: "Shivshahi AC", type: "shivshahi", from: "Pune", to: "Mumbai", dept: "09:15", arr: "13:00", baseFare: 380, duration: "3h 45m", distance: "150 km", rating: 4.2, runsOn: "Daily" },
+    { id: "MSR-104", name: "Parivartan Ordinary", type: "laldabba", from: "Pune", to: "Mumbai", dept: "10:30", arr: "14:45", baseFare: 220, duration: "4h 15m", distance: "150 km", rating: 3.9, runsOn: "Daily" },
+    
+    { id: "MSR-201", name: "Shivneri AC Volvo", type: "shivneri", from: "Mumbai", to: "Pune", dept: "07:00", arr: "10:30", baseFare: 550, duration: "3h 30m", distance: "150 km", rating: 4.9, runsOn: "Daily" },
+    { id: "MSR-202", name: "Shivshahi AC", type: "shivshahi", from: "Mumbai", to: "Pune", dept: "12:00", arr: "15:45", baseFare: 380, duration: "3h 45m", distance: "150 km", rating: 4.1, runsOn: "Daily" },
+    
+    { id: "MSR-301", name: "Shivneri AC Volvo", type: "shivneri", from: "Mumbai", to: "Nashik", dept: "06:30", arr: "10:30", baseFare: 620, duration: "4h 00m", distance: "170 km", rating: 4.6, runsOn: "Daily" },
+    { id: "MSR-401", name: "Shivshahi AC", type: "shivshahi", from: "Pune", to: "Kolhapur", dept: "06:15", arr: "11:30", baseFare: 480, duration: "5h 15m", distance: "230 km", rating: 4.4, runsOn: "Daily" }
   ],
 
   routes: [
@@ -58,33 +57,30 @@ const MSRTC_DATA = {
 
   recruitments: [
     { code: "REC/2026/01", position: "Assistant Depot Manager (Operations)", vacancies: 45, qualification: "MBA / Degree in Transport Studies", lastDate: "July 25, 2026" },
-    { code: "REC/2026/02", position: "Junior Engineer (Mechanical/Automobile)", vacancies: 120, qualification: "B.E/B.Tech in Automobile/Mechanical Engineering", lastDate: "August 02, 2026" },
-    { code: "REC/2026/03", position: "Direct Driver-cum-Conductor Cadre 2026", vacancies: 8500, qualification: "10th Standard Pass + Valid Heavy Motor Vehicle License", lastDate: "September 10, 2026" }
+    { code: "REC/2026/02", position: "Junior Engineer (Mechanical/Automobile)", vacancies: 120, qualification: "B.E/B.Tech in Automobile/Mechanical Engineering", lastDate: "August 02, 2026" }
   ],
 
   circulars: [
     { number: "CIR-2026/41", title: "Revision of luggage carriage rules & limits for Shivshahi AC buses", date: "July 01, 2026" },
-    { number: "CIR-2026/38", title: "Introduction of UPI payments at physical booking counters in rural depots", date: "June 15, 2026" },
-    { number: "CIR-2026/32", title: "Rules governing concession pass verification for senior citizens above 75", date: "May 29, 2026" }
+    { number: "CIR-2026/38", title: "Introduction of UPI payments at physical booking counters in rural depots", date: "June 15, 2026" }
   ],
 
   concessions: [
     { title: "Amrut Jyeshtha Nagarik", benefit: "100% Free travel in Ordinary, Semi-Luxury, & AC Shivshahi", eligibility: "Maharashtra Resident age 75+" },
-    { title: "Student Pass (School/College)", benefit: "66% Concession on daily tickets between home and school", eligibility: "Students up to post-graduation" },
-    { title: "Divyang Concession Scheme", benefit: "75% Concession for disabled person + 50% Concession for companion", eligibility: "Valid Medical Disability certificate holder" }
+    { title: "Student Pass (School/College)", benefit: "66% Concession on daily tickets between home and school", eligibility: "Students up to post-graduation" }
   ],
 
   popularRoutes: [
-    { from: "Mumbai (Mumbai Central)", to: "Pune (Shivajinagar)", fare: "₹550", time: "3.5 hrs" },
-    { from: "Pune (Shivajinagar)", to: "Aurangabad (Chhatrapati Sambhajinagar)", fare: "₹490", time: "5.25 hrs" },
-    { from: "Mumbai (Mumbai Central)", to: "Nashik (Thakkar Bazaar)", fare: "₹420", time: "4.25 hrs" },
-    { from: "Pune (Swargate)", to: "Kolhapur (CBS)", fare: "₹480", time: "5.25 hrs" }
+    { from: "Pune", to: "Mumbai", fare: "₹220", time: "1h 30m", image: "https://images.unsplash.com/photo-1568849676085-51415703900f?q=80&w=200" },
+    { from: "Mumbai", to: "Nashik", fare: "₹180", time: "3h 00m", image: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?q=80&w=200" },
+    { from: "Nagpur", to: "Wardha", fare: "₹120", time: "1h 15m", image: "https://images.unsplash.com/photo-1570129476815-ba368ac77013?q=80&w=200" },
+    { from: "Aurangabad", to: "Pune", fare: "₹320", time: "5h 30m", image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=200" }
   ],
 
   announcements: [
-    { title: "Ashadhi Ekadashi Special Buses", desc: "MSRTC is launching 5,000 additional special buses to Pandharpur starting July 10th.", date: "July 04, 2026", category: "Festival Specials" },
-    { title: "Route Diversion near Mumbai-Pune Expressway", desc: "Due to maintenance work near Khandala Ghat, Shivneri buses might be delayed by 20-30 mins.", date: "July 03, 2026", category: "News" },
-    { title: "Smart Card concession renewal rules", desc: "New guidelines issued for digital smart cards verify checks.", date: "June 25, 2026", category: "Circulars" }
+    { title: "Special Shivneri Service on Akshay Tritiya", desc: "Additional buses on Pune-Ahmednagar route on 30th April 2025.", date: "20 May 2025", category: "Service Updates" },
+    { title: "New Buses Added to Mumbai-Goa Route", desc: "Volvo AC buses now operating with enhanced comfort.", date: "18 May 2025", category: "Routes" },
+    { title: "Timetable Update", desc: "Schedule updated for Solapur - Latur route from 25th May 2025.", date: "16 May 2025", category: "Alerts" }
   ],
 
   news: [

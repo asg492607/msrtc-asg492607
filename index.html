@@ -17,22 +17,31 @@
   <!-- Toast Notification Wrapper -->
   <div id="toastContainer" class="toast-container"></div>
 
-  <!-- Top Utility Bar -->
+  <!-- Top Utility Bar (Mockup Style Dark Utility Header) -->
   <div class="utility-bar">
     <div class="utility-left">
-      <span style="font-weight:700; color:var(--primary);">📞 Emergency Helpline: 1800 22 1250</span>
-      <span>|</span>
-      <span>⏰ Status: All Routes Operating Normally</span>
+      <!-- Language Switchers -->
+      <button onclick="changeLanguage('en')" class="utility-btn" style="border-right:1px solid rgba(255,255,255,0.2); padding-right:0.5rem;">English</button>
+      <button onclick="changeLanguage('mr')" class="utility-btn" style="border-right:1px solid rgba(255,255,255,0.2); padding-right:0.5rem; padding-left:0.5rem;">मराठी</button>
+      <button onclick="changeLanguage('hi')" class="utility-btn" style="padding-left:0.5rem;">हिन्दी</button>
+      
+      <span style="margin-left:1.5rem; color:#94A3B8;">|</span>
+      
+      <!-- Accessibility Font Controls -->
+      <button onclick="changeFontSize()" class="utility-btn" style="margin-left:1rem;">A-</button>
+      <button onclick="changeFontSize()" class="utility-btn" style="font-weight:bold;">A</button>
+      <button onclick="changeFontSize()" class="utility-btn">A+</button>
+      
+      <span style="margin-left:1rem; color:#94A3B8;">|</span>
+      
+      <button onclick="toggleHighContrast()" class="utility-btn" style="margin-left:1rem;">🌓 High Contrast</button>
+      <button onclick="alert('Screen reader instructions activated')" class="utility-btn" style="margin-left:1rem;">🔊 Screen Reader Access</button>
     </div>
     <div class="utility-right">
-      <!-- Accessibility Font Controls -->
-      <button onclick="changeFontSize()" class="utility-btn">Adjust Text (A+/A-)</button>
-      <button onclick="toggleHighContrast()" class="utility-btn">🌓 High Contrast</button>
-      <span>|</span>
-      <!-- Language Switchers -->
-      <button onclick="changeLanguage('en')" class="utility-btn">English</button>
-      <button onclick="changeLanguage('mr')" class="utility-btn">मराठी</button>
-      <button onclick="changeLanguage('hi')" class="utility-btn">हिन्दी</button>
+      <span style="font-weight:700; color:#FF9100;">📞 Emergency Helpline: 1800 22 1250</span>
+      <span style="color:#94A3B8;">|</span>
+      <button onclick="showSection('login')" class="utility-btn" style="font-weight:bold;">👤 Login</button>
+      <button onclick="showSection('login')" class="btn-primary" style="padding:0.25rem 0.75rem; font-size:0.78rem; font-weight:700; box-shadow:none;">Sign Up</button>
     </div>
   </div>
 
@@ -40,24 +49,40 @@
   <header>
     <div class="nav-container">
       <a href="#" onclick="showSection('home')" class="logo-section" id="logo-link">
-        <svg width="42" height="42" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg width="45" height="45" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
           <circle cx="50" cy="50" r="48" fill="#FF6B00" stroke="#FFB300" stroke-width="4"/>
           <path d="M25 70V30L50 50L75 30V70" stroke="white" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
           <path d="M50 50V80" stroke="#FFB300" stroke-width="8" stroke-linecap="round"/>
         </svg>
         <div class="logo-text">
-          <h1 id="nav-title">MSRTC Smart Portal</h1>
-          <p id="nav-tagline">Maharashtra State Road Transport Corporation</p>
+          <h1 id="nav-title" style="color:#FF6B00;">MSRTC</h1>
+          <p id="nav-tagline" style="color:#082B4C;">Maharashtra State Road Transport Corporation</p>
         </div>
       </a>
 
       <nav>
         <ul class="nav-links">
-          <li><a href="#" onclick="showSection('home')" class="nav-item active" data-key="home">🏠 Home</a></li>
-          <li><a href="#" onclick="showSection('booking')" class="nav-item" data-key="bookTickets">🎫 Book Tickets</a></li>
-          <li><a href="#" onclick="showSection('schedule')" class="nav-item" data-key="busSchedule">📅 Bus Schedule</a></li>
-          <li><a href="#" onclick="showSection('parcel')" class="nav-item" data-key="parcelServices">📦 Parcel Services</a></li>
-          <li><a href="#" onclick="showSection('dashboard')" class="nav-item" data-key="dashboard">👤 Dashboard</a></li>
+          <li><a href="#" onclick="showSection('home')" class="nav-item active" data-key="home">Home</a></li>
+          <li class="dropdown-menu">
+            <a href="#" class="nav-item">Book Tickets ▾</a>
+            <div class="dropdown-content">
+              <a href="#" onclick="showSection('booking')">Reserve Seat</a>
+              <a href="#" onclick="showTicketsDashboard()">My Tickets</a>
+              <a href="#" onclick="showPassDashboard()">Concession Passes</a>
+            </div>
+          </li>
+          <li><a href="#" onclick="showSection('schedule')" class="nav-item" data-key="busSchedule">Bus Schedule</a></li>
+          <li><a href="#" onclick="openTrackBusPrompt()" class="nav-item" data-key="trackBus">Track Bus</a></li>
+          
+          <li class="dropdown-menu">
+            <a href="#" class="nav-item">Parcel Services ▾</a>
+            <div class="dropdown-content">
+              <a href="#" onclick="showSection('parcel')">Cargo Calculator</a>
+              <a href="#" onclick="showSection('parcel')">Track Cargo</a>
+            </div>
+          </li>
+          
+          <li><a href="#" onclick="showSection('circulars')" class="nav-item" data-key="circularsList">Latest Updates</a></li>
           
           <li class="dropdown-menu">
             <a href="#" class="nav-item">More ▾</a>
@@ -68,61 +93,70 @@
               <a href="#" onclick="showSection('tenders')">Active Tenders</a>
               <a href="#" onclick="showSection('recruitment')">Recruitments</a>
               <a href="#" onclick="showSection('acts')">Acts & Rules</a>
-              <a href="#" onclick="showSection('circulars')">Circulars & Notices</a>
               <a href="#" onclick="showSection('charter')">Citizen Charter</a>
             </div>
           </li>
-          
-          <li><a href="#" onclick="showSection('admin')" class="nav-item" data-key="adminPortal">⚙️ Admin</a></li>
+
+          <li><a href="#" onclick="showSection('admin')" class="nav-item" data-key="adminPortal">Admin Portal</a></li>
         </ul>
       </nav>
-
-      <div class="action-bar">
-        <div id="userWidget">
-          <button onclick="showSection('login')" class="btn-primary" data-key="login" style="padding:0.4rem 1rem; font-size:0.85rem;">Login / Sign Up</button>
-        </div>
-      </div>
     </div>
   </header>
 
-  <!-- Hero Section -->
+  <!-- Hero Banner with overlapping search card -->
   <section id="hero-banner" class="hero">
     <div class="hero-content">
       <div class="hero-left">
         <h2>Your Journey, <br><span>Our Responsibility</span></h2>
-        <p id="hero-subtitle" data-key="tagline">Safe, Reliable & Comfortable Travel Across Maharashtra.</p>
+        <p id="hero-subtitle">Safe, Reliable & Affordable Travel Across Maharashtra.</p>
         
-        <!-- Trust Badges -->
-        <div class="trust-badges">
-          <div class="badge-item">👥 6.8M+ Commuters Daily</div>
-          <div class="badge-item">🏢 250+ Depots Connected</div>
-          <div class="badge-item">🗺️ 15,000+ Daily Routes</div>
+        <div class="trust-badges" style="margin-top:2rem;">
+          <div class="badge-item">🏢 65+ Years of Trust</div>
+          <div class="badge-item">🚌 8,000+ Buses</div>
+          <div class="badge-item">🗺️ 1,000+ Routes</div>
+          <div class="badge-item">👥 Crores of Passengers</div>
         </div>
       </div>
       
-      <div class="hero-right">
-        <!-- SVG Mockup of modern orange Shivshahi transport bus -->
-        <svg width="450" height="230" viewBox="0 0 500 250" style="border-radius:12px; background:#1e293b;">
-          <rect x="0" y="0" width="500" height="250" fill="#0f172a"/>
-          <!-- Road -->
-          <rect x="0" y="200" width="500" height="50" fill="#334155"/>
-          <line x1="0" y1="225" x2="500" y2="225" stroke="#cbd5e1" stroke-dasharray="15" stroke-width="4"/>
-          <!-- Bus Body -->
-          <rect x="60" y="50" width="360" height="120" rx="20" fill="#FFFFFF"/>
-          <rect x="60" y="130" width="360" height="40" fill="#FF6B00"/>
-          <!-- Windows -->
-          <rect x="80" y="70" width="50" height="40" rx="5" fill="#38bdf8"/>
-          <rect x="145" y="70" width="50" height="40" rx="5" fill="#38bdf8"/>
-          <rect x="210" y="70" width="50" height="40" rx="5" fill="#38bdf8"/>
-          <rect x="275" y="70" width="50" height="40" rx="5" fill="#38bdf8"/>
-          <rect x="340" y="70" width="60" height="40" rx="5" fill="#38bdf8"/>
-          <!-- Wheels -->
-          <circle cx="130" cy="185" r="28" fill="#1e293b" stroke="#94a3b8" stroke-width="6"/>
-          <circle cx="340" cy="185" r="28" fill="#1e293b" stroke="#94a3b8" stroke-width="6"/>
-          <!-- Text Emblem -->
-          <text x="180" y="155" fill="white" font-family="'Outfit'" font-weight="800" font-size="16">SHIVSHAHI</text>
-          <text x="348" y="153" fill="white" font-family="'Outfit'" font-size="9">MSRTC</text>
-        </svg>
+      <!-- Overlapping Book Bus Ticket Card on the right -->
+      <div class="search-card-hero" id="searchCard">
+        <h3>Book Your Bus Ticket</h3>
+        <form id="busSearchForm" onsubmit="handleBusSearch(event)">
+          <div class="hero-form-group">
+            <label for="searchFrom" data-key="from">From</label>
+            <input type="text" id="searchFrom" placeholder="From City / Bus Stop" autocomplete="off" oninput="showSuggestions(this, 'from')" required>
+            <div id="fromSuggestions" class="suggestions-dropdown"></div>
+            <button type="button" class="hero-swap-btn" onclick="swapFromTo()">⇅</button>
+          </div>
+
+          <div class="hero-form-group">
+            <label for="searchTo" data-key="to">To</label>
+            <input type="text" id="searchTo" placeholder="To City / Bus Stop" autocomplete="off" oninput="showSuggestions(this, 'to')" required>
+            <div id="toSuggestions" class="suggestions-dropdown"></div>
+          </div>
+
+          <div style="display:flex; gap:1rem;">
+            <div class="hero-form-group" style="width: 50%;">
+              <label for="searchDate" data-key="date">Journey Date</label>
+              <input type="date" id="searchDate" required>
+            </div>
+            <div class="hero-form-group" style="width: 50%;">
+              <label>Return Date (Optional)</label>
+              <input type="date" id="searchReturnDate">
+            </div>
+          </div>
+
+          <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; margin-top: 0.5rem;" data-key="searchBtn">Search Buses</button>
+        </form>
+
+        <div style="margin-top:1rem; font-size:0.78rem;">
+          <strong style="color:var(--secondary); display:block; margin-bottom:0.25rem;">Popular Routes</strong>
+          <div style="display:flex; flex-wrap:wrap; gap:0.4rem; color:var(--text-secondary);">
+            <span onclick="autofillPopularSearch('Pune', 'Mumbai')" style="cursor:pointer; text-decoration:underline;">Pune ➔ Mumbai</span> | 
+            <span onclick="autofillPopularSearch('Nagpur', 'Wardha')" style="cursor:pointer; text-decoration:underline;">Nagpur ➔ Wardha</span> | 
+            <span onclick="autofillPopularSearch('Nashik', 'Pune')" style="cursor:pointer; text-decoration:underline;">Nashik ➔ Pune</span>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -143,136 +177,162 @@
     
     <!-- 1. Home View -->
     <section id="view-home" class="view-section active">
-      <!-- Search Input Area -->
-      <div class="search-card" id="searchCard">
-        <form id="busSearchForm" onsubmit="handleBusSearch(event)">
-          <div class="form-grid">
-            <div class="form-group">
-              <label for="searchFrom" data-key="from">From</label>
-              <input type="text" id="searchFrom" placeholder="From City / Bus Stop" autocomplete="off" oninput="showSuggestions(this, 'from')" required>
-              <div id="fromSuggestions" class="suggestions-dropdown"></div>
-            </div>
-            
-            <div class="swap-container">
-              <button type="button" class="swap-btn" onclick="swapFromTo()">⇅</button>
-            </div>
+      
+      <!-- Quick Actions row matching mockup styled circular icons -->
+      <div class="quick-actions-row">
+        <div class="action-item-card" onclick="showSection('booking')">
+          <div class="action-circle-icon bg-orange">🎫</div>
+          <strong style="font-size:0.95rem;">Book Ticket</strong>
+          <p style="font-size:0.75rem; color:var(--text-secondary);">Book your journey in advance</p>
+        </div>
+        <div class="action-item-card" onclick="showTicketsDashboard()">
+          <div class="action-circle-icon bg-navy">📄</div>
+          <strong style="font-size:0.95rem;">My Tickets</strong>
+          <p style="font-size:0.75rem; color:var(--text-secondary);">View & manage your bookings</p>
+        </div>
+        <div class="action-item-card" onclick="showSection('schedule')">
+          <div class="action-circle-icon bg-green">🚌</div>
+          <strong style="font-size:0.95rem;">Bus Schedule</strong>
+          <p style="font-size:0.75rem; color:var(--text-secondary);">Timings & routes at a glance</p>
+        </div>
+        <div class="action-item-card" onclick="openTrackBusPrompt()">
+          <div class="action-circle-icon bg-purple">📍</div>
+          <strong style="font-size:0.95rem;">Live Tracking</strong>
+          <p style="font-size:0.75rem; color:var(--text-secondary);">Track your bus in real-time</p>
+        </div>
+        <div class="action-item-card" onclick="showPassDashboard()">
+          <div class="action-circle-icon bg-amber">🎟</div>
+          <strong style="font-size:0.95rem;">Passes</strong>
+          <p style="font-size:0.75rem; color:var(--text-secondary);">Monthly & student bus passes</p>
+        </div>
+        <div class="action-item-card" onclick="toggleAIChat()">
+          <div class="action-circle-icon bg-blue">🤖</div>
+          <strong style="font-size:0.95rem;">AI Assistant</strong>
+          <p style="font-size:0.75rem; color:var(--text-secondary);">Get help instantly 24x7</p>
+        </div>
+      </div>
 
-            <div class="form-group">
-              <label for="searchTo" data-key="to">To</label>
-              <input type="text" id="searchTo" placeholder="To City / Bus Stop" autocomplete="off" oninput="showSuggestions(this, 'to')" required>
-              <div id="toSuggestions" class="suggestions-dropdown"></div>
-            </div>
-
-            <div class="form-group">
-              <label for="searchDate" data-key="date">Journey Date</label>
-              <input type="date" id="searchDate" required>
-            </div>
-
-            <div class="form-group">
-              <label>Return Date (Optional)</label>
-              <input type="date" id="searchReturnDate">
-            </div>
-
-            <div class="form-group">
-              <label>Passengers</label>
-              <select id="searchPassengerCount">
-                <option value="1">1 Passenger</option>
-                <option value="2">2 Passengers</option>
-                <option value="3">3 Passengers</option>
-                <option value="4">4 Passengers</option>
-              </select>
-            </div>
+      <!-- Main Column Grid: Latest Updates, Popular Routes, and Emergency Numbers -->
+      <div class="grid-three-cols">
+        <!-- Col 1: Latest Updates with dynamic Category Pills -->
+        <div class="panel-card">
+          <div class="panel-card-header">
+            <h3>Latest Updates</h3>
+            <button onclick="showSection('circulars')" class="btn-secondary" style="font-size:0.75rem; padding:0.3rem 0.6rem;">View All</button>
           </div>
-          <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; margin-top: 1rem;" data-key="searchBtn">Search Buses</button>
-        </form>
-      </div>
-
-      <!-- Quick Actions Grid (mockup 6 actions aligned) -->
-      <div class="shortcuts-grid">
-        <div class="shortcut-card" onclick="showSection('booking')">
-          <span style="font-size:2rem;">🎫</span>
-          <h4 data-key="bookTickets">Book Ticket</h4>
-          <p style="font-size:0.75rem; color:var(--text-secondary);">Reserve journey seats</p>
-        </div>
-        <div class="shortcut-card" onclick="showTicketsDashboard()">
-          <span style="font-size:2rem;">📄</span>
-          <h4>My Tickets</h4>
-          <p style="font-size:0.75rem; color:var(--text-secondary);">View booked receipt PNR</p>
-        </div>
-        <div class="shortcut-card" onclick="showSection('schedule')">
-          <span style="font-size:2rem;">🚌</span>
-          <h4 data-key="busSchedule">Bus Schedule</h4>
-          <p style="font-size:0.75rem; color:var(--text-secondary);">Search routes & depots</p>
-        </div>
-        <div class="shortcut-card" onclick="openTrackBusPrompt()">
-          <span style="font-size:2rem;">📍</span>
-          <h4 data-key="trackBus">Track Bus</h4>
-          <p style="font-size:0.75rem; color:var(--text-secondary);">Live GPS location tracker</p>
-        </div>
-        <div class="shortcut-card" onclick="showPassDashboard()">
-          <span style="font-size:2rem;">🎟</span>
-          <h4 data-key="applyPass">Passes</h4>
-          <p style="font-size:0.75rem; color:var(--text-secondary);">Apply student/senior pass</p>
-        </div>
-        <div class="shortcut-card" onclick="toggleAIChat()">
-          <span style="font-size:2rem;">🤖</span>
-          <h4>AI Assistant</h4>
-          <p style="font-size:0.75rem; color:var(--text-secondary);">Voice smart companion chat</p>
-        </div>
-      </div>
-
-      <!-- Latest Updates Section (With Category Filters) -->
-      <div class="info-section">
-        <div>
-          <h3 style="margin-bottom: 1rem; color: var(--primary);">Latest Announcements & Circulars</h3>
           
-          <!-- Category filters -->
           <div class="category-filters">
             <button class="filter-chip active" onclick="filterUpdatesByCategory('All', this)">All</button>
-            <button class="filter-chip" onclick="filterUpdatesByCategory('News', this)">News</button>
-            <button class="filter-chip" onclick="filterUpdatesByCategory('Circulars', this)">Circulars</button>
+            <button class="filter-chip" onclick="filterUpdatesByCategory('Service Updates', this)">Service Updates</button>
+            <button class="filter-chip" onclick="filterUpdatesByCategory('Routes', this)">Routes</button>
+            <button class="filter-chip" onclick="filterUpdatesByCategory('Alerts', this)">Alerts</button>
             <button class="filter-chip" onclick="filterUpdatesByCategory('Recruitment', this)">Recruitment</button>
-            <button class="filter-chip" onclick="filterUpdatesByCategory('Tenders', this)">Tenders</button>
-            <button class="filter-chip" onclick="filterUpdatesByCategory('Festival Specials', this)">Festival Specials</button>
           </div>
 
-          <div class="announcements-container" id="announcementsList"></div>
+          <div id="announcementsList"></div>
         </div>
-        
-        <div>
-          <h3 style="margin-bottom: 1rem;">Press Releases</h3>
-          <div class="announcements-container" id="newsList"></div>
+
+        <!-- Col 2: Popular Routes Carousel Card -->
+        <div class="panel-card">
+          <div class="panel-card-header">
+            <h3>Popular Routes</h3>
+            <button onclick="showSection('schedule')" class="btn-secondary" style="font-size:0.75rem; padding:0.3rem 0.6rem;">View All</button>
+          </div>
+          
+          <div class="route-carousel-card" id="carouselContainer">
+            <!-- Renders dynamically in app.js -->
+          </div>
+        </div>
+
+        <!-- Col 3: Emergency Contacts List Card -->
+        <div class="panel-card">
+          <div class="panel-card-header">
+            <h3>Emergency Numbers</h3>
+            <button onclick="alert('Primary Control Room: 022-23071850')" class="btn-secondary" style="font-size:0.75rem; padding:0.3rem 0.6rem;">View All</button>
+          </div>
+
+          <div class="emergency-row">
+            <div>
+              <small style="color:var(--text-secondary); display:block;">MSRTC Helpline</small>
+              <strong style="color:var(--text-primary);">Toll Free Inquiry</strong>
+            </div>
+            <strong>1800 22 1250</strong>
+          </div>
+
+          <div class="emergency-row">
+            <div>
+              <small style="color:var(--text-secondary); display:block;">Women Helpline</small>
+              <strong style="color:var(--text-primary);">Concession Support</strong>
+            </div>
+            <strong style="color:#FF6B00;">1091</strong>
+          </div>
+
+          <div class="emergency-row">
+            <div>
+              <small style="color:var(--text-secondary); display:block;">Police Emergency</small>
+              <strong style="color:var(--text-primary);">Security Desk</strong>
+            </div>
+            <strong style="color:#FF6B00;">100</strong>
+          </div>
+
+          <div class="emergency-row">
+            <div>
+              <small style="color:var(--text-secondary); display:block;">Ambulance</small>
+              <strong style="color:var(--text-primary);">Medical Trauma</strong>
+            </div>
+            <strong style="color:#FF6B00;">108</strong>
+          </div>
         </div>
       </div>
 
-      <!-- Popular Routes Grid -->
-      <h3 style="margin-top: 3rem; margin-bottom: 1.5rem; text-align:center;" data-key="popularRoutes">Popular Routes</h3>
-      <div class="shortcuts-grid" id="popularRoutesContainer" style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));"></div>
-
-      <!-- Live Operational Statistics -->
-      <h3 style="text-align: center; margin-top: 3rem;" data-key="statistics">Live Operational Statistics</h3>
-      <div class="stats-grid">
-        <div class="stat-card">
-          <h4>Buses Run Daily</h4>
-          <p class="stat-number">15,420</p>
-          <span style="font-size: 0.85rem; color: var(--seat-avail);">● Active & Inspected</span>
+      <!-- Lower Statistics Banner Row -->
+      <div class="stat-banner-row">
+        <div class="stat-banner-col">
+          <p class="stat-banner-number">8,000+</p>
+          <small style="color:var(--text-secondary); font-weight:700;">Buses Active</small>
         </div>
-        <div class="stat-card">
-          <h4>Daily Commuters</h4>
-          <p class="stat-number">6.8M</p>
-          <span style="font-size: 0.85rem; color: var(--seat-avail);">● Safe Journeys</span>
+        <div class="stat-banner-col">
+          <p class="stat-banner-number">1,050+</p>
+          <small style="color:var(--text-secondary); font-weight:700;">Routes Covered</small>
         </div>
-        <div class="stat-card">
-          <h4>Depots Covered</h4>
-          <p class="stat-number">250+</p>
-          <span style="font-size: 0.85rem; color: var(--seat-avail);">● Maharashtra State</span>
+        <div class="stat-banner-col">
+          <p class="stat-banner-number">5.2 Crore+</p>
+          <small style="color:var(--text-secondary); font-weight:700;">Happy Passengers</small>
         </div>
-        <div class="stat-card">
-          <h4>E-Bus Fleets</h4>
-          <p class="stat-number">1,200</p>
-          <span style="font-size: 0.85rem; color: var(--seat-avail);">● Zero Emission</span>
+        <div class="stat-banner-col">
+          <p class="stat-banner-number">6.5 Lakh+</p>
+          <small style="color:var(--text-secondary); font-weight:700;">Trips Every Day Pune</small>
         </div>
       </div>
+
+      <!-- App Download block with Mockup Render Layout -->
+      <div class="app-block-container">
+        <div style="display:flex; align-items:center; gap:1.5rem;">
+          <div style="width:70px; height:70px; background:var(--primary); border-radius:16px; display:flex; justify-content:center; align-items:center; font-size:2rem; color:white; font-weight:bold;">ST</div>
+          <div>
+            <h3 style="color:#031A30; font-weight:800; font-size:1.4rem;">MSRTC Mobile App</h3>
+            <p style="color:var(--text-secondary); font-size:0.9rem;">Your Travel Companion. Download now and travel smarter!</p>
+            
+            <div style="display:flex; gap:0.5rem; margin-top:1rem;">
+              <button class="btn-secondary" style="font-size:0.75rem; padding:0.4rem 0.8rem;" onclick="alert('Redirecting to Google Play...')">🤖 Google Play</button>
+              <button class="btn-secondary" style="font-size:0.75rem; padding:0.4rem 0.8rem;" onclick="alert('Redirecting to App Store...')">🍎 App Store</button>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex; align-items:center; gap:1.5rem;">
+          <div style="text-align:right;">
+            <strong style="display:block; color:#031A30;">Hi! I'm MSRTC AI</strong>
+            <small style="color:var(--text-secondary);">How can I help you?</small>
+          </div>
+          <!-- QR Code Placeholder -->
+          <svg width="70" height="70" viewBox="0 0 100 100" fill="black" style="background:#FFF; padding:0.25rem; border:1px solid var(--border); border-radius:8px;">
+            <rect x="0" y="0" width="30" height="30"/><rect x="70" y="0" width="30" height="30"/><rect x="0" y="70" width="30" height="30"/>
+            <rect x="40" y="40" width="20" height="20"/>
+          </svg>
+        </div>
+      </div>
+
     </section>
 
     <!-- 2. Booking View -->
@@ -290,7 +350,6 @@
         
         <!-- Skeleton loaders container -->
         <div id="busSkeletonLoader" style="display:none; flex-direction:column; gap:1rem;">
-          <div class="skeleton" style="height:120px; width:100%;"></div>
           <div class="skeleton" style="height:120px; width:100%;"></div>
           <div class="skeleton" style="height:120px; width:100%;"></div>
         </div>
@@ -434,7 +493,6 @@
       <!-- Booking success with animations -->
       <div id="booking-step-success" class="booking-flow-step" style="display:none;">
         <div style="text-align:center;">
-          <!-- Success visual checkmark animation -->
           <div class="success-checkmark">✓</div>
           <h2 data-key="success" style="color: var(--seat-avail); margin-bottom: 1rem;">Booking Successful</h2>
           
@@ -1038,21 +1096,21 @@
       <span class="bottom-nav-icon">🏠</span>
       <span>Home</span>
     </a>
-    <a href="#" onclick="showSection('booking')" class="bottom-nav-item" id="bnav-book">
-      <span class="bottom-nav-icon">🎫</span>
-      <span>Book</span>
-    </a>
     <a href="#" onclick="showTicketsDashboard()" class="bottom-nav-item" id="bnav-tickets">
       <span class="bottom-nav-icon">📄</span>
-      <span>Tickets</span>
+      <span>My Tickets</span>
     </a>
-    <a href="#" onclick="toggleAIChat()" class="bottom-nav-item" id="bnav-ai">
-      <span class="bottom-nav-icon">🤖</span>
-      <span>AI Chat</span>
+    <a href="#" onclick="openTrackBusPrompt()" class="bottom-nav-item" id="bnav-track">
+      <span class="bottom-nav-icon">📍</span>
+      <span>Track Bus</span>
+    </a>
+    <a href="#" onclick="showSection('booking')" class="bottom-nav-item" id="bnav-book">
+      <span class="bottom-nav-icon">📅</span>
+      <span>Bookings</span>
     </a>
     <a href="#" onclick="showSection('dashboard')" class="bottom-nav-item" id="bnav-profile">
       <span class="bottom-nav-icon">👤</span>
-      <span>Profile</span>
+      <span>More</span>
     </a>
   </div>
 
@@ -1101,53 +1159,62 @@
   <footer>
     <div class="footer-grid">
       <div class="footer-col">
-        <h4 data-key="aboutUs">Quick Links</h4>
+        <h4>MSRTC</h4>
+        <p style="font-size:0.85rem; color:#94A3B8; line-height:1.6; margin-top:0.5rem;">Committed to provide safe, reliable, and affordable bus services across Maharashtra.</p>
+        <div style="display:flex; gap:0.5rem; margin-top:1rem; font-size:1.2rem;">
+          <span>📘</span> <span>🐦</span> <span>📸</span> <span>📺</span>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
         <ul>
-          <li><a href="#" onclick="showSection('about')">About Us</a></li>
-          <li><a href="#" onclick="alert('Careers portal updates soon')">Careers</a></li>
-          <li><a href="#" onclick="showSection('tenders')">Tenders Board</a></li>
-          <li><a href="#" onclick="showSection('depots')">Stops & Depots</a></li>
+          <li><a href="#" onclick="showSection('about')">About MSRTC</a></li>
+          <li><a href="#" onclick="showSection('tenders')">Tenders</a></li>
+          <li><a href="#" onclick="showSection('recruitment')">Careers</a></li>
+          <li><a href="#" onclick="showSection('acts')">Right to Information</a></li>
+          <li><a href="#" onclick="showSection('admin')">RTI Dashboard</a></li>
+          <li><a href="#" onclick="showSection('charter')">Contact Us</a></li>
         </ul>
       </div>
       <div class="footer-col">
         <h4>Passenger Services</h4>
         <ul>
-          <li><a href="#" onclick="showSection('booking')">Ticket Booking</a></li>
-          <li><a href="#" onclick="showPassDashboard()">Concession Passes</a></li>
-          <li><a href="#" onclick="showSection('parcel')">Cargo Services</a></li>
-          <li><a href="#" onclick="showComplaintDashboard()">Complaint Portal</a></li>
+          <li><a href="#" onclick="showSection('booking')">Book Tickets</a></li>
+          <li><a href="#" onclick="showSection('booking')">Cancel Ticket</a></li>
+          <li><a href="#" onclick="showSection('dashboard')">Refund Policy</a></li>
+          <li><a href="#" onclick="showSection('about')">FAQ</a></li>
+          <li><a href="#" onclick="showSection('depots')">Lost & Found</a></li>
+          <li><a href="#" onclick="showSection('charter')">Travel Guidelines</a></li>
         </ul>
       </div>
       <div class="footer-col">
-        <h4>Government Information</h4>
-        <ul>
-          <li><a href="#" onclick="showSection('acts')">Acts & Rules</a></li>
-          <li><a href="#" onclick="showSection('circulars')">Circulars & Notices</a></li>
-          <li><a href="#" onclick="showSection('charter')">Citizen Charter</a></li>
-          <li><a href="#" onclick="alert('MSRTC leadership statistics resolution dashboard')">State Transport Board</a></li>
-        </ul>
+        <h4>Contact Us</h4>
+        <p style="font-size:0.85rem; color:#94A3B8; margin-top:0.5rem;">📍 MSRTC Central Office, Mumbai Central, Mumbai - 400008</p>
+        <p style="font-size:0.85rem; color:#94A3B8; margin-top:0.5rem;">📞 1800 22 1250</p>
+        <p style="font-size:0.85rem; color:#94A3B8; margin-top:0.5rem;">📧 msrtchelp@maharashtra.gov.in</p>
       </div>
       <div class="footer-col">
-        <h4>Contact & Helpline</h4>
-        <p style="margin-bottom:0.5rem; font-size:0.9rem;">📍 Head Office, Mumbai Central, Mumbai 400008</p>
-        <p style="margin-bottom:0.5rem; font-size:0.9rem; font-weight:bold; color:var(--primary);">📞 Toll Free: 1800 22 1250</p>
-        <p style="margin-bottom:0.5rem; font-size:0.9rem;">📧 smartsupport@msrtc.gov.in</p>
-      </div>
-      <div class="footer-col">
-        <h4>Get Our App</h4>
-        <!-- QR Mockup -->
-        <div style="display:flex; gap:0.5rem; align-items:center; margin-bottom:0.5rem;">
-          <svg width="60" height="60" viewBox="0 0 100 100" fill="black" style="background:#FFF; padding:0.25rem; border:1px solid var(--border);">
+        <h4>Download App</h4>
+        <p style="font-size:0.8rem; color:#94A3B8; margin-bottom:0.5rem;">Scan QR Code to download the MSRTC App</p>
+        <div style="display:flex; gap:0.5rem; align-items:center;">
+          <svg width="60" height="60" viewBox="0 0 100 100" fill="black" style="background:#FFF; padding:0.25rem; border:1px solid var(--border); border-radius:6px;">
             <rect x="0" y="0" width="30" height="30"/><rect x="70" y="0" width="30" height="30"/><rect x="0" y="70" width="30" height="30"/>
             <rect x="40" y="40" width="20" height="20"/>
           </svg>
-          <span style="font-size:0.75rem; color:var(--text-secondary);">Scan to download MSRTC Mobile app</span>
         </div>
       </div>
     </div>
     
     <div class="footer-bottom">
-      <p>&copy; 2026 MSRTC. Redesigned Government Portal. All rights reserved.</p>
+      <div style="display:flex; justify-content:space-between; flex-wrap:wrap; font-size:0.85rem; color:#94A3B8;">
+        <p>&copy; 2025 Maharashtra State Road Transport Corporation. All Rights Reserved.</p>
+        <div style="display:flex; gap:1rem;">
+          <a href="#" style="color:#94A3B8; text-decoration:none;">Privacy Policy</a> | 
+          <a href="#" style="color:#94A3B8; text-decoration:none;">Terms & Conditions</a> | 
+          <a href="#" style="color:#94A3B8; text-decoration:none;">Sitemap</a>
+        </div>
+        <p>❤️ Powered by MSRTC IT Team</p>
+      </div>
     </div>
   </footer>
 
