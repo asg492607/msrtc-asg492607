@@ -350,34 +350,34 @@ header {
 
 .action-item-card {
   background: var(--bg-secondary);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 1.5rem;
-  text-align: center;
+  border: 1px solid #ECEFF1;
+  border-radius: 12px;
+  padding: 1.25rem 1rem;
   cursor: pointer;
   transition: var(--transition);
-  box-shadow: var(--shadow);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  gap: 0.5rem;
+  gap: 1rem;
+  text-align: left;
 }
 
 .action-item-card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
 }
 
 .action-circle-icon {
-  width: 50px;
-  height: 50px;
+  width: 54px;
+  height: 54px;
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 1.5rem;
   color: white;
-  margin-bottom: 0.5rem;
+  flex-shrink: 0;
 }
 
 /* Custom categories color grids */
