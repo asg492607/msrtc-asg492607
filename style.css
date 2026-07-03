@@ -1,8 +1,8 @@
 :root {
   /* Exact color matching schema from design mockup */
-  --primary: #FF6B00;       /* Rich warm orange */
-  --primary-hover: #E05E00;
-  --secondary: #082B4C;     /* Deep navy blue utility/actions */
+  --primary: #FF5E00;       /* Rich warm orange */
+  --primary-hover: #E05300;
+  --secondary: #0A2D4D;     /* Deep navy blue utility/actions */
   --accent: #FFB300;        
   
   --bg-primary: #F8FAFC;    
