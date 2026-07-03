@@ -208,7 +208,7 @@ header {
 /* Hero & Route patterns (matching mockup background styling) */
 .hero {
   background: linear-gradient(90deg, rgba(255,255,255,0.92) 35%, rgba(255,255,255,0) 80%), 
-              url('msrtc_hero_bg_exact.png') center right/cover;
+              url('msrtc_hero_bg.jpg') center right/cover;
   padding: 5rem 2rem;
   border-bottom: 1px solid var(--border);
 }
