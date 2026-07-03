@@ -48,10 +48,15 @@
 .text-scale-2 { font-size: 1rem; }
 .text-scale-3 { font-size: 1.15rem; }
 
-* {
-  box-sizing: border-box;
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
   margin: 0;
   padding: 0;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 body {
