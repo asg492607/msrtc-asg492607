@@ -1,0 +1,313 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ==========================================
+// TASK 2: Authentication & Authorization
+// ==========================================
+
+model User {
+  id             String    @id @default(uuid())
+  email          String    @unique
+  phone          String?   @unique
+  passwordHash   String
+  firstName      String
+  lastName       String
+  isActive       Boolean   @default(true)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  userRoles      UserRole[]
+  sessions       Session[]
+  refreshTokens  RefreshToken[]
+  otps           Otp[]
+  loginHistory   LoginHistory[]
+}
+
+model Role {
+  id          String   @id @default(uuid())
+  name        String   @unique // Passenger, Driver, Conductor, Admin, etc.
+  description String?
+  
+  userRoles       UserRole[]
+  rolePermissions RolePermission[]
+}
+
+model Permission {
+  id          String   @id @default(uuid())
+  action      String   @unique // e.g., "CREATE_BUS", "VIEW_REPORT"
+  description String?
+
+  rolePermissions RolePermission[]
+}
+
+model UserRole {
+  userId String
+  roleId String
+  user   User   @relation(fields: [userId], references: [id])
+  role   Role   @relation(fields: [roleId], references: [id])
+  @@id([userId, roleId])
+}
+
+model RolePermission {
+  roleId       String
+  permissionId String
+  role         Role       @relation(fields: [roleId], references: [id])
+  permission   Permission @relation(fields: [permissionId], references: [id])
+  @@id([roleId, permissionId])
+}
+
+model Session {
+  id        String   @id @default(uuid())
+  userId    String
+  device    String?
+  ipAddress String?
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  isRevoked Boolean  @default(false)
+  expiresAt DateTime
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model Otp {
+  id        String   @id @default(uuid())
+  userId    String
+  code      String
+  type      String   // SMS, EMAIL
+  expiresAt DateTime
+  isUsed    Boolean  @default(false)
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model LoginHistory {
+  id        String   @id @default(uuid())
+  userId    String
+  ipAddress String?
+  userAgent String?
+  status    String   // SUCCESS, FAILED
+  timestamp DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+// ==========================================
+// TASK 3: Master Data Management
+// ==========================================
+
+model Region {
+  id        String     @id @default(uuid())
+  name      String     @unique
+  divisions Division[]
+}
+
+model Division {
+  id       String  @id @default(uuid())
+  name     String
+  regionId String
+  region   Region  @relation(fields: [regionId], references: [id])
+  depots   Depot[]
+}
+
+model Depot {
+  id         String   @id @default(uuid())
+  name       String
+  code       String   @unique
+  divisionId String
+  division   Division @relation(fields: [divisionId], references: [id])
+  buses      Bus[]
+}
+
+model Station {
+  id   String @id @default(uuid())
+  name String
+  code String @unique
+  city String
+}
+
+model Stop {
+  id        String  @id @default(uuid())
+  name      String
+  latitude  Float?
+  longitude Float?
+}
+
+model BusType {
+  id   String @id @default(uuid())
+  name String @unique // Shivneri, Shivshahi, Ordinary
+  buses Bus[]
+}
+
+model SeatLayout {
+  id          String @id @default(uuid())
+  name        String // e.g., 2x2 Pushback, 3x2 Seater
+  totalSeats  Int
+}
+
+model FareCategory {
+  id        String @id @default(uuid())
+  name      String // Adult, Child, Senior Citizen
+  discount  Float  @default(0.0) // Percentage discount
+}
+
+// ==========================================
+// TASK 4: Fleet Management
+// ==========================================
+
+model Bus {
+  id                String   @id @default(uuid())
+  registrationNo    String   @unique
+  engineNo          String   @unique
+  chassisNo         String   @unique
+  vin               String   @unique
+  busTypeId         String
+  depotId           String
+  status            String   // ACTIVE, MAINTENANCE, SCRAPPED
+  fuelType          String
+  capacity          Int
+  
+  busType           BusType @relation(fields: [busTypeId], references: [id])
+  depot             Depot   @relation(fields: [depotId], references: [id])
+  
+  insurance         Insurance[]
+  permits           Permit[]
+  fitness           Fitness[]
+  pollution         Pollution[]
+  gpsDevices        GpsDevice[]
+  maintenanceStatus MaintenanceStatus[]
+}
+
+model Insurance {
+  id        String   @id @default(uuid())
+  busId     String
+  policyNo  String
+  validFrom DateTime
+  validTo   DateTime
+  bus       Bus      @relation(fields: [busId], references: [id])
+}
+
+model Permit {
+  id        String   @id @default(uuid())
+  busId     String
+  permitNo  String
+  validFrom DateTime
+  validTo   DateTime
+  bus       Bus      @relation(fields: [busId], references: [id])
+}
+
+model Fitness {
+  id             String   @id @default(uuid())
+  busId          String
+  certificateNo  String
+  validTo        DateTime
+  bus            Bus      @relation(fields: [busId], references: [id])
+}
+
+model Pollution {
+  id             String   @id @default(uuid())
+  busId          String
+  certificateNo  String
+  validTo        DateTime
+  bus            Bus      @relation(fields: [busId], references: [id])
+}
+
+model GpsDevice {
+  id        String   @id @default(uuid())
+  busId     String
+  imei      String   @unique
+  status    String   // ONLINE, OFFLINE
+  bus       Bus      @relation(fields: [busId], references: [id])
+}
+
+model MaintenanceStatus {
+  id          String   @id @default(uuid())
+  busId       String
+  status      String   // BREAKDOWN, PREVENTIVE, REPAIR
+  reportedAt  DateTime @default(now())
+  resolvedAt  DateTime?
+  bus         Bus      @relation(fields: [busId], references: [id])
+}
+
+// ==========================================
+// TASK 5: Route, Schedule & Trip Management
+// ==========================================
+
+model Route {
+  id          String   @id @default(uuid())
+  routeCode   String   @unique
+  origin      String
+  destination String
+  distance    Float
+  duration    Int      // in minutes
+  baseFare    Float
+  
+  routeStops  RouteStop[]
+  schedules   Schedule[]
+}
+
+model RouteStop {
+  id          String @id @default(uuid())
+  routeId     String
+  stopName    String
+  sequence    Int
+  distanceFromStart Float
+  route       Route  @relation(fields: [routeId], references: [id])
+}
+
+model Schedule {
+  id            String   @id @default(uuid())
+  routeId       String
+  departureTime String   // "08:00"
+  arrivalTime   String   // "14:30"
+  operatingDays String   // "1,2,3,4,5,6,7"
+  effectiveFrom DateTime
+  expiryDate    DateTime?
+  
+  route         Route    @relation(fields: [routeId], references: [id])
+  trips         TripInstance[]
+}
+
+model TripInstance {
+  id           String   @id @default(uuid())
+  scheduleId   String
+  tripDate     DateTime
+  busId        String?
+  driverId     String?
+  conductorId  String?
+  status       String   // SCHEDULED, IN_PROGRESS, COMPLETED, CANCELLED
+  
+  schedule     Schedule @relation(fields: [scheduleId], references: [id])
+  logs         TripLog[]
+  events       TripEvent[]
+}
+
+model TripLog {
+  id             String   @id @default(uuid())
+  tripInstanceId String
+  timestamp      DateTime @default(now())
+  latitude       Float?
+  longitude      Float?
+  speed          Float?
+  
+  trip           TripInstance @relation(fields: [tripInstanceId], references: [id])
+}
+
+model TripEvent {
+  id             String   @id @default(uuid())
+  tripInstanceId String
+  eventType      String   // DELAY, BREAKDOWN, ACCIDENT
+  description    String?
+  timestamp      DateTime @default(now())
+  
+  trip           TripInstance @relation(fields: [tripInstanceId], references: [id])
+}
