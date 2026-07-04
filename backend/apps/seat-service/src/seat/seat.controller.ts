@@ -1,15 +1,25 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards, Request } from '@nestjs/common';
 import { SeatService } from './seat.service';
-import { ApiTags, ApiOperation } from '@nestjs/swagger';
+import { LockSeatDto } from './dto/lock-seat.dto';
+import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
+import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 
-@ApiTags('Seat')
-@Controller()
+@ApiTags('Seats')
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
+@Controller('seats')
 export class SeatController {
-  constructor(private readonly service: SeatService) {}
+  constructor(private readonly seatService: SeatService) {}
 
-  @Get()
-  @ApiOperation({ summary: 'Health check endpoint' })
-  getHello(): string {
-    return this.service.getHello();
+  @Post('lock')
+  @ApiOperation({ summary: 'Lock seats temporarily in Redis for a booking session' })
+  async lockSeats(@Request() req, @Body() dto: LockSeatDto) {
+    return this.seatService.lockSeats(req.user.userId, dto);
+  }
+
+  @Post('release')
+  @ApiOperation({ summary: 'Manually release held seats' })
+  async releaseSeats(@Request() req, @Body() dto: LockSeatDto) {
+    return this.seatService.releaseSeats(req.user.userId, dto);
   }
 }
