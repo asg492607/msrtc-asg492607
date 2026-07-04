@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MSRTC | OTP Verification</title>
+  <link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+
+<div class="auth-container single-card-layout">
+  <div class="auth-card">
+    
+    <div class="auth-nav" style="justify-content: center; margin-bottom: 20px;">
+      <a href="../index.html" class="logo">
+        <img src="../msrtc_new_logo.png" alt="MSRTC Logo">
+      </a>
+    </div>
+
+    <div style="text-align: center; font-size: 48px; margin-bottom: 10px;">💬</div>
+    <h1 style="text-align: center;">Verify OTP</h1>
+    <p class="sub-heading" style="text-align: center;">We have sent a 6-digit OTP to your mobile number.</p>
+
+    <form id="otpForm" novalidate>
+      
+      <div class="otp-group">
+        <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric">
+        <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric">
+        <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric">
+        <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric">
+        <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric">
+        <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric">
+      </div>
+
+      <div class="timer-text">
+        Resend OTP in <span id="otpTimer">00:59</span>
+      </div>
+
+      <button type="submit" class="btn btn-primary" style="margin-bottom: 16px;">
+        <span class="btn-text">Verify & Continue</span>
+        <div class="spinner"></div>
+      </button>
+
+      <button type="button" class="btn btn-outline" onclick="window.history.back()">
+        <span class="btn-text">Back</span>
+      </button>
+
+    </form>
+    
+  </div>
+</div>
+
+<script src="js/validation.js"></script>
+<script src="js/auth.js"></script>
+</body>
+</html>

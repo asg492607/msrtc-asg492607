@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MSRTC | Search Buses</title>
+  <link rel="stylesheet" href="css/search.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="sticky-header">
+    <div class="header-left">
+      <a href="../index.html"><img src="../msrtc_new_logo.png" alt="MSRTC Logo"></a>
+      <h1>Maharashtra State Road Transport Corporation</h1>
+    </div>
+    <div class="header-center">
+      <input type="text" placeholder="Search portal...">
+    </div>
+    <div class="header-right">
+      <select>
+        <option>English</option>
+        <option>मराठी</option>
+      </select>
+      <div class="icon">🔔</div>
+      <div class="avatar">A</div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <h2>Plan Your Journey</h2>
+    <p>Search buses across Maharashtra</p>
+  </section>
+
+  <!-- Search Card -->
+  <div class="search-card-wrapper">
+    <div class="search-card">
+      <div class="search-row">
+        
+        <!-- From -->
+        <div class="input-group">
+          <label>From</label>
+          <div style="position: relative;">
+            <input type="text" id="fromCity" placeholder="Leaving from..." autocomplete="off">
+            <div id="fromList" class="autocomplete-list"></div>
+          </div>
+        </div>
+
+        <!-- Swap -->
+        <button id="swapBtn" class="swap-btn" title="Swap cities">⇄</button>
+
+        <!-- To -->
+        <div class="input-group">
+          <label>To</label>
+          <div style="position: relative;">
+            <input type="text" id="toCity" placeholder="Going to..." autocomplete="off">
+            <div id="toList" class="autocomplete-list"></div>
+          </div>
+        </div>
+
+        <!-- Date -->
+        <div class="input-group">
+          <label>Journey Date</label>
+          <input type="date" id="journeyDate">
+        </div>
+
+        <!-- Return Date -->
+        <div class="input-group">
+          <label>Return Date (Optional)</label>
+          <input type="date" id="returnDate">
+        </div>
+
+      </div>
+
+      <div class="search-row">
+        
+        <!-- Passengers -->
+        <div class="input-group">
+          <label>Passengers</label>
+          <select id="passengerCount">
+            <option>1 Adult</option>
+            <option>2 Adults</option>
+            <option>2 Adults, 1 Child</option>
+            <option>1 Senior Citizen</option>
+          </select>
+        </div>
+
+        <!-- Bus Types -->
+        <div class="input-group" style="flex: 2;">
+          <label>Preferred Bus Type</label>
+          <div class="checkbox-row">
+            <label><input type="checkbox" checked> Shivneri</label>
+            <label><input type="checkbox" checked> Shivshahi</label>
+            <label><input type="checkbox" checked> Ordinary</label>
+            <label><input type="checkbox"> Sleeper</label>
+            <label><input type="checkbox"> Electric</label>
+          </div>
+        </div>
+
+        <button id="searchBtn" class="btn-search">Search Buses</button>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Popular Routes -->
+  <section class="section">
+    <h3>Popular Routes</h3>
+    <div class="grid-cards">
+      <div class="card"><div class="card-icon">🚌</div><div class="card-title">Mumbai → Pune</div></div>
+      <div class="card"><div class="card-icon">🚌</div><div class="card-title">Pune → Nashik</div></div>
+      <div class="card"><div class="card-icon">🚌</div><div class="card-title">Nagpur → Amravati</div></div>
+      <div class="card"><div class="card-icon">🚌</div><div class="card-title">Kolhapur → Satara</div></div>
+      <div class="card"><div class="card-icon">🚌</div><div class="card-title">Aurangabad → Pune</div></div>
+      <div class="card"><div class="card-icon">🚌</div><div class="card-title">Solapur → Mumbai</div></div>
+    </div>
+  </section>
+
+  <!-- Quick Services -->
+  <section class="section" style="margin-bottom: 100px;">
+    <h3>Quick Services</h3>
+    <div class="grid-cards">
+      <div class="card"><div class="card-icon">📍</div><div class="card-title">Track Bus</div></div>
+      <div class="card"><div class="card-icon">📦</div><div class="card-title">Parcel Booking</div></div>
+      <div class="card"><div class="card-icon">💳</div><div class="card-title">Bus Pass</div></div>
+      <div class="card"><div class="card-icon">📅</div><div class="card-title">Schedules</div></div>
+      <div class="card"><div class="card-icon">⚠️</div><div class="card-title">Complaints</div></div>
+    </div>
+  </section>
+
+  <div id="toast" class="toast"></div>
+
+  <script src="js/validation.js"></script>
+  <script src="js/autocomplete.js"></script>
+  <script src="js/search.js"></script>
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MSRTC | Bus Details</title>
+  <link rel="stylesheet" href="details.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-left">
+      <a href="../index.html"><img src="../msrtc_new_logo.png" alt="MSRTC Logo"></a>
+    </div>
+  </header>
+
+  <a href="#" class="back-link" onclick="window.history.back()">← Back to Search Results</a>
+
+  <div class="details-container">
+    
+    <!-- Left Column (Main Info) -->
+    <div class="main-col">
+      
+      <!-- Top Card -->
+      <div class="card">
+        <div class="bus-header-row">
+          <div>
+            <h1 id="busName" class="bus-title">Loading...</h1>
+            <div id="busNumber" class="bus-subtitle">Loading...</div>
+            <div id="busType" class="badge">--</div>
+            <div id="busRating" class="rating">★ --</div>
+          </div>
+          <div style="text-align: right;">
+            <div class="bus-subtitle">Starting from</div>
+            <div id="busFare" class="bus-title" style="color: var(--primary);">₹--</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Route Timeline -->
+      <div class="card">
+        <div class="card-header">Route Timeline</div>
+        <div id="timelineContainer" class="timeline">
+          <!-- Timeline injected here -->
+        </div>
+      </div>
+
+      <!-- Boarding & Dropping Points -->
+      <div class="card">
+        <div class="card-header">Select Boarding & Dropping Points</div>
+        
+        <div style="margin-bottom: 24px;">
+          <h3 style="font-size: 16px; margin-bottom: 12px; color: var(--secondary);">Boarding Point</h3>
+          <div id="boardingGrid" class="radio-grid"></div>
+        </div>
+
+        <div>
+          <h3 style="font-size: 16px; margin-bottom: 12px; color: var(--secondary);">Dropping Point</h3>
+          <div id="droppingGrid" class="radio-grid"></div>
+        </div>
+      </div>
+
+      <!-- Amenities & Policies -->
+      <div class="card">
+        <div class="card-header">Amenities & Policies</div>
+        
+        <div style="margin-bottom: 24px;">
+          <h3 style="font-size: 16px; margin-bottom: 12px; color: var(--secondary);">Amenities</h3>
+          <div id="amenitiesGrid" class="amenities-grid"></div>
+        </div>
+
+        <div class="accordion">
+          <div class="acc-header">Cancellation Policy <span class="icon">+</span></div>
+          <div class="acc-content">
+            100% refund if cancelled 24 hours before departure.<br>
+            50% refund if cancelled 12 hours before departure.<br>
+            No refund if cancelled within 12 hours.
+          </div>
+        </div>
+
+        <div class="accordion">
+          <div class="acc-header">Luggage Policy <span class="icon">+</span></div>
+          <div class="acc-content">
+            2 bags allowed per passenger (Max 15kg total).<br>
+            Extra luggage will be charged at ₹50 per kg.
+          </div>
+        </div>
+      </div>
+
+      <!-- Gallery -->
+      <div class="card">
+        <div class="card-header">Bus Gallery</div>
+        <div class="gallery">
+          <div class="gallery-img">Exterior</div>
+          <div class="gallery-img">Interior</div>
+          <div class="gallery-img">Seats</div>
+          <div class="gallery-img">Driver Cabin</div>
+          <div class="gallery-img">Luggage Space</div>
+        </div>
+      </div>
+
+      <!-- Reviews -->
+      <div class="card">
+        <div class="card-header">Passenger Reviews</div>
+        <div id="reviewsContainer"></div>
+      </div>
+
+    </div>
+
+    <!-- Right Column (Sticky Summary) -->
+    <div class="side-col">
+      
+      <!-- Seat Availability Card -->
+      <div class="card" style="position: sticky; top: 100px;">
+        <div class="card-header">Seat Availability</div>
+        
+        <div class="seat-stats">
+          <span id="seatTotal">-- Seats</span>
+          <span style="color: var(--primary);" id="seatAvailable">-- Available</span>
+        </div>
+        
+        <div class="progress-bar">
+          <div id="progressFill" class="progress-fill" style="width: 0%;"></div>
+        </div>
+        
+        <div class="seat-stats" style="color: var(--text-light); justify-content: flex-end;">
+          <span id="seatBooked">-- Booked</span>
+        </div>
+
+        <div style="margin-top: 24px; border-top: 1px solid var(--border); padding-top: 24px;">
+          <h3 style="font-size: 16px; margin-bottom: 16px; color: var(--secondary);">Fare Summary</h3>
+          <div class="fare-row"><span>Base Fare</span> <span id="baseFare">₹--</span></div>
+          <div class="fare-row"><span>GST (5%)</span> <span id="gstAmt">₹--</span></div>
+          <div class="fare-row"><span>Reservation Fee</span> <span id="resFee">₹--</span></div>
+          <div class="fare-row total"><span>Total Fare</span> <span id="totalFare">₹--</span></div>
+        </div>
+
+        <button class="btn-continue" onclick="continueToSeatSelection()">Continue to Seat Selection</button>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script src="details.js"></script>
+</body>
+</html>

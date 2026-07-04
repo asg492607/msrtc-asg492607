@@ -1,0 +1,102 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+:root {
+  --primary: #FF6B00;
+  --primary-hover: #E65C00;
+  --secondary: #0B3C5D;
+  --bg-color: #F8F9FA;
+  --card-bg: #FFFFFF;
+  --text-dark: #333333;
+  --text-light: #777777;
+  --border: #E5E7EB;
+  --shadow: 0 8px 24px rgba(0,0,0,.08);
+  --radius: 16px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Poppins', sans-serif; background-color: var(--bg-color); color: var(--text-dark); }
+
+/* Header & Summary */
+.header {
+  height: 80px; background: var(--card-bg); border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between; padding: 0 40px; position: sticky; top: 0; z-index: 100;
+}
+.header-left { display: flex; align-items: center; gap: 16px; }
+.header-left img { height: 48px; }
+
+.search-summary {
+  background: var(--secondary); color: white; padding: 20px 40px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.summary-details { display: flex; align-items: center; gap: 24px; font-size: 18px; font-weight: 500; }
+.summary-details span { opacity: 0.8; font-size: 14px; }
+.btn-edit { background: white; color: var(--secondary); border: none; padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; }
+
+/* Main Layout */
+.results-container {
+  display: flex; gap: 30px; max-width: 1200px; margin: 30px auto; padding: 0 20px; align-items: flex-start;
+}
+
+/* Sidebar Filters */
+.sidebar {
+  width: 300px; background: var(--card-bg); border-radius: var(--radius); padding: 24px;
+  box-shadow: var(--shadow); position: sticky; top: 100px;
+}
+.sidebar h3 { font-size: 18px; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+.filter-group { margin-bottom: 24px; }
+.filter-title { font-weight: 600; margin-bottom: 12px; font-size: 14px; color: var(--secondary); }
+.checkbox-list { display: flex; flex-direction: column; gap: 10px; }
+.checkbox-list label { display: flex; align-items: center; gap: 8px; font-size: 14px; cursor: pointer; }
+.checkbox-list input { accent-color: var(--primary); }
+
+/* Range Slider */
+input[type=range] { width: 100%; accent-color: var(--primary); }
+.range-labels { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-light); margin-top: 8px; }
+
+/* Results List */
+.results-list { flex: 1; display: flex; flex-direction: column; gap: 20px; }
+.results-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.sort-dropdown { padding: 8px 16px; border-radius: 8px; border: 1px solid var(--border); font-family: 'Poppins', sans-serif; }
+
+/* Bus Card */
+.bus-card {
+  background: var(--card-bg); border-radius: var(--radius); padding: 24px;
+  box-shadow: 0 4px 12px rgba(0,0,0,.05); border: 1px solid transparent;
+  display: flex; flex-direction: column; gap: 20px; transition: 0.3s;
+}
+.bus-card:hover {
+  transform: translateY(-4px); box-shadow: var(--shadow); border-color: var(--primary);
+}
+
+.bus-top { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid var(--border); padding-bottom: 16px; }
+.bus-info h4 { font-size: 20px; color: var(--secondary); display: flex; align-items: center; gap: 8px; }
+.rating { background: #43A047; color: white; font-size: 12px; padding: 2px 6px; border-radius: 4px; font-weight: 600; }
+.bus-number { color: var(--text-light); font-size: 14px; margin-top: 4px; }
+
+.fare { text-align: right; }
+.fare-amt { font-size: 24px; font-weight: 700; color: var(--primary); }
+.seats-left { font-size: 12px; color: var(--error); font-weight: 500; }
+
+.bus-middle { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; }
+.time-col { text-align: center; }
+.time { font-size: 18px; font-weight: 600; }
+.place { font-size: 14px; color: var(--text-light); }
+.duration { font-size: 12px; color: var(--text-light); position: relative; padding: 0 20px; }
+.duration::before { content: ''; position: absolute; left: 0; right: 0; top: 50%; border-top: 1px dashed var(--border); z-index: 1; }
+.duration span { background: var(--card-bg); padding: 0 8px; position: relative; z-index: 2; }
+
+.bus-bottom { display: flex; justify-content: space-between; align-items: center; }
+.amenities { display: flex; gap: 12px; font-size: 18px; color: var(--secondary); }
+.btn-book {
+  background: var(--primary); color: white; border: none; padding: 12px 30px;
+  border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.2s;
+}
+.btn-book:hover { background: var(--primary-hover); transform: scale(1.05); }
+
+/* Pagination */
+.pagination { display: flex; justify-content: center; gap: 8px; margin-top: 20px; margin-bottom: 40px; }
+.page-btn {
+  width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--border); border-radius: 8px; cursor: pointer; background: white;
+}
+.page-btn.active { background: var(--primary); color: white; border-color: var(--primary); }

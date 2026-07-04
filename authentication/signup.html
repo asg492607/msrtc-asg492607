@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MSRTC | Sign Up</title>
+  <link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+
+<div class="auth-container">
+  
+  <!-- Left Side: Illustration -->
+  <div class="auth-left">
+    <img src="../msrtc_hero_bg.jpg" alt="MSRTC Bus" class="illustration">
+  </div>
+
+  <!-- Right Side: Signup Card -->
+  <div class="auth-right">
+    <div class="auth-card" style="max-height: 90vh; overflow-y: auto;">
+      
+      <div class="auth-nav">
+        <a href="../index.html" class="logo">
+          <img src="../msrtc_new_logo.png" alt="MSRTC Logo">
+        </a>
+      </div>
+
+      <h1>Create Account 🚌</h1>
+      <p class="sub-heading">Join MSRTC for faster booking and exclusive passes.</p>
+
+      <form id="signupForm" novalidate>
+        <div class="form-group">
+          <label for="regName">Full Name</label>
+          <input type="text" id="regName" class="form-control" placeholder="Enter your full name">
+        </div>
+
+        <div class="form-group">
+          <label for="regMobile">Mobile Number</label>
+          <input type="tel" id="regMobile" class="form-control" placeholder="Enter 10-digit mobile number" maxlength="10">
+        </div>
+
+        <div class="form-group">
+          <label for="regEmail">Email Address (Optional)</label>
+          <input type="email" id="regEmail" class="form-control" placeholder="Enter your email">
+        </div>
+
+        <div class="form-group">
+          <label for="regLanguage">Preferred Language</label>
+          <select id="regLanguage" class="form-control">
+            <option>English</option>
+            <option>मराठी</option>
+            <option>हिन्दी</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="regPassword">Password</label>
+          <input type="password" id="regPassword" class="form-control" placeholder="Create a strong password">
+          <span class="toggle-password" title="Show/Hide Password">👁️‍🗨️</span>
+        </div>
+
+        <div class="form-group">
+          <label for="regConfirm">Confirm Password</label>
+          <input type="password" id="regConfirm" class="form-control" placeholder="Confirm your password">
+        </div>
+
+        <div class="auth-links" style="margin-bottom: 20px;">
+          <label class="checkbox-group">
+            <input type="checkbox" id="terms">
+            <span>I agree to the <a href="#">Terms</a> and <a href="#">Privacy Policy</a></span>
+          </label>
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+          <span class="btn-text">Sign Up</span>
+          <div class="spinner"></div>
+        </button>
+
+        <div class="bottom-text">
+          Already have an account? <a href="login.html">Login</a>
+        </div>
+      </form>
+      
+    </div>
+  </div>
+
+</div>
+
+<script src="js/validation.js"></script>
+<script src="js/auth.js"></script>
+</body>
+</html>

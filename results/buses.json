@@ -1,0 +1,67 @@
+[
+  {
+    "id": 1,
+    "name": "MSRTC Shivneri AC",
+    "number": "MH14 AB 1234",
+    "rating": 4.8,
+    "departure": "06:00 AM",
+    "arrival": "10:00 AM",
+    "duration": "4 Hr",
+    "fare": 620,
+    "seatsLeft": 16,
+    "type": "Shivneri",
+    "amenities": ["wifi", "charging", "water", "blanket", "gps", "cctv"]
+  },
+  {
+    "id": 2,
+    "name": "MSRTC Shivshahi AC",
+    "number": "MH12 CD 5678",
+    "rating": 4.2,
+    "departure": "07:30 AM",
+    "arrival": "12:00 PM",
+    "duration": "4.5 Hr",
+    "fare": 450,
+    "seatsLeft": 5,
+    "type": "Shivshahi",
+    "amenities": ["charging", "water", "gps", "cctv"]
+  },
+  {
+    "id": 3,
+    "name": "MSRTC Ordinary (Parivartan)",
+    "number": "MH11 EF 9012",
+    "rating": 3.8,
+    "departure": "08:00 AM",
+    "arrival": "01:30 PM",
+    "duration": "5.5 Hr",
+    "fare": 250,
+    "seatsLeft": 25,
+    "type": "Ordinary",
+    "amenities": ["gps", "emergency_exit"]
+  },
+  {
+    "id": 4,
+    "name": "MSRTC E-Shivaee",
+    "number": "MH01 GH 3456",
+    "rating": 4.9,
+    "departure": "09:00 AM",
+    "arrival": "01:00 PM",
+    "duration": "4 Hr",
+    "fare": 580,
+    "seatsLeft": 12,
+    "type": "Electric",
+    "amenities": ["wifi", "charging", "gps", "cctv"]
+  },
+  {
+    "id": 5,
+    "name": "MSRTC Night Sleeper AC",
+    "number": "MH09 IJ 7890",
+    "rating": 4.5,
+    "departure": "10:00 PM",
+    "arrival": "05:00 AM",
+    "duration": "7 Hr",
+    "fare": 850,
+    "seatsLeft": 8,
+    "type": "Sleeper",
+    "amenities": ["charging", "water", "blanket", "gps", "cctv"]
+  }
+]

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MSRTC | Search Results</title>
+  <link rel="stylesheet" href="results.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-left">
+      <a href="../index.html"><img src="../msrtc_new_logo.png" alt="MSRTC Logo"></a>
+    </div>
+  </header>
+
+  <!-- Search Summary -->
+  <div class="search-summary">
+    <div class="summary-details">
+      <span id="summaryRoute">Mumbai → Pune</span> | 
+      <span id="summaryDate">15 July</span> | 
+      <span id="busCount">0 buses found</span>
+    </div>
+    <button class="btn-edit" onclick="window.location.href='../search/search.html'">Edit Search</button>
+  </div>
+
+  <!-- Main Layout -->
+  <div class="results-container">
+    
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <h3>Filters</h3>
+      
+      <div class="filter-group">
+        <div class="filter-title">Departure Time</div>
+        <div class="checkbox-list">
+          <label><input type="checkbox"> Morning (6AM - 12PM)</label>
+          <label><input type="checkbox"> Afternoon (12PM - 6PM)</label>
+          <label><input type="checkbox"> Evening (6PM - 12AM)</label>
+          <label><input type="checkbox"> Night (12AM - 6AM)</label>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <div class="filter-title">Fare Range</div>
+        <input type="range" min="200" max="3000" value="3000">
+        <div class="range-labels">
+          <span>₹200</span>
+          <span>₹3000</span>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <div class="filter-title">Bus Type</div>
+        <div class="checkbox-list">
+          <label><input type="checkbox" checked> Shivneri</label>
+          <label><input type="checkbox" checked> Shivshahi</label>
+          <label><input type="checkbox" checked> Ordinary</label>
+          <label><input type="checkbox"> Sleeper</label>
+          <label><input type="checkbox"> Electric</label>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <div class="filter-title">Amenities</div>
+        <div class="checkbox-list">
+          <label><input type="checkbox"> WiFi</label>
+          <label><input type="checkbox"> Charging</label>
+          <label><input type="checkbox"> Water Bottle</label>
+          <label><input type="checkbox"> Blanket</label>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Results List -->
+    <main class="results-list">
+      <div class="results-header">
+        <div style="font-weight: 500;">Available Buses</div>
+        <select class="sort-dropdown">
+          <option>Sort By: Earliest</option>
+          <option>Lowest Fare</option>
+          <option>Highest Fare</option>
+          <option>Fastest</option>
+          <option>Rating</option>
+        </select>
+      </div>
+
+      <div id="resultsContainer">
+        <!-- Buses injected here via JS -->
+      </div>
+
+      <div class="pagination">
+        <div class="page-btn active">1</div>
+        <div class="page-btn">2</div>
+        <div class="page-btn">3</div>
+      </div>
+    </main>
+
+  </div>
+
+  <script src="results.js"></script>
+</body>
+</html>

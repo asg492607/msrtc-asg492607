@@ -1,0 +1,46 @@
+{
+  "id": 1,
+  "name": "MSRTC Shivneri AC",
+  "number": "MH14 AB 1234",
+  "operator": "Maharashtra State Road Transport Corporation",
+  "rating": 4.8,
+  "fare": 620,
+  "type": "Shivneri",
+  "seats": {
+    "total": 45,
+    "available": 16,
+    "booked": 29
+  },
+  "timeline": [
+    { "place": "Mumbai", "time": "06:00 AM", "status": "start" },
+    { "place": "Lonavala", "time": "08:00 AM", "status": "stop" },
+    { "place": "Khopoli", "time": "08:45 AM", "status": "stop" },
+    { "place": "Pune", "time": "10:00 AM", "status": "end" }
+  ],
+  "boardingPoints": [
+    { "id": "bp1", "name": "Dadar", "time": "06:00 AM" },
+    { "id": "bp2", "name": "Sion", "time": "06:15 AM" },
+    { "id": "bp3", "name": "Chembur", "time": "06:30 AM" },
+    { "id": "bp4", "name": "Panvel", "time": "07:00 AM" }
+  ],
+  "droppingPoints": [
+    { "id": "dp1", "name": "Wakad", "time": "09:30 AM" },
+    { "id": "dp2", "name": "Shivajinagar", "time": "09:45 AM" },
+    { "id": "dp3", "name": "Swargate", "time": "10:00 AM" }
+  ],
+  "amenities": ["WiFi", "USB Charging", "Blanket", "Water Bottle", "Reading Light", "GPS", "Emergency Exit", "CCTV", "Fire Extinguisher"],
+  "reviews": [
+    {
+      "name": "Rahul Deshmukh",
+      "stars": 5,
+      "date": "10 July 2026",
+      "comment": "Excellent service, right on time. The bus was very clean and AC was perfect."
+    },
+    {
+      "name": "Sneha Patil",
+      "stars": 4,
+      "date": "08 July 2026",
+      "comment": "Comfortable journey. Only issue was WiFi was a bit slow in ghat sections."
+    }
+  ]
+}
