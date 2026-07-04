@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Depot Portal | Dashboard</title>
+  <link rel="stylesheet" href="css/depot.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="brand">
+      <img src="../msrtc_new_logo.png" alt="MSRTC Logo">
+    </div>
+    <nav class="nav-menu">
+      <a href="dashboard.html" class="nav-item active">📊 Dashboard</a>
+      <a href="bus-management.html" class="nav-item">🚌 Bus Management</a>
+      <a href="route-management.html" class="nav-item">🗺️ Route Management</a>
+      <a href="schedule-management.html" class="nav-item">⏰ Schedules</a>
+      <a href="driver-assignment.html" class="nav-item">👨‍✈️ Driver Assignment</a>
+      <a href="conductor-assignment.html" class="nav-item">🎫 Conductor Assign</a>
+      <a href="revenue.html" class="nav-item">💰 Revenue</a>
+      <a href="complaints.html" class="nav-item">⚠️ Complaints</a>
+      <a href="parcel.html" class="nav-item">📦 Parcel</a>
+      <a href="maintenance.html" class="nav-item">🔧 Maintenance</a>
+      <a href="notice-board.html" class="nav-item">📢 Notice Board</a>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    
+    <div class="topbar">
+      <div class="page-title">
+        <h1>Overview Dashboard</h1>
+        <p>Swargate Depot Operations</p>
+      </div>
+      <div class="top-actions">
+        <input type="text" class="search-bar" placeholder="Search buses, routes, staff...">
+        <button class="profile-btn" onclick="handleLogout()">DM</button>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="grid-4">
+      <div class="card stat-card">
+        <div class="icon-box blue">🚌</div>
+        <div class="stat-info">
+          <div class="val">124</div>
+          <div class="label">Today's Trips</div>
+        </div>
+      </div>
+      <div class="card stat-card">
+        <div class="icon-box green">✅</div>
+        <div class="stat-info">
+          <div class="val">98</div>
+          <div class="label">Active Fleet</div>
+        </div>
+      </div>
+      <div class="card stat-card">
+        <div class="icon-box orange">💰</div>
+        <div class="stat-info">
+          <div class="val">₹4.5L</div>
+          <div class="label">Revenue Today</div>
+        </div>
+      </div>
+      <div class="card stat-card">
+        <div class="icon-box red">🔧</div>
+        <div class="stat-info">
+          <div class="val">5</div>
+          <div class="label">Maintenance Alerts</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Weekly Revenue (₹)</div>
+        </div>
+        <div class="chart-container">
+          <canvas id="revenueChart"></canvas>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Average Occupancy (%)</div>
+        </div>
+        <div class="chart-container">
+          <canvas id="occupancyChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Alerts -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Live Operational Alerts</div>
+      </div>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Time</th>
+              <th>Category</th>
+              <th>Description</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>10:15 AM</td>
+              <td>Breakdown</td>
+              <td>MH12 CD 5678 (Shivshahi) reported breakdown near Lonavala.</td>
+              <td><span class="badge badge-delayed">Critical</span></td>
+            </tr>
+            <tr>
+              <td>09:30 AM</td>
+              <td>Complaint</td>
+              <td>AC not working in MH14 AB 1234.</td>
+              <td><span class="badge badge-maintenance">Pending</span></td>
+            </tr>
+            <tr>
+              <td>08:00 AM</td>
+              <td>Operations</td>
+              <td>All morning schedules dispatched successfully.</td>
+              <td><span class="badge badge-active">Resolved</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="js/depot.js"></script>
+  <script src="js/charts.js"></script>
+</body>
+</html>

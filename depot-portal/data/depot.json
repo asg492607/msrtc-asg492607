@@ -1,0 +1,23 @@
+{
+  "depotName": "Swargate Depot",
+  "stats": {
+    "todaysTrips": 124,
+    "activeBuses": 98,
+    "availableDrivers": 15,
+    "availableConductors": 12,
+    "revenueToday": 450500,
+    "occupancy": 78,
+    "complaints": 3,
+    "parcels": 45,
+    "maintenanceAlerts": 5
+  },
+  "buses": [
+    { "id": "MH12 AB 1234", "type": "Shivneri", "status": "Active", "fitness": "2027-05-10" },
+    { "id": "MH12 CD 5678", "type": "Shivshahi", "status": "Maintenance", "fitness": "2026-11-20" },
+    { "id": "MH14 EF 9012", "type": "Ordinary", "status": "Active", "fitness": "2028-01-15" }
+  ],
+  "routes": [
+    { "id": "R-101", "name": "Pune - Mumbai", "distance": "150 km", "fare": 620 },
+    { "id": "R-102", "name": "Pune - Nashik", "distance": "210 km", "fare": 450 }
+  ]
+}
