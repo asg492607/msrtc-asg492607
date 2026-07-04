@@ -2,16 +2,19 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { AllExceptionsFilter } from './common/filters/http-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
+  app.useGlobalFilters(new AllExceptionsFilter());
+  
   app.setGlobalPrefix('api/v1/booking');
 
   const config = new DocumentBuilder()
     .setTitle('MSRTC Booking Service')
-    .setDescription('The Booking API for MSRTC Platform')
+    .setDescription('The Core Reservation Engine API')
     .setVersion('1.0')
     .addBearerAuth()
     .build();
