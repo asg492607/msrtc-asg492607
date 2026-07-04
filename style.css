@@ -1366,3 +1366,38 @@ footer {
     font-size: 24px; color: #0B3C5D; cursor: pointer;
   }
 }
+
+/* Responsive Media Queries */
+@media (max-width: 768px) { 
+  .grid-three-cols, .grid-4, .grid-2 { grid-template-columns: 1fr !important; } 
+  .nav-container { flex-direction: column; gap: 10px; } 
+  .hero-content { flex-direction: column; text-align: center; } 
+  .search-card-hero { margin-top: 20px; } 
+  .utility-bar { display: none; } 
+}
+
+/* Mobile Sidebar Drawer CSS */
+@media (max-width: 900px) {
+  #mobileMenuBtn { display: inline-block !important; }
+  header .nav-container { flex-direction: row; justify-content: space-between; align-items: center; }
+  .nav-links {
+    position: fixed;
+    top: 0; left: -300px;
+    width: 250px; height: 100vh;
+    background: #FFF;
+    display: flex;
+    flex-direction: column;
+    padding: 80px 20px 20px 20px;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+    transition: left 0.3s ease;
+    z-index: 1000;
+  }
+  .nav-links.active { left: 0; }
+  /* A close button inside the nav */
+  .nav-links::before {
+    content: 'X';
+    position: absolute; top: 20px; right: 20px;
+    font-size: 24px; color: #0B3C5D; cursor: pointer;
+    font-weight: bold;
+  }
+}
