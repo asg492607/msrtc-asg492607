@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Accessibility Center | MSRTC</title>
+  <link rel="stylesheet" href="css/accessibility.css">
+</head>
+<body>
+
+  <a href="#main-content" class="skip-link">Skip to content</a>
+
+  <header style="margin-bottom: 40px; display: flex; gap: 20px; align-items: center;">
+    <a href="../admin.html" class="btn" style="text-decoration: none;">⬅️ Admin Home</a>
+    <h1>Accessibility Center</h1>
+  </header>
+
+  <main id="main-content">
+    
+    <div class="card">
+      <h2 id="visual-settings">Visual Preferences</h2>
+      
+      <div class="toggle-row">
+        <span><strong aria-hidden="true">🌓</strong> High Contrast Mode</span>
+        <button class="btn" onclick="document.body.classList.toggle('high-contrast')" aria-pressed="false" id="btn-contrast">Toggle</button>
+      </div>
+
+      <div class="toggle-row">
+        <span><strong aria-hidden="true">Aa</strong> Dyslexia Friendly Font</span>
+        <button class="btn" onclick="document.body.classList.toggle('dyslexia-font')" aria-pressed="false">Toggle</button>
+      </div>
+
+      <div class="toggle-row" style="border: none;">
+        <span><strong aria-hidden="true">A+</strong> Text Size</span>
+        <div style="display: flex; gap: 10px;">
+          <button class="btn" onclick="document.body.className=''">Normal</button>
+          <button class="btn" onclick="document.body.className='text-large'">Large</button>
+          <button class="btn" onclick="document.body.className='text-xl'">XL</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Keyboard & Voice</h2>
+      <div class="toggle-row">
+        <span>Keyboard Shortcuts Info</span>
+        <a href="keyboard-shortcuts.html" class="btn" style="text-decoration: none;">View Keys</a>
+      </div>
+      <div class="toggle-row" style="border: none;">
+        <span>Enable Voice Commands</span>
+        <button class="btn" onclick="alert('Voice navigation enabled. Say \'Book Ticket\' or \'Go Home\'.')">Enable</button>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="js/accessibility.js"></script>
+</body>
+</html>

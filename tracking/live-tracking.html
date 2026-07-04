@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Live Bus Tracking | MSRTC</title>
+  <link rel="stylesheet" href="css/tracking.css">
+</head>
+<body>
+
+  <header class="topbar">
+    <h1>Live GPS Tracking</h1>
+    <a href="../admin.html" class="btn">⬅️ Exit Tracking</a>
+  </header>
+
+  <div class="map-container">
+    
+    <!-- Dummy Map Elements -->
+    <div class="route-line"></div>
+    <div class="bus-marker">🚌</div>
+
+    <!-- Floating UI Card -->
+    <div class="tracking-card">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+        <div>
+          <h2>Shivneri AC Volvo</h2>
+          <p>MH14 CD 1234 • Route: Pune ➔ Mumbai</p>
+        </div>
+        <div style="background: #10B981; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold;">ON TIME</div>
+      </div>
+
+      <div class="eta-box">
+        <span>Current Speed: 65 km/h</span>
+        <span>ETA: 45 Mins</span>
+      </div>
+
+      <div class="timeline">
+        <div class="timeline-item passed">
+          <strong style="display: block; font-size: 14px;">Swargate, Pune</strong>
+          <small style="color: #64748B;">Departed at 08:00 AM</small>
+        </div>
+        <div class="timeline-item">
+          <strong style="display: block; font-size: 14px;">Lonavala (Current Stop)</strong>
+          <small style="color: #64748B;">Arriving in 5 mins</small>
+        </div>
+        <div class="timeline-item" style="opacity: 0.5;">
+          <strong style="display: block; font-size: 14px;">Dadar, Mumbai</strong>
+          <small style="color: #64748B;">Expected at 11:30 AM</small>
+        </div>
+      </div>
+      
+      <button class="btn" style="width: 100%; margin-top: 10px; text-align: center; background: #F1F5F9; color: #1E293B; border: 1px solid #E2E8F0;">Share Live Location</button>
+    </div>
+
+  </div>
+
+  <script src="js/tracking.js"></script>
+</body>
+</html>
