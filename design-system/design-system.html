@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Design System UI Kit | MSRTC</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css"> <!-- We leverage the global CSS -->
+  <link rel="stylesheet" href="../polish/css/animations.css">
+  <style>
+    body { background: #F8FAFC; padding-bottom: 100px; }
+    .ds-sidebar { position: fixed; top: 0; left: 0; width: 260px; height: 100vh; background: #0F172A; color: white; overflow-y: auto; }
+    .ds-main { margin-left: 260px; padding: 40px; }
+    .ds-section { background: white; padding: 40px; border-radius: 12px; border: 1px solid #E2E8F0; margin-bottom: 40px; }
+    .ds-section h2 { margin-bottom: 20px; color: #0B3C5D; font-size: 24px; border-bottom: 2px solid #E2E8F0; padding-bottom: 10px; }
+    
+    .ds-color-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 20px; }
+    .color-swatch { height: 100px; border-radius: 8px; margin-bottom: 8px; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1); }
+    
+    .component-row { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 20px; align-items: center; }
+  </style>
+</head>
+<body>
+
+  <aside class="ds-sidebar">
+    <div style="padding: 30px 20px; border-bottom: 1px solid rgba(255,255,255,0.1);">
+      <h2 style="color: #FF6B00; font-size: 20px;">MSRTC UI Kit</h2>
+      <p style="color: #94A3B8; font-size: 12px;">Enterprise Design System</p>
+    </div>
+    <div style="padding: 20px;">
+      <a href="#colors" style="display:block; color:white; text-decoration:none; margin-bottom:15px; opacity:0.8;">Colors</a>
+      <a href="#typography" style="display:block; color:white; text-decoration:none; margin-bottom:15px; opacity:0.8;">Typography</a>
+      <a href="#buttons" style="display:block; color:white; text-decoration:none; margin-bottom:15px; opacity:0.8;">Buttons</a>
+      <a href="#inputs" style="display:block; color:white; text-decoration:none; margin-bottom:15px; opacity:0.8;">Forms & Inputs</a>
+      <a href="#badges" style="display:block; color:white; text-decoration:none; margin-bottom:15px; opacity:0.8;">Badges & Tags</a>
+      <a href="#skeletons" style="display:block; color:white; text-decoration:none; margin-bottom:15px; opacity:0.8;">Loaders & Skeletons</a>
+    </div>
+    <div style="position: absolute; bottom: 20px; left: 20px;">
+      <a href="../admin.html" class="btn-secondary" style="font-size: 12px; padding: 8px 16px;">⬅️ Admin Home</a>
+    </div>
+  </aside>
+
+  <main class="ds-main">
+    <h1 style="font-size: 36px; margin-bottom: 10px; color: #0B3C5D;">Design System & Component Library</h1>
+    <p style="color: #64748B; margin-bottom: 40px; font-size: 18px;">The single source of truth for all reusable UI components.</p>
+
+    <!-- Colors -->
+    <section id="colors" class="ds-section">
+      <h2>Color Palette</h2>
+      <div class="ds-color-grid">
+        <div>
+          <div class="color-swatch" style="background: #FF6B00;"></div>
+          <strong>Primary</strong><br><small>#FF6B00</small>
+        </div>
+        <div>
+          <div class="color-swatch" style="background: #0B3C5D;"></div>
+          <strong>Secondary</strong><br><small>#0B3C5D</small>
+        </div>
+        <div>
+          <div class="color-swatch" style="background: #10B981;"></div>
+          <strong>Success</strong><br><small>#10B981</small>
+        </div>
+        <div>
+          <div class="color-swatch" style="background: #EF4444;"></div>
+          <strong>Danger</strong><br><small>#EF4444</small>
+        </div>
+        <div>
+          <div class="color-swatch" style="background: #F4F7FE;"></div>
+          <strong>Background</strong><br><small>#F4F7FE</small>
+        </div>
+        <div>
+          <div class="color-swatch" style="background: #64748B;"></div>
+          <strong>Text Muted</strong><br><small>#64748B</small>
+        </div>
+      </div>
+    </section>
+
+    <!-- Typography -->
+    <section id="typography" class="ds-section">
+      <h2>Typography</h2>
+      <div style="font-family: 'Outfit', sans-serif;">
+        <h1 style="font-size: 2.5rem; margin-bottom: 10px;">Heading 1 (2.5rem)</h1>
+        <h2 style="font-size: 2rem; margin-bottom: 10px;">Heading 2 (2rem)</h2>
+        <h3 style="font-size: 1.5rem; margin-bottom: 10px;">Heading 3 (1.5rem)</h3>
+        <p style="font-size: 1rem; color: #64748B; margin-bottom: 10px;">Body Text (1rem). The quick brown fox jumps over the lazy dog. Designed for readability.</p>
+        <small style="font-size: 0.8rem; color: #94A3B8;">Small Text (0.8rem)</small>
+      </div>
+    </section>
+
+    <!-- Buttons -->
+    <section id="buttons" class="ds-section">
+      <h2>Buttons & Interactions</h2>
+      <div class="component-row">
+        <button class="btn-primary hover-scale">Primary Button</button>
+        <button class="btn-secondary hover-scale">Secondary Button</button>
+        <button class="btn-primary btn-ripple">Ripple Effect</button>
+        <button class="btn-primary" disabled style="opacity: 0.5; cursor: not-allowed;">Disabled</button>
+      </div>
+    </section>
+
+    <!-- Badges -->
+    <section id="badges" class="ds-section">
+      <h2>Badges & Status</h2>
+      <div class="component-row">
+        <span style="background: #10B981; color: white; padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: bold;">ON TIME</span>
+        <span style="background: #EF4444; color: white; padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: bold;">DELAYED</span>
+        <span style="background: #F59E0B; color: white; padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: bold;">IN TRANSIT</span>
+        <span style="background: #64748B; color: white; padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: bold;">COMPLETED</span>
+      </div>
+    </section>
+
+    <!-- Loaders -->
+    <section id="skeletons" class="ds-section">
+      <h2>Skeletons & Shimmer Loaders</h2>
+      <p style="margin-bottom: 20px; color: #64748B;">Used in place of empty states while data is loading.</p>
+      
+      <div class="component-row" style="flex-direction: column; align-items: stretch; max-width: 400px;">
+        <div class="skeleton" style="height: 40px; width: 100%;"></div>
+        <div class="skeleton" style="height: 120px; width: 100%;"></div>
+        <div class="skeleton" style="height: 20px; width: 60%;"></div>
+      </div>
+      
+      <div style="margin-top: 40px;">
+        <p style="margin-bottom: 10px; color: #64748B;">Success Animation:</p>
+        <div class="success-check">✓</div>
+      </div>
+    </section>
+
+  </main>
+</body>
+</html>
