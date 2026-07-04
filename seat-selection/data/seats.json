@@ -1,0 +1,58 @@
+{
+  "baseFare": 620,
+  "layout": {
+    "rows": 10,
+    "configuration": ["1", "2", "aisle", "3", "4"]
+  },
+  "seats": [
+    { "id": "1A", "status": "available", "type": "regular" },
+    { "id": "1B", "status": "available", "type": "regular" },
+    { "id": "1C", "status": "booked", "type": "regular" },
+    { "id": "1D", "status": "booked", "type": "regular" },
+    
+    { "id": "2A", "status": "available", "type": "ladies" },
+    { "id": "2B", "status": "available", "type": "ladies" },
+    { "id": "2C", "status": "available", "type": "regular" },
+    { "id": "2D", "status": "available", "type": "regular" },
+    
+    { "id": "3A", "status": "booked", "type": "ladies" },
+    { "id": "3B", "status": "booked", "type": "ladies" },
+    { "id": "3C", "status": "available", "type": "senior" },
+    { "id": "3D", "status": "available", "type": "senior" },
+    
+    { "id": "4A", "status": "available", "type": "regular" },
+    { "id": "4B", "status": "available", "type": "regular" },
+    { "id": "4C", "status": "available", "type": "regular" },
+    { "id": "4D", "status": "available", "type": "regular" },
+
+    { "id": "5A", "status": "booked", "type": "regular" },
+    { "id": "5B", "status": "booked", "type": "regular" },
+    { "id": "5C", "status": "booked", "type": "regular" },
+    { "id": "5D", "status": "booked", "type": "regular" },
+
+    { "id": "6A", "status": "available", "type": "regular" },
+    { "id": "6B", "status": "available", "type": "regular" },
+    { "id": "6C", "status": "available", "type": "regular" },
+    { "id": "6D", "status": "available", "type": "regular" },
+
+    { "id": "7A", "status": "available", "type": "ladies" },
+    { "id": "7B", "status": "available", "type": "ladies" },
+    { "id": "7C", "status": "available", "type": "regular" },
+    { "id": "7D", "status": "available", "type": "regular" },
+
+    { "id": "8A", "status": "available", "type": "regular" },
+    { "id": "8B", "status": "available", "type": "regular" },
+    { "id": "8C", "status": "booked", "type": "regular" },
+    { "id": "8D", "status": "booked", "type": "regular" },
+
+    { "id": "9A", "status": "available", "type": "regular" },
+    { "id": "9B", "status": "available", "type": "regular" },
+    { "id": "9C", "status": "available", "type": "regular" },
+    { "id": "9D", "status": "available", "type": "regular" },
+
+    { "id": "10A", "status": "available", "type": "regular" },
+    { "id": "10B", "status": "available", "type": "regular" },
+    { "id": "10C", "status": "available", "type": "regular" },
+    { "id": "10D", "status": "available", "type": "regular" }
+  ]
+}

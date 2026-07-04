@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MSRTC | Seat Selection</title>
+  <link rel="stylesheet" href="css/seat-selection.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-left">
+      <a href="../index.html"><img src="../msrtc_new_logo.png" alt="MSRTC Logo"></a>
+    </div>
+  </header>
+
+  <!-- Journey Summary -->
+  <div class="journey-summary">
+    <div class="route-info">
+      <span id="summaryRoute">Mumbai → Pune</span>
+      <span class="meta" id="summaryDate">15 July</span>
+      <span class="meta">06:00 AM</span>
+      <span class="meta">Shivneri AC</span>
+    </div>
+    <button class="back-btn" onclick="window.history.back()">Change Bus</button>
+  </div>
+
+  <div class="selection-container">
+    
+    <!-- Left: Bus Layout -->
+    <div class="card">
+      <div class="card-header">Select Your Seats (Max 6)</div>
+      
+      <div class="bus-layout-wrapper">
+        <div class="bus-container">
+          <div class="steering-wheel"></div>
+          
+          <div id="busLayout">
+            <!-- Rendered by seat-layout.js -->
+          </div>
+        </div>
+      </div>
+
+      <div class="legend">
+        <div class="legend-item"><div class="legend-box avail"></div> Available</div>
+        <div class="legend-item"><div class="legend-box book"></div> Booked</div>
+        <div class="legend-item"><div class="legend-box lady"></div> Ladies</div>
+        <div class="legend-item"><div class="legend-box sen"></div> Senior Citizen</div>
+        <div class="legend-item"><div class="legend-box sel"></div> Selected</div>
+      </div>
+    </div>
+
+    <!-- Right: Summary & Legend -->
+    <div class="card" style="align-self: start; position: sticky; top: 100px;">
+      <div class="card-header">Booking Summary</div>
+      
+      <h3 style="font-size: 14px; margin-bottom: 12px;">Selected Seats</h3>
+      <div id="selectedChips" class="selected-chips">
+        <!-- Rendered by seat-selection.js -->
+      </div>
+
+      <h3 style="font-size: 14px; margin-bottom: 12px; margin-top: 20px;">Fare Details</h3>
+      <div class="fare-row"><span>Seat Fare</span> <span id="seatFare">₹0</span></div>
+      <div class="fare-row"><span>Reservation Fee</span> <span id="resFee">₹0</span></div>
+      <div class="fare-row"><span>GST (5%)</span> <span id="gstAmt">₹0</span></div>
+      <div class="fare-row"><span>Convenience Fee</span> <span id="convFee">₹0</span></div>
+      <div class="fare-row total"><span>Total Amount</span> <span id="totalFare">₹0</span></div>
+
+      <button id="continueBtn" class="btn-continue" onclick="continueToPassenger()" disabled>Select Seats to Continue</button>
+    </div>
+
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script src="js/fare-calculator.js"></script>
+  <script src="js/seat-layout.js"></script>
+  <script src="js/seat-selection.js"></script>
+</body>
+</html>

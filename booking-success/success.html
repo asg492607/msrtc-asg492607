@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MSRTC | Booking Successful</title>
+  <link rel="stylesheet" href="css/success.css">
+</head>
+<body>
+
+  <!-- Animation & Header -->
+  <div class="success-anim">
+    <div class="circle">✓</div>
+    <h1>Booking Successful!</h1>
+    <p class="sub">Your digital ticket has been generated.</p>
+  </div>
+
+  <!-- Digital Ticket Card -->
+  <div class="ticket-wrapper">
+    
+    <div class="ticket-header">
+      <img src="../msrtc_new_logo.png" alt="MSRTC Logo">
+      <div class="pnr-box">
+        <div class="label">PNR Number</div>
+        <div class="val" id="tktPnr">MH00000</div>
+      </div>
+    </div>
+
+    <div class="ticket-body">
+      <div class="route-row">
+        <div class="city-block">
+          <div class="city-code" id="tktFrom">BOM</div>
+          <div class="city-name" id="tktFromName">Mumbai</div>
+          <div class="time">06:00 AM</div>
+        </div>
+        
+        <div class="arrow">✈</div> <!-- Or a bus icon -->
+        
+        <div class="city-block end">
+          <div class="city-code" id="tktTo">PNQ</div>
+          <div class="city-name" id="tktToName">Pune</div>
+          <div class="time">10:00 AM</div>
+        </div>
+      </div>
+
+      <div class="info-grid">
+        <div class="info-block">
+          <div class="label">Date</div>
+          <div class="val" id="tktDate">--</div>
+        </div>
+        <div class="info-block">
+          <div class="label">Bus Type</div>
+          <div class="val">Shivneri AC</div>
+        </div>
+        <div class="info-block">
+          <div class="label">Seats</div>
+          <div class="val" id="tktSeats">--</div>
+        </div>
+        <div class="info-block">
+          <div class="label">Platform</div>
+          <div class="val">TBA</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ticket-footer">
+      <div class="pax-names">
+        <div class="label">Passengers</div>
+        <div class="val" id="tktPaxNames">--</div>
+      </div>
+      <div class="qr-box">
+        <div class="qr-code">
+          <!-- Dummy QR Code -->
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=MSRTC_TICKET" alt="QR Code">
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Actions -->
+  <div class="action-buttons">
+    <button class="btn btn-primary" onclick="triggerDownload()">⬇ Download Ticket</button>
+    <button class="btn btn-outline" onclick="triggerShare()">↗ Share</button>
+    <button class="btn btn-outline" onclick="window.location.href='../dashboard/dashboard.html'">Go to Dashboard</button>
+    <button class="btn btn-outline" onclick="window.location.href='../index.html'">Return Home</button>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script src="js/success.js"></script>
+</body>
+</html>

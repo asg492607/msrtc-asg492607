@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MSRTC | Passenger Dashboard</title>
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="brand">
+      <a href="../index.html"><img src="../msrtc_new_logo.png" alt="MSRTC Logo"></a>
+    </div>
+    
+    <nav class="nav-menu">
+      <a href="dashboard.html" class="nav-item active">🏠 Dashboard</a>
+      <a href="my-tickets.html" class="nav-item">🎫 My Tickets</a>
+      <a href="#" class="nav-item">💳 Bus Passes</a>
+      <a href="#" class="nav-item">📦 Parcel Services</a>
+      <a href="#" class="nav-item">⚠️ Complaints</a>
+      <a href="profile.html" class="nav-item">⚙️ Settings</a>
+    </nav>
+
+    <div class="user-profile">
+      <div class="avatar">G</div>
+      <div class="user-info">
+        <div class="name">Guest User</div>
+        <div class="role">Passenger</div>
+      </div>
+      <button style="margin-left: auto; background: none; border: none; cursor: pointer; color: var(--text-light);" onclick="handleLogout()" title="Logout">🚪</button>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    
+    <div class="top-header">
+      <h1>Welcome back, Guest!</h1>
+      <div class="header-actions">
+        <button class="btn btn-primary" onclick="window.location.href='../search/search.html'">+ Book New Ticket</button>
+      </div>
+    </div>
+
+    <!-- Stats Row -->
+    <div class="grid-4">
+      <div class="card stat-widget">
+        <div class="stat-icon bg-blue">🎫</div>
+        <div class="stat-info">
+          <div class="label">Total Journeys</div>
+          <div class="val">12</div>
+        </div>
+      </div>
+      <div class="card stat-widget">
+        <div class="stat-icon bg-orange">⭐</div>
+        <div class="stat-info">
+          <div class="label">Reward Points</div>
+          <div class="val">450</div>
+        </div>
+      </div>
+      <div class="card stat-widget">
+        <div class="stat-icon bg-blue">💳</div>
+        <div class="stat-info">
+          <div class="label">Wallet Balance</div>
+          <div class="val">₹1,200</div>
+        </div>
+      </div>
+      <div class="card stat-widget">
+        <div class="stat-icon bg-orange">🎁</div>
+        <div class="stat-info">
+          <div class="label">Active Offers</div>
+          <div class="val">3</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <!-- Upcoming Journey -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Upcoming Journey</div>
+          <a href="my-tickets.html" style="font-size: 14px; color: var(--primary); text-decoration: none;">View All</a>
+        </div>
+        <div id="upcomingJourney">
+          <!-- JS fills this -->
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Quick Services</div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <a href="#" style="text-decoration: none; color: var(--secondary); font-weight: 500; border: 1px solid var(--border); padding: 12px; border-radius: 8px;">📍 Track My Bus</a>
+          <a href="#" style="text-decoration: none; color: var(--secondary); font-weight: 500; border: 1px solid var(--border); padding: 12px; border-radius: 8px;">🔄 Cancel Ticket</a>
+          <a href="#" style="text-decoration: none; color: var(--secondary); font-weight: 500; border: 1px solid var(--border); padding: 12px; border-radius: 8px;">📄 Download Invoice</a>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <div id="toast" class="toast"></div>
+
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

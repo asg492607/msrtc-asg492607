@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MSRTC | Payment</title>
+  <link rel="stylesheet" href="payment.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-left">
+      <a href="../index.html"><img src="../msrtc_new_logo.png" alt="MSRTC Logo"></a>
+    </div>
+  </header>
+
+  <button class="back-btn" onclick="window.history.back()">← Back to Passenger Details</button>
+
+  <div class="payment-container">
+    
+    <!-- Left: Payment Options -->
+    <div class="card" style="padding: 0;">
+      <div class="payment-layout">
+        <div class="tabs-sidebar">
+          <button class="tab-btn active" data-target="tabUPI">UPI Apps</button>
+          <button class="tab-btn" data-target="tabCard">Credit / Debit Card</button>
+          <button class="tab-btn" data-target="tabNet">Net Banking</button>
+          <button class="tab-btn" data-target="tabWallet">Wallets</button>
+        </div>
+
+        <div class="tab-content active" id="tabUPI">
+          <h3 style="margin-bottom: 20px;">Pay via UPI</h3>
+          <div class="upi-apps">
+            <div class="upi-app">GPay</div>
+            <div class="upi-app">PhonePe</div>
+            <div class="upi-app">Paytm</div>
+            <div class="upi-app">BHIM</div>
+          </div>
+          <div class="form-group">
+            <label>Or enter UPI ID</label>
+            <input type="text" class="form-control" placeholder="example@upi">
+          </div>
+        </div>
+
+        <div class="tab-content" id="tabCard">
+          <h3 style="margin-bottom: 20px;">Pay via Card</h3>
+          <div class="form-group">
+            <label>Card Number</label>
+            <input type="text" class="form-control" placeholder="0000 0000 0000 0000">
+          </div>
+          <div class="row-2">
+            <div class="form-group">
+              <label>Expiry Date</label>
+              <input type="text" class="form-control" placeholder="MM/YY">
+            </div>
+            <div class="form-group">
+              <label>CVV</label>
+              <input type="password" class="form-control" placeholder="123" maxlength="3">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Cardholder Name</label>
+            <input type="text" class="form-control" placeholder="Name on card">
+          </div>
+        </div>
+
+        <div class="tab-content" id="tabNet">
+          <h3 style="margin-bottom: 20px;">Net Banking</h3>
+          <p style="color: var(--text-light);">Select your bank from the list below to proceed.</p>
+          <select class="form-control" style="margin-top: 20px;">
+            <option>State Bank of India</option>
+            <option>HDFC Bank</option>
+            <option>ICICI Bank</option>
+            <option>Axis Bank</option>
+          </select>
+        </div>
+
+        <div class="tab-content" id="tabWallet">
+          <h3 style="margin-bottom: 20px;">Wallets</h3>
+          <p style="color: var(--text-light);">Available wallets:</p>
+          <div class="upi-apps" style="margin-top: 20px;">
+            <div class="upi-app">Amazon Pay</div>
+            <div class="upi-app">Mobikwik</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Booking Summary -->
+    <div class="card" style="align-self: start;">
+      <div class="card-header">Booking Summary</div>
+      
+      <ul class="summary-list">
+        <li><span>Bus</span> <span style="font-weight: 500;">Shivneri AC</span></li>
+        <li><span>Seats</span> <span id="sumSeats" style="font-weight: 500;">--</span></li>
+        <li><span>Passengers</span> <span id="sumPax" style="font-weight: 500;">--</span></li>
+      </ul>
+
+      <div class="promo-box">
+        <input type="text" id="promoCode" class="form-control" placeholder="Promo Code (Try MSRTC50)">
+        <button id="applyPromoBtn" class="btn-apply">Apply</button>
+      </div>
+
+      <ul class="summary-list">
+        <li id="discountRow" style="display: none;"><span class="discount">Discount Applied</span> <span class="discount" id="discAmt">-₹0</span></li>
+        <li class="total"><span>Grand Total</span> <span id="sumTotal">₹0</span></li>
+      </ul>
+
+      <button id="payBtn" class="btn-pay" style="margin-top: 24px;">Proceed to Pay ₹0</button>
+      <p style="text-align: center; font-size: 12px; color: var(--text-light); margin-top: 12px;">By clicking pay, you agree to our Terms and Conditions.</p>
+    </div>
+
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <!-- Loader Overlay -->
+  <div id="loaderOverlay" class="loader-overlay">
+    <div class="spinner"></div>
+    <h2 style="color: var(--secondary);">Processing Payment...</h2>
+    <p style="color: var(--text-light); margin-top: 10px;">Please do not refresh or close this page.</p>
+  </div>
+
+  <script src="payment.js"></script>
+</body>
+</html>

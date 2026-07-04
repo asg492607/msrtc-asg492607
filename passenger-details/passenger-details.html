@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MSRTC | Passenger Details</title>
+  <link rel="stylesheet" href="css/passenger.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-left">
+      <a href="../index.html"><img src="../msrtc_new_logo.png" alt="MSRTC Logo"></a>
+    </div>
+  </header>
+
+  <!-- Journey Summary -->
+  <div class="journey-summary">
+    <div class="route-info">
+      <span id="summaryRoute">Mumbai → Pune</span>
+      <span class="meta" id="summaryDate">15 July</span>
+      <span class="meta">06:00 AM</span>
+      <span class="meta">Shivneri AC</span>
+    </div>
+    <button class="back-btn" onclick="window.history.back()">Change Seats</button>
+  </div>
+
+  <div class="container">
+    <form id="passengerForm" novalidate>
+      
+      <!-- Passenger Forms injected here -->
+      <div id="passengersContainer"></div>
+
+      <!-- Contact Info -->
+      <div class="card">
+        <div class="card-header">Contact Information</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Mobile Number (Ticket will be sent here)</label>
+            <input type="tel" id="contactMobile" class="form-control" placeholder="10-digit mobile number" maxlength="10">
+          </div>
+          <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" id="contactEmail" class="form-control" placeholder="Enter email">
+          </div>
+        </div>
+      </div>
+
+      <!-- Emergency Contact -->
+      <div class="card">
+        <div class="card-header">Emergency Contact</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Contact Name</label>
+            <input type="text" id="emName" class="form-control" placeholder="Name">
+          </div>
+          <div class="form-group">
+            <label>Mobile Number</label>
+            <input type="tel" id="emMobile" class="form-control" placeholder="10-digit mobile number" maxlength="10">
+          </div>
+        </div>
+      </div>
+
+      <!-- Booking Review -->
+      <div class="card">
+        <div class="card-header">Review Booking</div>
+        
+        <ul class="summary-list">
+          <li><span>Selected Seats</span> <span id="reviewSeats" style="font-weight: 600;">--</span></li>
+          <li class="total"><span>Grand Total</span> <span id="reviewFare">₹0</span></li>
+        </ul>
+
+        <label class="checkbox-row" style="margin-top: 24px;">
+          <input type="checkbox" id="termsCb">
+          I agree to the Terms & Conditions and Cancellation Policy
+        </label>
+
+        <button type="submit" id="btnSubmit" class="btn-continue">Proceed to Payment</button>
+      </div>
+
+    </form>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script src="js/validation.js"></script>
+  <script src="js/passenger.js"></script>
+</body>
+</html>

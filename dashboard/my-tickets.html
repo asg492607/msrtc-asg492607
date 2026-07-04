@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MSRTC | My Tickets</title>
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="brand">
+      <a href="../index.html"><img src="../msrtc_new_logo.png" alt="MSRTC Logo"></a>
+    </div>
+    
+    <nav class="nav-menu">
+      <a href="dashboard.html" class="nav-item">🏠 Dashboard</a>
+      <a href="my-tickets.html" class="nav-item active">🎫 My Tickets</a>
+      <a href="#" class="nav-item">💳 Bus Passes</a>
+      <a href="#" class="nav-item">📦 Parcel Services</a>
+      <a href="#" class="nav-item">⚠️ Complaints</a>
+      <a href="profile.html" class="nav-item">⚙️ Settings</a>
+    </nav>
+
+    <div class="user-profile">
+      <div class="avatar">G</div>
+      <div class="user-info">
+        <div class="name">Guest User</div>
+        <div class="role">Passenger</div>
+      </div>
+      <button style="margin-left: auto; background: none; border: none; cursor: pointer; color: var(--text-light);" onclick="handleLogout()" title="Logout">🚪</button>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    
+    <div class="top-header">
+      <h1>My Tickets</h1>
+      <div class="header-actions">
+        <button class="btn btn-primary" onclick="window.location.href='../search/search.html'">+ Book New Ticket</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="tabs">
+        <div class="tab active" data-target="tabUpcoming">Upcoming</div>
+        <div class="tab" data-target="tabCompleted">Completed</div>
+        <div class="tab" data-target="tabCancelled">Cancelled</div>
+      </div>
+
+      <div class="tab-content active" id="tabUpcoming">
+        <div class="ticket-list" id="upcomingTicketsContainer">
+          <div class="ticket-card">
+            <div>
+              <div class="tkt-route">Mumbai → Pune</div>
+              <div class="tkt-meta">
+                <span>📅 15 July 2026</span>
+                <span>🎫 PNR: MH98765</span>
+                <span>💺 Seats: A1, A2</span>
+              </div>
+            </div>
+            <div class="tkt-actions">
+              <span class="status-badge status-upcoming">Upcoming</span>
+              <button class="btn" style="background: var(--bg-color); color: var(--text-dark);" onclick="window.location.href='../booking-success/success.html'">View / Download</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-content" id="tabCompleted" style="display: none;">
+        <div class="ticket-list">
+          <div class="ticket-card">
+            <div>
+              <div class="tkt-route">Pune → Nashik</div>
+              <div class="tkt-meta">
+                <span>📅 02 June 2026</span>
+                <span>🎫 PNR: MH12345</span>
+              </div>
+            </div>
+            <div class="tkt-actions">
+              <span class="status-badge status-completed">Completed</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-content" id="tabCancelled" style="display: none;">
+        <div class="ticket-list">
+          <div class="ticket-card">
+            <div>
+              <div class="tkt-route">Mumbai → Nagpur</div>
+              <div class="tkt-meta">
+                <span>📅 10 May 2026</span>
+                <span>🎫 PNR: MH55432</span>
+              </div>
+            </div>
+            <div class="tkt-actions">
+              <span class="status-badge status-cancelled">Cancelled</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="js/dashboard.js"></script>
+</body>
+</html>
