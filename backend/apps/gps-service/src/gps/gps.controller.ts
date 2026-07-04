@@ -1,15 +1,25 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Post, Get, Body, Param, UseGuards } from '@nestjs/common';
 import { GpsService } from './gps.service';
-import { ApiTags, ApiOperation } from '@nestjs/swagger';
+import { GpsPingDto } from './dto/gps.dto';
+import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
+import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 
-@ApiTags('Gps')
-@Controller()
+@ApiTags('GPS Ingestion')
+@Controller('gps')
 export class GpsController {
-  constructor(private readonly service: GpsService) {}
+  constructor(private readonly gpsService: GpsService) {}
 
-  @Get()
-  @ApiOperation({ summary: 'Health check endpoint' })
-  getHello(): string {
-    return this.service.getHello();
+  @Post('ping')
+  @ApiOperation({ summary: 'Receive GPS ping from vehicle IoT device or conductor app' })
+  async receivePing(@Body() dto: GpsPingDto) {
+    return this.gpsService.processPing(dto);
+  }
+
+  @Get('vehicle/:id/current')
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: 'Get the last known location of a vehicle (reads from Redis)' })
+  async getCurrentLocation(@Param('id') vehicleId: string) {
+    return this.gpsService.getLastKnownLocation(vehicleId);
   }
 }

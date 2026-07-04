@@ -2,23 +2,26 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { AllExceptionsFilter } from './common/filters/http-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
-  app.setGlobalPrefix('api/v1/gps');
+  app.useGlobalFilters(new AllExceptionsFilter());
+  
+  app.setGlobalPrefix('api/v1');
 
   const config = new DocumentBuilder()
-    .setTitle('MSRTC Gps Service')
-    .setDescription('The Gps API for MSRTC Platform')
+    .setTitle('MSRTC GPS & Live Operations Service')
+    .setDescription('Real-time location ingestion and WebSocket broadcasting')
     .setVersion('1.0')
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/docs/gps', app, document);
 
-  await app.listen(3010);
-  console.log('Gps Service is running on http://localhost:3010');
+  await app.listen(3009);
+  console.log('GPS Service is running on http://localhost:3009');
 }
 bootstrap();
