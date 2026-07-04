@@ -1,0 +1,16 @@
+{
+  "name": "MSRTC Smart Digital Platform",
+  "short_name": "MSRTC App",
+  "description": "Unified Digital Mobility Platform for Maharashtra.",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#F4F7FE",
+  "theme_color": "#FF6B00",
+  "icons": [
+    {
+      "src": "msrtc_new_logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
