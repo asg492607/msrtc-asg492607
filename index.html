@@ -25,6 +25,26 @@
           .catch(err => console.error('PWA SW registration failed:', err));
       });
     }
+
+    function toggleMobileMenu() {
+      const navLinks = document.querySelector('.nav-links');
+      navLinks.classList.toggle('active');
+    }
+    
+    // Close menu when clicking a link
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.querySelector('.nav-links').classList.remove('active');
+        });
+      });
+      // Also close when clicking outside the nav-links if it's open (pseudo-element close simulation)
+      document.querySelector('.nav-links').addEventListener('click', (e) => {
+        if (e.target === e.currentTarget && e.offsetY < 50) { 
+            e.currentTarget.classList.remove('active'); 
+        }
+      });
+    });
   </script>
 
   <!-- Toast Notification Wrapper -->
@@ -64,9 +84,12 @@
   <!-- Main Navigation Header -->
   <header>
     <div class="nav-container">
-      <a href="#" onclick="showSection('home')" class="logo-section" id="logo-link">
-        <img src="msrtc_new_logo.png" alt="Maharashtra State Road Transport Corporation" style="height: 55px; object-fit: contain;">
-      </a>
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <button id="mobileMenuBtn" class="hamburger-btn" onclick="toggleMobileMenu()" aria-label="Menu" style="display: none; background: none; border: none; font-size: 24px; cursor: pointer; color: var(--secondary);">☰</button>
+        <a href="#" onclick="showSection('home')" class="logo-section" id="logo-link">
+          <img src="msrtc_new_logo.png" alt="Maharashtra State Road Transport Corporation" style="height: 55px; object-fit: contain;">
+        </a>
+      </div>
 
       <nav>
         <ul class="nav-links">
