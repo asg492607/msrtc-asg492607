@@ -1,0 +1,7 @@
+export enum TicketStatus {
+  GENERATED = 'GENERATED',
+  ISSUED = 'ISSUED',
+  USED = 'USED',
+  CANCELLED = 'CANCELLED',
+  ARCHIVED = 'ARCHIVED',
+}

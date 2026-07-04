@@ -1,15 +1,19 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards } from '@nestjs/common';
 import { TicketService } from './ticket.service';
-import { ApiTags, ApiOperation } from '@nestjs/swagger';
+import { GenerateTicketDto } from './dto/ticket.dto';
+import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
+import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 
-@ApiTags('Ticket')
-@Controller()
+@ApiTags('Tickets')
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
+@Controller('tickets')
 export class TicketController {
-  constructor(private readonly service: TicketService) {}
+  constructor(private readonly ticketService: TicketService) {}
 
-  @Get()
-  @ApiOperation({ summary: 'Health check endpoint' })
-  getHello(): string {
-    return this.service.getHello();
+  @Post('generate')
+  @ApiOperation({ summary: 'Generate a new QR/PDF ticket for a confirmed booking' })
+  async generateTicket(@Body() dto: GenerateTicketDto) {
+    return this.ticketService.generateTicket(dto);
   }
 }
