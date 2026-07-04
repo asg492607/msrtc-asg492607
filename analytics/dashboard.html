@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Analytics & Executive Dashboard</title>
+  <link rel="stylesheet" href="css/analytics.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="brand">
+      <img src="../msrtc_new_logo.png" alt="MSRTC Logo">
+    </div>
+    <div style="padding: 20px 20px 0;">
+      <div style="font-size: 11px; text-transform: uppercase; color: #8AA4C1; font-weight: 600; letter-spacing: 1px;">Executive Portals</div>
+    </div>
+    <nav class="nav-menu">
+      <a href="dashboard.html" class="nav-item active">📈 Analytics Overview</a>
+      <a href="revenue.html" class="nav-item">💰 Revenue Reports</a>
+      <a href="occupancy.html" class="nav-item">👥 Occupancy Metrics</a>
+      <a href="reports.html" class="nav-item">📄 Custom Reports</a>
+      <a href="../integration/launcher.html" class="nav-item" style="margin-top: auto; border-top: 1px solid rgba(255,255,255,0.1); border-radius: 0; padding-top: 20px;">⬅️ Back to Launcher</a>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    
+    <header class="topbar">
+      <h1>Executive Analytics Dashboard</h1>
+      <div class="top-actions">
+        <button class="btn btn-outline">📥 Export PDF</button>
+        <button class="btn btn-primary" onclick="window.location.reload()">🔄 Refresh Data</button>
+      </div>
+    </header>
+
+    <div class="filters-bar">
+      <select class="filter-select">
+        <option>All Regions</option>
+        <option>Pune Region</option>
+        <option>Mumbai Region</option>
+      </select>
+      <select class="filter-select">
+        <option>All Time</option>
+        <option>Today</option>
+        <option>This Week</option>
+        <option>This Month</option>
+      </select>
+    </div>
+
+    <div class="dashboard-container">
+      
+      <!-- KPI Widgets -->
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-header">
+            <div class="kpi-title">Total Revenue</div>
+            <div class="kpi-icon orange">₹</div>
+          </div>
+          <div class="kpi-value">₹24.5 Cr</div>
+          <div class="kpi-trend trend-up">↑ 12% vs last month</div>
+        </div>
+        
+        <div class="kpi-card">
+          <div class="kpi-header">
+            <div class="kpi-title">Total Bookings</div>
+            <div class="kpi-icon blue">🎫</div>
+          </div>
+          <div class="kpi-value">142,850</div>
+          <div class="kpi-trend trend-up">↑ 8% vs last month</div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-header">
+            <div class="kpi-title">Avg Occupancy</div>
+            <div class="kpi-icon green">👥</div>
+          </div>
+          <div class="kpi-value">78.4%</div>
+          <div class="kpi-trend trend-up">↑ 2.1% vs last month</div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-header">
+            <div class="kpi-title">Active Complaints</div>
+            <div class="kpi-icon red">⚠️</div>
+          </div>
+          <div class="kpi-value">342</div>
+          <div class="kpi-trend trend-down">↓ 5% vs last month</div>
+        </div>
+      </div>
+
+      <!-- Charts -->
+      <div class="chart-grid">
+        <div class="chart-card">
+          <div class="chart-header">
+            <div class="chart-title">Revenue Trend (Last 6 Months)</div>
+          </div>
+          <div class="chart-container">
+            <canvas id="revenueTrendChart"></canvas>
+          </div>
+        </div>
+        
+        <div class="chart-card">
+          <div class="chart-header">
+            <div class="chart-title">Occupancy by Bus Type</div>
+          </div>
+          <div class="chart-container">
+            <canvas id="occupancyChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Data Table -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <div class="chart-title">Top Performing Regions</div>
+        </div>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Region</th>
+              <th>Total Trips</th>
+              <th>Passengers</th>
+              <th>Revenue (₹)</th>
+              <th>Occupancy</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Pune Region</td>
+              <td>4,520</td>
+              <td>185,000</td>
+              <td>₹8.2 Cr</td>
+              <td>82%</td>
+            </tr>
+            <tr>
+              <td>Mumbai Region</td>
+              <td>4,100</td>
+              <td>160,000</td>
+              <td>₹7.5 Cr</td>
+              <td>79%</td>
+            </tr>
+            <tr>
+              <td>Nashik Region</td>
+              <td>3,200</td>
+              <td>120,000</td>
+              <td>₹4.1 Cr</td>
+              <td>74%</td>
+            </tr>
+            <tr>
+              <td>Nagpur Region</td>
+              <td>2,800</td>
+              <td>95,000</td>
+              <td>₹3.8 Cr</td>
+              <td>71%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+  </main>
+
+  <script src="js/analytics.js"></script>
+</body>
+</html>

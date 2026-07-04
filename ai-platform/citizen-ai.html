@@ -3,34 +3,92 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Assistant | Citizen Ai</title>
+  <title>Citizen AI | MSRTC</title>
   <link rel="stylesheet" href="css/ai.css">
 </head>
 <body>
-  <aside class="sidebar">
-    <div class="brand"><img src="../msrtc_new_logo.png" alt="MSRTC Logo" style="height: 40px;"></div>
-    <nav class="nav-menu">
-      <a href="citizen-ai.html" class="nav-item">👨‍👩‍👧‍👦 Citizen AI</a>
-      <a href="employee-ai.html" class="nav-item">👨‍💼 Employee AI</a>
-      <a href="executive-ai.html" class="nav-item">📈 Executive AI</a>
-      <a href="chatbot.html" class="nav-item">💬 Chat Widget Demo</a>
-      <a href="ai-settings.html" class="nav-item">⚙️ Settings</a>
-    </nav>
-  </aside>
-  <main class="main-content">
-    <div class="topbar" style="margin-bottom: 30px;">
-      <div class="page-title">
-        <h1 style="font-size: 28px; color: var(--secondary);">Citizen Ai</h1>
+
+  <div class="app-container">
+    
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="brand">
+        <img src="../msrtc_new_logo.png" alt="MSRTC Logo">
       </div>
-    </div>
-    <div class="card">
-      <h2 style="color: var(--secondary); margin-bottom: 12px;">Citizen Ai Module</h2>
-      <p style="color: var(--text-light);">This enterprise interface is a structural placeholder. Integration with NestJS backend is pending.</p>
+      <div style="padding: 20px 20px 0;">
+        <button class="lang-switch" style="width: 100%; border: 2px dashed var(--border); padding: 12px; display: flex; justify-content: center; align-items: center; gap: 8px;">
+          <span>➕</span> New Conversation
+        </button>
+      </div>
+      <nav class="nav-menu">
+        <div style="font-size: 12px; font-weight: 600; color: var(--text-light); text-transform: uppercase; margin-bottom: 12px;">Recent Chats</div>
+        <a href="#" class="nav-item active">💬 Track Shivneri to Pune</a>
+        <a href="#" class="nav-item">💬 Pass Renewal Query</a>
+        <a href="#" class="nav-item">💬 Refund for MH98765</a>
+        
+        <div style="font-size: 12px; font-weight: 600; color: var(--text-light); text-transform: uppercase; margin: 24px 0 12px;">Portals</div>
+        <a href="employee-ai.html" class="nav-item">👨‍💼 Employee AI</a>
+        <a href="executive-ai.html" class="nav-item">📈 Executive AI</a>
+      </nav>
+      <div style="padding: 20px; border-top: 1px solid var(--border);">
+        <a href="settings.html" class="nav-item" style="margin: 0;">⚙️ Settings</a>
+      </div>
+    </aside>
+
+    <!-- Main Chat Area -->
+    <main class="chat-area">
       
-      <!-- Back to Presentation Launcher -->
-      <button class="btn btn-primary" style="margin-top: 24px;" onclick="window.location.href='../integration/launcher.html'">Return to Central Launcher</button>
-    </div>
-  </main>
+      <header class="topbar">
+        <div style="font-weight: 600; font-size: 18px; color: var(--secondary);">Citizen Assistant (Beta)</div>
+        <div class="header-actions">
+          <select class="lang-switch">
+            <option>English</option>
+            <option>मराठी (Marathi)</option>
+            <option>हिन्दी (Hindi)</option>
+          </select>
+          <button class="theme-toggle" id="themeToggle">🌙</button>
+        </div>
+      </header>
+
+      <div class="chat-container" id="chatContainer">
+        <!-- AI Greeting -->
+        <div class="message-wrapper ai">
+          <div class="message ai">
+            Namaskar! I am your MSRTC AI Assistant. 🚌<br><br>
+            I can help you with ticket booking, live bus tracking, checking refund status, or finding the nearest depot. How can I assist you today?
+          </div>
+        </div>
+      </div>
+
+      <div class="input-area">
+        <div class="quick-chips">
+          <div class="chip">Track Bus</div>
+          <div class="chip">Book Ticket</div>
+          <div class="chip">Cancel Ticket</div>
+          <div class="chip">Refund Status</div>
+          <div class="chip">Emergency Contacts</div>
+          <div class="chip">Nearby Depot</div>
+        </div>
+
+        <div class="recording" id="recordingIndicator">
+          <div class="pulse-circle"></div> Listening...
+        </div>
+
+        <div class="input-box">
+          <button class="icon-btn" title="Upload Attachment">📎</button>
+          <input type="text" id="chatInput" placeholder="Ask me anything in English, Marathi, or Hindi...">
+          <button class="icon-btn" id="voiceBtn" title="Voice Input">🎤</button>
+          <button class="send-btn" id="sendBtn">➤</button>
+        </div>
+        <div style="text-align: center; font-size: 11px; color: var(--text-light); margin-top: -8px;">
+          AI responses are generated dynamically and may contain errors. Please verify critical information.
+        </div>
+      </div>
+
+    </main>
+
+  </div>
+
   <script src="js/ai.js"></script>
 </body>
 </html>

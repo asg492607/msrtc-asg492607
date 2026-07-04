@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vendor & Procurement Portal</title>
+  <link rel="stylesheet" href="css/vendor.css">
+</head>
+<body>
+
+  <aside class="sidebar">
+    <div class="brand">
+      <img src="../msrtc_new_logo.png" alt="MSRTC Logo">
+    </div>
+    <nav class="nav-menu">
+      <a href="dashboard.html" class="nav-item active">📊 Dashboard</a>
+      <a href="purchase-orders.html" class="nav-item">🛒 Purchase Orders</a>
+      <a href="vendors.html" class="nav-item">🏢 Vendor List</a>
+      <a href="contracts.html" class="nav-item">📜 Contracts</a>
+      <a href="invoices.html" class="nav-item">🧾 Invoices</a>
+      <a href="../integration/launcher.html" class="nav-item" style="margin-top: auto; border-top: 1px solid rgba(255,255,255,0.1); border-radius: 0;">⬅️ Launcher</a>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    
+    <div class="topbar">
+      <h1>Procurement Dashboard</h1>
+      <button class="btn btn-primary">+ New PO</button>
+    </div>
+
+    <div class="grid-3">
+      <div class="card">
+        <div class="stat-val">24</div>
+        <div class="stat-label">Active Purchase Orders</div>
+      </div>
+      <div class="card">
+        <div class="stat-val" style="color: #D97706;">5</div>
+        <div class="stat-label">Pending Approvals</div>
+      </div>
+      <div class="card">
+        <div class="stat-val" style="color: #059669;">12</div>
+        <div class="stat-label">Deliveries Expected Today</div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top: 20px;">
+      <h2 style="font-size: 16px; margin-bottom: 8px;">Recent Purchase Orders</h2>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>PO Number</th>
+            <th>Vendor</th>
+            <th>Date</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>PO-2026-892</td>
+            <td>Tata Motors Ltd</td>
+            <td>01 Jul 2026</td>
+            <td>₹45,00,000</td>
+            <td><span class="badge badge-approved">Approved</span></td>
+            <td><button class="btn btn-outline">View PDF</button></td>
+          </tr>
+          <tr>
+            <td>PO-2026-891</td>
+            <td>Ashok Leyland Spares</td>
+            <td>03 Jul 2026</td>
+            <td>₹12,50,000</td>
+            <td><span class="badge badge-pending">Pending</span></td>
+            <td><button class="btn btn-primary">Approve</button></td>
+          </tr>
+          <tr>
+            <td>PO-2026-890</td>
+            <td>Michelin Tyres India</td>
+            <td>28 Jun 2026</td>
+            <td>₹8,20,000</td>
+            <td><span class="badge badge-rejected">Rejected</span></td>
+            <td><button class="btn btn-outline">Details</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </main>
+
+  <script src="js/vendor.js"></script>
+</body>
+</html>

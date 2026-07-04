@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Workshop & Fleet Maintenance</title>
+  <link rel="stylesheet" href="css/workshop.css">
+</head>
+<body>
+
+  <aside class="sidebar">
+    <div class="brand">
+      <img src="../msrtc_new_logo.png" alt="MSRTC Logo">
+    </div>
+    <nav class="nav-menu">
+      <a href="dashboard.html" class="nav-item active">📊 Overview</a>
+      <a href="repairs.html" class="nav-item">🔧 Active Repairs</a>
+      <a href="inventory.html" class="nav-item">⚙️ Spare Parts</a>
+      <a href="mechanics.html" class="nav-item">👨‍🔧 Mechanics</a>
+      <a href="certificates.html" class="nav-item">📄 Certificates</a>
+      <a href="../integration/launcher.html" class="nav-item" style="margin-top: auto; border-top: 1px solid rgba(255,255,255,0.1); border-radius: 0;">⬅️ Launcher</a>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    
+    <div class="topbar">
+      <h1>Workshop Operations</h1>
+    </div>
+
+    <div class="grid-4">
+      <div class="card">
+        <div class="stat-val">12</div>
+        <div class="stat-label">Vehicles Waiting</div>
+      </div>
+      <div class="card">
+        <div class="stat-val">8</div>
+        <div class="stat-label">Active Repairs</div>
+      </div>
+      <div class="card">
+        <div class="stat-val">45</div>
+        <div class="stat-label">Available Mechanics</div>
+      </div>
+      <div class="card">
+        <div class="stat-val" style="color: #EF4444;">3</div>
+        <div class="stat-label">Critical Shortages (Parts)</div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top: 20px;">
+      <h2 style="font-size: 16px; margin-bottom: 8px;">Vehicle Queue</h2>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Job Card #</th>
+            <th>Bus Number</th>
+            <th>Issue Reported</th>
+            <th>Arrival Time</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>JC-4091</td>
+            <td>MH14 CD 1234</td>
+            <td>Engine Overheating</td>
+            <td>08:30 AM</td>
+            <td><span class="badge badge-waiting">Waiting</span></td>
+            <td><button class="btn btn-outline">Assign</button></td>
+          </tr>
+          <tr>
+            <td>JC-4088</td>
+            <td>MH12 AB 5678</td>
+            <td>Brake Pad Replacement</td>
+            <td>Yesterday, 04:00 PM</td>
+            <td><span class="badge badge-repair">In Repair</span></td>
+            <td><button class="btn btn-outline">View</button></td>
+          </tr>
+          <tr>
+            <td>JC-4085</td>
+            <td>MH09 EF 9012</td>
+            <td>Routine Maintenance (10,000 km)</td>
+            <td>Yesterday, 10:00 AM</td>
+            <td><span class="badge badge-ready">Ready</span></td>
+            <td><button class="btn btn-outline">Dispatch</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </main>
+
+  <script src="js/workshop.js"></script>
+</body>
+</html>

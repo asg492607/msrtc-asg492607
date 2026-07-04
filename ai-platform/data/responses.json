@@ -1,0 +1,12 @@
+{
+  "book ticket": "I can help you book a ticket. Please tell me your origin, destination, and date of journey. For example, 'Mumbai to Pune tomorrow'.",
+  "cancel ticket": "To cancel a ticket, please provide your PNR number.",
+  "refund status": "Refunds are processed within 3-5 working days. Please provide your PNR to check the exact status.",
+  "bus schedule": "You can check the daily schedule for all routes in the Search section. Tell me the route to see timings.",
+  "track bus": "Please provide the Bus Number or your PNR to track the live location.",
+  "parcel tracking": "Please enter your Parcel Tracking ID (LR Number).",
+  "complaint status": "To check your complaint status, please provide your Grievance ID.",
+  "pass renewal": "You can renew your Monthly or Student pass from the Dashboard > Bus Passes section. Shall I take you there?",
+  "nearby depot": "Please allow location access or tell me your current city so I can find the nearest MSRTC Depot for you.",
+  "emergency contacts": "For emergencies during your journey, call the MSRTC Helpline: 1800-22-1250, or type 'SOS' for immediate assistance."
+}
