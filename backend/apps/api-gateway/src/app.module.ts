@@ -3,6 +3,9 @@ import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 import { CircuitBreakerProxyMiddleware } from './proxy/circuit-breaker.middleware';
 import { SwaggerAggregatorController } from './swagger/swagger.controller';
+import { AppController } from './app.controller';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 // import { RedisModule } from '@msrtc/redis';
 
 @Module({
@@ -11,9 +14,13 @@ import { SwaggerAggregatorController } from './swagger/swagger.controller';
     ThrottlerModule.forRoot([{
       ttl: 60000, // 60 seconds
       limit: 100, // 100 requests per minute per IP
-    }])
+    }]),
+    ServeStaticModule.forRoot({
+      rootPath: join(process.cwd(), '..', '..', '..'), // Up to msrtc root from api-gateway
+      exclude: ['/api/(.*)', '/swagger-json'],
+    })
   ],
-  controllers: [SwaggerAggregatorController],
+  controllers: [SwaggerAggregatorController, AppController],
   providers: [
     {
       provide: APP_GUARD,

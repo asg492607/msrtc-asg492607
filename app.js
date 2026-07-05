@@ -287,26 +287,15 @@ function swapFromTo() {
 }
 
 // Search Buses Flow
-function handleBusSearch(event) {
+async function handleBusSearch(event) {
   if (event) event.preventDefault();
   const from = document.getElementById('searchFrom').value;
   const to = document.getElementById('searchTo').value;
   const date = document.getElementById('searchDate').value;
   const filterType = document.getElementById('searchBusType').value;
   
-  let results = MSRTC_DATA.buses.filter(bus => 
-    bus.from.toLowerCase().includes(from.toLowerCase()) && 
-    bus.to.toLowerCase().includes(to.toLowerCase())
-  );
-
-  if (filterType !== 'all') {
-    results = results.filter(bus => bus.type === filterType);
-  }
-  
-  currentSearchBuses = results;
   showSection('booking');
   goBackToStep(1);
-
   document.getElementById('searchResultsTitle').innerHTML = `Buses from <span style="color:var(--primary);">${from}</span> to <span style="color:var(--primary);">${to}</span> on ${date}`;
   
   // Show Skeleton loading simulation
@@ -316,10 +305,22 @@ function handleBusSearch(event) {
   busResults.innerHTML = '';
   skeleton.style.display = 'flex';
   
-  setTimeout(() => {
-    skeleton.style.display = 'none';
-    renderBusResults();
-  }, 1000);
+  try {
+    const response = await fetch(`/api/v1/buses?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}&date=${encodeURIComponent(date)}`);
+    let results = await response.json();
+    
+    if (filterType !== 'all' && filterType !== 'any') {
+      results = results.filter(bus => bus.type === filterType);
+    }
+    
+    currentSearchBuses = results;
+  } catch (error) {
+    console.error("Failed to fetch buses from backend", error);
+    currentSearchBuses = [];
+  }
+  
+  skeleton.style.display = 'none';
+  renderBusResults();
 }
 
 // Bus cards result render
