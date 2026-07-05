@@ -744,7 +744,10 @@ function switchDashboardTab(tabName, el) {
   document.getElementById(`dash-${tabName}`).style.display = 'block';
   
   el.parentElement.querySelectorAll('.panel-menu-item').forEach(btn => btn.classList.remove('active'));
-  el.classasync function renderDashboard() {
+  el.classList.add('active');
+}
+
+async function renderDashboard() {
   if (!userSession) {
     showSection('login');
     alert("Authentication required. Please sign in first.");
