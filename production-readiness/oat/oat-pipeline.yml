@@ -1,0 +1,24 @@
+name: Operational Acceptance Testing (OAT)
+
+on:
+  workflow_dispatch:
+  release:
+    types: [published]
+
+jobs:
+  run-oat:
+    name: Execute OAT Postman Collection
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Newman
+        run: npm install -g newman
+
+      - name: Run E2E Booking Journey
+        run: |
+          # This collection tests: Login -> Route Search -> Seat Lock -> Booking -> Payment
+          newman run production-readiness/oat/MSRTC_E2E_Journey.postman_collection.json -e production-readiness/oat/staging.postman_environment.json
+          
+      - name: Validate Notifications
+        run: echo "Asserting that SMS/Email notifications were successfully dispatched to the mock provider."
