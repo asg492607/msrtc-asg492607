@@ -76,8 +76,10 @@
     <div class="utility-right">
       <span style="font-weight:700; color:#FF9100;">📞 Emergency Helpline: 1800 22 1250</span>
       <span style="color:#94A3B8;">|</span>
-      <button onclick="showSection('login')" class="utility-btn" style="font-weight:bold;">👤 Login</button>
-      <button onclick="showSection('login')" class="btn-primary" style="padding:0.25rem 0.75rem; font-size:0.78rem; font-weight:700; box-shadow:none;">Sign Up</button>
+      <div id="userWidget" style="display:inline-flex; align-items:center; gap:0.5rem;">
+        <button onclick="showSection('login')" class="utility-btn" style="font-weight:bold;">👤 Login</button>
+        <button onclick="showSection('login')" class="btn-primary" style="padding:0.25rem 0.75rem; font-size:0.78rem; font-weight:700; box-shadow:none;">Sign Up</button>
+      </div>
     </div>
   </div>
 
@@ -1382,7 +1384,6 @@
     </div>
   </footer>
 
-  <script src="data.js"></script>
   <script src="app.js"></script>
 
   <script>

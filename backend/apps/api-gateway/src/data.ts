@@ -1,4 +1,4 @@
-// Expanded MSRTC Database, Information pages, and Translations
+export // Expanded MSRTC Database, Information pages, and Translations
 const MSRTC_DATA = {
   locations: [
     "Pune",
@@ -271,3 +271,4 @@ const MSRTC_DATA = {
     }
   }
 };
+

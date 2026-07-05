@@ -1,5 +1,6 @@
 import { Controller, Get, Post, Body, Query, Param, HttpException, HttpStatus } from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
+import { MSRTC_DATA } from './data';
 
 // In-memory data store for prototype
 const users = new Map<string, any>();
@@ -10,6 +11,14 @@ const complaints = new Map<string, any[]>();
 @Controller('api/v1')
 export class AppController {
   
+  // ----------------------------------------------------
+  // DATA
+  // ----------------------------------------------------
+  @Get('data/all')
+  getAllData() {
+    return MSRTC_DATA;
+  }
+
   // ----------------------------------------------------
   // BUSES
   // ----------------------------------------------------

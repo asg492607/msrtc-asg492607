@@ -11,45 +11,27 @@ let discountApplied = false;
 let currentUpdateCategory = 'All';
 let currentCarouselIndex = 0;
 
-// Simulated State (In-Memory Database)
-let myBookings = [
-  { pnr: "PNR9938210", from: "Pune", to: "Mumbai", busNo: "MSR-101", seats: ["A1", "A2"], date: "2026-07-15", fare: 1100, status: "Active" }
-];
-
-let myPasses = [
-  { id: "PASS-S881", name: "Atharva K.", type: "Student Concession (Monthly)", proof: "Aadhaar: 9931-2918-1123", status: "Approved" }
-];
-
-let myComplaints = [
-  { id: "COMP-229", category: "Cleanliness", busNo: "MH-12-AQ-9932", desc: "AC vents in Shivneri bus were blocked.", status: "Pending" }
-];
-
-let allParcels = [
-  { id: "MSR-P-992", sender: "Ramesh P.", receiver: "Sunita S.", status: "transit", details: "Departed from Pune (Shivajinagar) cargo hub at 09:30 AM" }
-];
-
-let savedPassengers = [
-  { name: "Atharva K.", age: 24, gender: "Male" },
-  { name: "Sunita K.", age: 52, gender: "Female" }
-];
-
-let favoriteRoutes = [
-  { from: "Pune", to: "Mumbai" },
-  { from: "Mumbai", to: "Nashik" }
-];
+let MSRTC_DATA = null;
 
 // Initial Setup
-window.addEventListener('DOMContentLoaded', () => {
-  renderAnnouncements();
-  renderNews();
-  renderCarouselRoute();
-  renderAboutSection();
-  renderDepotsList();
-  renderConcessionsList();
-  renderPublicTenders();
-  renderPublicRecruitments();
-  renderPublicCirculars();
-  updateLangStrings();
+window.addEventListener('DOMContentLoaded', async () => {
+  try {
+    const res = await fetch('/api/v1/data/all');
+    MSRTC_DATA = await res.json();
+    
+    renderAnnouncements();
+    renderNews();
+    renderCarouselRoute();
+    renderAboutSection();
+    renderDepotsList();
+    renderConcessionsList();
+    renderPublicTenders();
+    renderPublicRecruitments();
+    renderPublicCirculars();
+    updateLangStrings();
+  } catch (err) {
+    console.error("Failed to load platform data from backend", err);
+  }
   
   const dateInput = document.getElementById('searchDate');
   if (dateInput) {
@@ -364,7 +346,12 @@ function renderBusResults() {
 
 // Seat Selector
 function selectBusForBooking(busId) {
-  currentSelectedBus = MSRTC_DATA.buses.find(b => b.id === busId);
+  currentSelectedBus = currentSearchBuses.find(b => b.id === busId);
+  if (!currentSelectedBus) {
+    showToast("Error: Bus details not found", "error");
+    return;
+  }
+  
   selectedSeats = [];
   discountApplied = false;
   
@@ -838,7 +825,8 @@ function switchDashboardTab(tabName, el) {
     `).join('');
 
     const favCont = document.getElementById('dashboardFavoritesList');
-    favCont.innerHTML = favoriteRoutes.map(route => `
+    const favRoutes = MSRTC_DATA?.popularRoutes || [];
+    favCont.innerHTML = favRoutes.slice(0, 2).map(route => `
       <div class="bus-card" style="padding:1rem;">
         <div>
           <strong>${route.from} to ${route.to}</strong>
