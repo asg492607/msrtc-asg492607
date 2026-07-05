@@ -1,0 +1,20 @@
+{
+  "name": "finops-service",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "nest build",
+    "start": "nest start",
+    "start:dev": "nest start --watch"
+  },
+  "dependencies": {
+    "@nestjs/common": "^10.0.0",
+    "@nestjs/core": "^10.0.0",
+    "@msrtc/database": "workspace:*",
+    "@msrtc/tenant": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.1.3",
+    "@types/node": "^20.0.0"
+  }
+}
