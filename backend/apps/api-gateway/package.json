@@ -15,6 +15,12 @@
     "axios": "^1.6.0",
     "http-proxy-middleware": "^2.0.6",
     "class-validator": "^0.14.0",
-    "class-transformer": "^0.5.1"
+    "class-transformer": "^0.5.1",
+    "opossum": "^7.1.0",
+    "@nestjs/throttler": "^5.0.0",
+    "cache-manager": "^5.2.3"
+  },
+  "devDependencies": {
+    "@types/opossum": "^6.2.1"
   }
 }

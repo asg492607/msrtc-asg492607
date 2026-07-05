@@ -2,107 +2,85 @@ import os
 
 base_dir = r"C:\Users\Atharva\OneDrive\Desktop\msrtc\backend\apps\api-gateway\src"
 
-# 1. Health Aggregator
-health_svc = """import { Injectable } from '@nestjs/common';
-import { HttpService } from '@nestjs/axios';
-import { ServiceRegistry } from './service-registry';
-import { firstValueFrom } from 'rxjs';
+# 1. Swagger Aggregation
+swagger_ctrl = """import { Controller, Get } from '@nestjs/common';
+import axios from 'axios';
 
-@Injectable()
-export class HealthService {
-  constructor(private httpService: HttpService) {}
+@Controller('swagger-json')
+export class SwaggerAggregatorController {
+  
+  @Get()
+  async getAggregatedSwagger() {
+    // In production, these would be fetched from internal Docker DNS names
+    const services = [
+      { name: 'Auth', url: 'http://localhost:3001/api/docs/auth-json' },
+      { name: 'Booking', url: 'http://localhost:3002/api/docs/bookings-json' }
+    ];
 
-  async aggregateHealth() {
-    const report = { status: 'OK', services: {} };
-    let hasError = false;
+    const aggregated = {
+      openapi: '3.0.0',
+      info: { title: 'MSRTC Enterprise API Gateway', version: '1.0.0' },
+      paths: {},
+      components: { schemas: {} }
+    };
 
-    for (const [name, url] of Object.entries(ServiceRegistry)) {
+    for (const s of services) {
       try {
-        // Ping internal health endpoint
-        // NOTE: Actually pinging might be slow if we ping 20, but this is a mock implementation
-        // const response = await firstValueFrom(this.httpService.get(`${url}/api/v1/health`));
-        report.services[name] = 'UP';
-      } catch (error) {
-        report.services[name] = 'DOWN';
-        hasError = true;
+        const res = await axios.get(s.url);
+        // Merge paths
+        for (const [path, methods] of Object.entries(res.data.paths || {})) {
+           aggregated.paths[path] = methods;
+        }
+        // Merge schemas
+        for (const [schema, def] of Object.entries(res.data.components?.schemas || {})) {
+           aggregated.components.schemas[schema] = def;
+        }
+      } catch (e) {
+        console.error(`Failed to fetch swagger from ${s.name}: ${e.message}`);
       }
     }
 
-    if (hasError) report.status = 'DEGRADED';
-    return report;
+    return aggregated;
   }
 }
 """
-with open(os.path.join(base_dir, "health/health.service.ts"), "w", encoding="utf-8") as f: f.write(health_svc)
-
-health_ctrl = """import { Controller, Get } from '@nestjs/common';
-import { HealthService } from './health.service';
-import { ApiTags, ApiOperation } from '@nestjs/swagger';
-
-@ApiTags('System Diagnostics')
-@Controller('system/health')
-export class HealthController {
-  constructor(private readonly healthService: HealthService) {}
-
-  @Get()
-  @ApiOperation({ summary: 'Aggregate health checks across all microservices' })
-  async getSystemHealth() {
-    return this.healthService.aggregateHealth();
-  }
-}
-"""
-with open(os.path.join(base_dir, "health/health.controller.ts"), "w", encoding="utf-8") as f: f.write(health_ctrl)
+with open(os.path.join(base_dir, "swagger/swagger.controller.ts"), "w", encoding="utf-8") as f: f.write(swagger_ctrl)
 
 
-# 2. AppModule configuration
-app_module = """import { Module, MiddlewareConsumer, NestModule } from '@nestjs/common';
-import { HealthController } from './health/health.controller';
-import { HealthService } from './health/health.service';
-import { ProxyMiddleware } from './middleware/proxy.middleware';
-import { HttpModule } from '@nestjs/axios';
+# 2. AppModule Integration (Throttler + Proxy)
+app_mod = """import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
+import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
+import { CircuitBreakerProxyMiddleware } from './proxy/circuit-breaker.middleware';
+import { SwaggerAggregatorController } from './swagger/swagger.controller';
+// import { RedisModule } from '@msrtc/redis';
 
 @Module({
-  imports: [HttpModule],
-  controllers: [HealthController],
-  providers: [HealthService],
+  imports: [
+    // RedisModule, // In reality, we'd use ThrottlerStorageRedisService
+    ThrottlerModule.forRoot([{
+      ttl: 60000, // 60 seconds
+      limit: 100, // 100 requests per minute per IP
+    }])
+  ],
+  controllers: [SwaggerAggregatorController],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard
+    }
+  ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
-      .apply(ProxyMiddleware)
-      .forRoutes('/api/*');
+      .apply(CircuitBreakerProxyMiddleware)
+      .exclude('swagger-json') // Don't proxy the swagger endpoint itself
+      .forRoutes('*');
   }
 }
 """
-with open(os.path.join(base_dir, "app.module.ts"), "w", encoding="utf-8") as f: f.write(app_module)
-
-main_ts = """import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { CorrelationIdInterceptor } from './interceptors/correlation-id.interceptor';
-
-async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  
-  app.enableCors();
-  app.useGlobalInterceptors(new CorrelationIdInterceptor());
-  
-  const config = new DocumentBuilder()
-    .setTitle('MSRTC Central API Gateway')
-    .setDescription('Single entry point for all internal microservices')
-    .setVersion('1.0')
-    .addBearerAuth()
-    .build();
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api/docs/gateway', app, document);
-
-  // Gateway runs on 8080
-  await app.listen(8080);
-  console.log('MSRTC API Gateway is routing traffic on http://localhost:8080');
-}
-bootstrap();
-"""
-with open(os.path.join(base_dir, "main.ts"), "w", encoding="utf-8") as f: f.write(main_ts)
+with open(os.path.join(base_dir, "app.module.ts"), "w", encoding="utf-8") as f: f.write(app_mod)
 
 
-print("Gateway Phase 2 Scaffolded (Health Aggregator, AppModule)")
+print("Gateway Hardening Phase 2 Scaffolded (Swagger, Throttler, AppModule)")

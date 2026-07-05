@@ -1,42 +1,4 @@
-import os
-import json
-
-base_dir = r"C:\Users\Atharva\OneDrive\Desktop\msrtc"
-gateway_dir = os.path.join(base_dir, "backend/apps/api-gateway")
-gateway_src = os.path.join(gateway_dir, "src")
-
-# 1. Update Package.json for api-gateway
-pkg_path = os.path.join(gateway_dir, "package.json")
-if os.path.exists(pkg_path):
-    with open(pkg_path, "r") as f:
-        pkg = json.load(f)
-    
-    if 'dependencies' not in pkg: pkg['dependencies'] = {}
-    pkg['dependencies']['opossum'] = "^7.1.0"
-    pkg['dependencies']['@nestjs/throttler'] = "^5.0.0"
-    pkg['dependencies']['cache-manager'] = "^5.2.3"
-    pkg['dependencies']['axios'] = "^1.6.0"
-    
-    if 'devDependencies' not in pkg: pkg['devDependencies'] = {}
-    pkg['devDependencies']['@types/opossum'] = "^6.2.1"
-    
-    with open(pkg_path, "w") as f:
-        json.dump(pkg, f, indent=2)
-
-
-# 2. Directories
-dirs = [
-    "proxy",
-    "throttler",
-    "swagger",
-    "cache"
-]
-for d in dirs:
-    os.makedirs(os.path.join(gateway_src, d), exist_ok=True)
-
-
-# 3. Circuit Breaker Proxy
-proxy_svc = """import { Injectable, Logger, NestMiddleware } from '@nestjs/common';
+import { Injectable, Logger, NestMiddleware } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 import * as CircuitBreaker from 'opossum';
@@ -112,8 +74,3 @@ export class CircuitBreakerProxyMiddleware implements NestMiddleware {
     return this.breakers.get(target);
   }
 }
-"""
-with open(os.path.join(gateway_src, "proxy/circuit-breaker.middleware.ts"), "w", encoding="utf-8") as f: f.write(proxy_svc)
-
-
-print("Gateway Hardening Phase 1 Scaffolded (Package.json, Circuit Breaker)")
