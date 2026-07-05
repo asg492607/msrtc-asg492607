@@ -1,15 +1,18 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param, UseGuards, Request } from '@nestjs/common';
 import { CrewService } from './crew.service';
-import { ApiTags, ApiOperation } from '@nestjs/swagger';
+import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
+import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 
-@ApiTags('Crew')
-@Controller()
+@ApiTags('Crew Profile (Self)')
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
+@Controller('crew')
 export class CrewController {
-  constructor(private readonly service: CrewService) {}
+  constructor(private readonly crewService: CrewService) {}
 
-  @Get()
-  @ApiOperation({ summary: 'Health check endpoint' })
-  getHello(): string {
-    return this.service.getHello();
+  @Get('me')
+  @ApiOperation({ summary: 'Get own profile details' })
+  async getMyProfile(@Request() req) {
+    return this.crewService.getProfile(req.user.userId);
   }
 }
