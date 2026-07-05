@@ -1,0 +1,13 @@
+apiVersion: slo.custom.io/v1
+kind: ServiceLevelObjective
+metadata:
+  name: booking-success-rate
+spec:
+  service: booking-service
+  description: "99.9% of booking requests must succeed"
+  indicator:
+    prometheus:
+      success: sum(rate(http_requests_total{job="booking-service", status!~"5.."}[30d]))
+      total: sum(rate(http_requests_total{job="booking-service"}[30d]))
+  objective: 99.9
+  window: 30d

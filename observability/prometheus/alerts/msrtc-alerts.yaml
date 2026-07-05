@@ -1,0 +1,29 @@
+groups:
+- name: msrtc.alerts
+  rules:
+  - alert: HighErrorRate
+    expr: sum(rate(http_requests_total{status=~"5.."}[5m])) / sum(rate(http_requests_total[5m])) > 0.05
+    for: 2m
+    labels:
+      severity: critical
+    annotations:
+      summary: High HTTP 5xx error rate detected
+      description: "More than 5% of requests are failing in the last 5 minutes."
+
+  - alert: HighLatency
+    expr: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket[5m])) by (le)) > 2.0
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: P95 Latency is over 2 seconds
+      description: "API latency is degrading, currently above 2s for 5m."
+
+  - alert: KafkaConsumerLag
+    expr: sum by (consumergroup, topic) (kafka_consumergroup_lag) > 1000
+    for: 3m
+    labels:
+      severity: critical
+    annotations:
+      summary: Kafka consumer lag is too high
+      description: "Consumer group {{ $labels.consumergroup }} is lagging behind by over 1000 messages."
