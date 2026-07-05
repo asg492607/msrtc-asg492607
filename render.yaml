@@ -1,0 +1,38 @@
+services:
+  # ---------------------------------------------------------
+  # 1. API Gateway (Backend)
+  # ---------------------------------------------------------
+  - type: web
+    name: msrtc-api-gateway
+    env: node
+    region: singapore
+    plan: free
+    rootDir: backend/apps/api-gateway
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+
+  # ---------------------------------------------------------
+  # 2. Passenger Web (Frontend)
+  # ---------------------------------------------------------
+  - type: web
+    name: msrtc-passenger-web
+    env: node
+    region: singapore
+    plan: free
+    rootDir: frontend/apps/passenger-web
+    buildCommand: npm install && npm run build
+    startCommand: npm run start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      # Automatically link the API Gateway's public URL to the Frontend
+      - key: NEXT_PUBLIC_API_URL
+        fromService:
+          type: web
+          name: msrtc-api-gateway
+          envVarKey: RENDER_EXTERNAL_URL
