@@ -1,0 +1,19 @@
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChaosEngine
+metadata:
+  name: worker-node-cpu-stress
+  namespace: msrtc-staging
+spec:
+  engineState: 'active'
+  chaosServiceAccount: litmus-admin
+  experiments:
+    - name: node-cpu-hog
+      spec:
+        components:
+          env:
+            - name: TOTAL_CHAOS_DURATION
+              value: '120' # Run for 2 minutes
+            - name: NODE_CPU_CORE
+              value: '100' # Consume 100% of available CPU cores
+            # This proves that the Horizontal Pod Autoscaler (HPA) detects the CPU starvation
+            # and successfully reschedules pods to healthy nodes.

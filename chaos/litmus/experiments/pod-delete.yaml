@@ -1,0 +1,23 @@
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChaosEngine
+metadata:
+  name: booking-service-pod-delete
+  namespace: msrtc-staging
+spec:
+  engineState: 'active'
+  appinfo:
+    appns: 'msrtc-staging'
+    applabel: 'app=booking-service'
+    appkind: 'deployment'
+  chaosServiceAccount: litmus-admin
+  experiments:
+    - name: pod-delete
+      spec:
+        components:
+          env:
+            - name: TOTAL_CHAOS_DURATION
+              value: '60' # Run for 60 seconds
+            - name: CHAOS_INTERVAL
+              value: '10' # Kill a pod every 10 seconds
+            - name: FORCE
+              value: 'false'

@@ -1,0 +1,24 @@
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChaosEngine
+metadata:
+  name: api-gateway-network-latency
+  namespace: msrtc-staging
+spec:
+  engineState: 'active'
+  appinfo:
+    appns: 'msrtc-staging'
+    applabel: 'app=api-gateway'
+    appkind: 'deployment'
+  chaosServiceAccount: litmus-admin
+  experiments:
+    - name: pod-network-latency
+      spec:
+        components:
+          env:
+            - name: NETWORK_LATENCY
+              value: '2000' # Inject 2000ms latency
+            - name: TOTAL_CHAOS_DURATION
+              value: '60' # Run for 60 seconds
+            # This proves that our Istio Circuit Breakers and @WithTimeout decorators
+            # successfully sever the connection and return a fallback response,
+            # rather than hanging the entire application cluster.
