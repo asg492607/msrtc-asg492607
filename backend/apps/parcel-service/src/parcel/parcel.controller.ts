@@ -1,15 +1,21 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards, Request } from '@nestjs/common';
 import { ParcelService } from './parcel.service';
-import { ApiTags, ApiOperation } from '@nestjs/swagger';
+import { CreateParcelDto } from './dto/parcel.dto';
+import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
+import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 
-@ApiTags('Parcel')
-@Controller()
+@ApiTags('Parcel Booking (Customers)')
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
+@Controller('parcels')
 export class ParcelController {
-  constructor(private readonly service: ParcelService) {}
+  constructor(private readonly parcelService: ParcelService) {}
 
-  @Get()
-  @ApiOperation({ summary: 'Health check endpoint' })
-  getHello(): string {
-    return this.service.getHello();
+  @Post('book')
+  @ApiOperation({ summary: 'Book a new parcel for delivery' })
+  async book(@Request() req, @Body() dto: CreateParcelDto) {
+    // Override senderId to the authenticated user
+    dto.senderId = req.user.userId;
+    return this.parcelService.bookParcel(req.user.userId, dto);
   }
 }
