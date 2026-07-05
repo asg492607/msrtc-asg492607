@@ -1,0 +1,19 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: msrtc-global-routing
+  namespace: msrtc-prod
+spec:
+  hosts:
+  - "api.msrtc.gov.in"
+  gateways:
+  - msrtc-gateway
+  http:
+  - match:
+    - uri:
+        prefix: "/"
+    route:
+    - destination:
+        host: maintenance-page-service.msrtc-prod.svc.cluster.local
+        port:
+          number: 80
