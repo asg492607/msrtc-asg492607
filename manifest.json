@@ -9,7 +9,7 @@
   "icons": [
     {
       "src": "msrtc_new_logo.png",
-      "sizes": "192x192",
+      "sizes": "any",
       "type": "image/png"
     }
   ]
