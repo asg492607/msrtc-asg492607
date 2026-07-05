@@ -1,0 +1,33 @@
+extends: ["spectral:oas", "spectral:oas3"]
+rules:
+  # 1. Enforce camelCase for all JSON properties
+  camel-case-properties:
+    description: "Property names must be camelCase."
+    message: "{{property}} is not camelCase."
+    severity: error
+    given: "$..properties.*~"
+    then:
+      function: casing
+      functionOptions:
+        type: camel
+  
+  # 2. Prevent breaking changes by requiring versioning in the URL path
+  path-versioning:
+    description: "API paths must start with a version e.g. /v1/"
+    severity: error
+    given: "$.paths[*]~"
+    then:
+      function: pattern
+      functionOptions:
+        match: "^/v[1-9][0-9]*/.*"
+
+  # 3. Require standard HTTP Error definitions
+  require-error-responses:
+    description: "All operations must define HTTP 400 and 500 error responses."
+    severity: error
+    given: "$.paths.*[get,post,put,patch,delete]"
+    then:
+      - field: responses.400
+        function: truthy
+      - field: responses.500
+        function: truthy

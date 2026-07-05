@@ -1,0 +1,26 @@
+{
+  "consumer": { "name": "MSRTC-Frontend-Web" },
+  "provider": { "name": "Booking-Service" },
+  "interactions": [
+    {
+      "description": "a request to create a booking",
+      "request": {
+        "method": "POST",
+        "path": "/v1/bookings",
+        "headers": { "Content-Type": "application/json" },
+        "body": {
+          "routeId": "R123",
+          "seats": ["1A", "1B"]
+        }
+      },
+      "response": {
+        "status": 201,
+        "body": {
+          "bookingId": "uuid-v4",
+          "status": "CONFIRMED"
+        }
+      }
+    }
+  ],
+  "metadata": { "pactSpecification": { "version": "3.0.0" } }
+}
