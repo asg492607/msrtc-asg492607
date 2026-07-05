@@ -19,7 +19,8 @@ async function bootstrap() {
   SwaggerModule.setup('api/docs/gateway', app, document);
 
   // Gateway runs on 8080
-  await app.listen(8080);
-  console.log('MSRTC API Gateway is routing traffic on http://localhost:8080');
+  const port = process.env.PORT || 8080;
+  await app.listen(port, '0.0.0.0');
+  console.log(`MSRTC API Gateway is routing traffic on port ${port}`);
 }
 bootstrap();
