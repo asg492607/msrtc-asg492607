@@ -67,6 +67,15 @@ export const apiClient = {
       return { success: true, expiresAt: Date.now() + 10 * 60 * 1000 };
     }
   },
+
+  booking: {
+    createBooking: async (data: any) => {
+      console.log('Creating pending booking', data);
+      await new Promise(r => setTimeout(r, 1000));
+      // Simulate backend validation or success
+      return { success: true, bookingId: `BKG-${Math.floor(Math.random() * 1000000)}` };
+    }
+  },
   auth: {
     login: async (phone: string, otp: string) => {
       console.log('Verifying OTP', phone, otp);
