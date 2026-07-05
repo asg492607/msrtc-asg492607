@@ -1,16 +1,11 @@
+import { SearchForm } from '../../features/search/components/SearchForm';
+
 export default function Home() {
   return (
-    <div className="hero">
-      <div className="hero-content">
-        <h1>Your Journey Starts Here</h1>
-        <p>Premium transit across Maharashtra. Book your seat today.</p>
-        <div className="search-box">
-          <input type="text" placeholder="From (e.g., Mumbai)" />
-          <input type="text" placeholder="To (e.g., Pune)" />
-          <input type="date" />
-          <button className="btn-primary">Search Buses</button>
-        </div>
-      </div>
+    <div className="hero" style={{ minHeight: '80vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+      <h1 style={{ fontSize: '3rem', fontWeight: 'bold', marginBottom: '1rem' }}>Your Journey Starts Here</h1>
+      <p style={{ fontSize: '1.2rem', marginBottom: '2rem', color: '#555' }}>Premium transit across Maharashtra. Book your seat today.</p>
+      <SearchForm />
     </div>
   );
 }

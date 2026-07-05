@@ -1,5 +1,6 @@
 import './globals.css';
 import { Inter } from 'next/font/google';
+import Providers from '../providers/QueryProvider';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 
@@ -16,18 +17,21 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.variable}>
       <body>
-        <header className="header">
-          <div className="logo">MSRTC</div>
-          <nav>
-            <a href="/">Home</a>
-            <a href="/search">Book</a>
-            <a href="/login">Login</a>
-          </nav>
-        </header>
-        <main>{children}</main>
-        <footer>
-          <p>&copy; 2026 Maharashtra State Road Transport Corporation</p>
-        </footer>
+        <Providers>
+          <header className="header">
+            <div className="logo">MSRTC</div>
+            <nav>
+              <a href="/">Home</a>
+              <a href="/search">Book</a>
+              <a href="/profile">Profile</a>
+              <a href="/login">Login</a>
+            </nav>
+          </header>
+          <main>{children}</main>
+          <footer>
+            <p>&copy; 2026 Maharashtra State Road Transport Corporation</p>
+          </footer>
+        </Providers>
       </body>
     </html>
   );

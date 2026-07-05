@@ -11,9 +11,22 @@ export const apiClient = {
   },
 
   routes: {
-    search: async (from: string, to: string, date: string) => {
+    search: async (from: string, to: string, date: string): Promise<any[]> => {
       console.log('Searching routes', from, to, date, 'Headers:', apiClient.getHeaders());
-      return [];
+      // Simulate network delay
+      await new Promise(resolve => setTimeout(resolve, 800));
+      return [
+        {
+          id: 'TRIP-101', routeId: 'R-MUM-PUN', source: from, destination: to,
+          departureTime: '2026-07-10T08:00:00Z', arrivalTime: '2026-07-10T11:30:00Z', durationMinutes: 210,
+          busType: 'Shivneri', availableSeats: 12, baseFare: 550, liveStatus: 'ON_TIME'
+        },
+        {
+          id: 'TRIP-102', routeId: 'R-MUM-PUN', source: from, destination: to,
+          departureTime: '2026-07-10T09:15:00Z', arrivalTime: '2026-07-10T13:00:00Z', durationMinutes: 225,
+          busType: 'Shivshahi', availableSeats: 30, baseFare: 350, liveStatus: 'DELAYED'
+        }
+      ];
     }
   },
   
