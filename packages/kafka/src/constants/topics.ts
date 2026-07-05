@@ -1,0 +1,17 @@
+export const Topics = {
+  BOOKING: 'booking.events',
+  PAYMENT: 'payment.events',
+  SEAT: 'seat.events',
+  TICKET: 'ticket.events',
+  GPS: 'gps.events',
+  NOTIFICATION: 'notification.events',
+  COMPLAINT: 'complaint.events',
+  PASS: 'pass.events',
+  PARCEL: 'parcel.events',
+  CREW: 'crew.events',
+  DEPOT: 'depot.events',
+  MAINTENANCE: 'maintenance.events',
+  FINANCE: 'finance.events',
+  HQ: 'hq.events',
+  AUDIT: 'audit.events',
+};
