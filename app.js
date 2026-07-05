@@ -530,39 +530,57 @@ function togglePaymentInputs(val) {
   document.getElementById('cardInputContainer').style.display = val === 'card' ? 'block' : 'none';
 }
 
-function completeBooking(event) {
+async function completeBooking(event) {
   event.preventDefault();
-  const randomPnr = "PNR" + Math.floor(100000000 + Math.random() * 900000000);
+  
+  if (!userSession) {
+    showToast("Please login first to complete booking", "error");
+    return;
+  }
   
   let basePrice = selectedSeats.length * currentSelectedBus.baseFare;
   if (discountApplied) basePrice = Math.round(basePrice * 0.5);
   const total = basePrice + Math.round(basePrice * 0.05);
   
-  const newBooking = {
-    pnr: randomPnr,
+  const payload = {
+    mobile: userSession.mobile,
     from: currentSelectedBus.from,
     to: currentSelectedBus.to,
     busNo: currentSelectedBus.id,
     seats: [...selectedSeats],
     date: document.getElementById('searchDate').value,
-    fare: total,
-    status: "Active"
+    fare: total
   };
   
-  myBookings.unshift(newBooking);
-  
-  document.getElementById('ticketPnr').innerText = `PNR: ${randomPnr}`;
-  document.getElementById('tFrom').innerText = currentSelectedBus.from;
-  document.getElementById('tTo').innerText = currentSelectedBus.to;
-  document.getElementById('tBus').innerText = `${currentSelectedBus.id} (${currentSelectedBus.name})`;
-  document.getElementById('tSeats').innerText = selectedSeats.join(', ');
-  document.getElementById('tDate').innerText = newBooking.date;
-  document.getElementById('tFare').innerText = `₹${total}`;
-  
-  document.querySelectorAll('.booking-flow-step').forEach(step => step.style.display = 'none');
-  document.getElementById('booking-step-success').style.display = 'block';
-  document.getElementById('step-node-4').classList.add('done');
-  showToast("Booking completed successfully!", "success");
+  try {
+    const res = await fetch('/api/v1/bookings', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    
+    const data = await res.json();
+    if (data.success) {
+      const newBooking = data.booking;
+      
+      document.getElementById('ticketPnr').innerText = `PNR: ${newBooking.pnr}`;
+      document.getElementById('tFrom').innerText = newBooking.from;
+      document.getElementById('tTo').innerText = newBooking.to;
+      document.getElementById('tBus').innerText = `${newBooking.busNo} (${currentSelectedBus.name})`;
+      document.getElementById('tSeats').innerText = newBooking.seats.join(', ');
+      document.getElementById('tDate').innerText = newBooking.date;
+      document.getElementById('tFare').innerText = `₹${newBooking.fare}`;
+      
+      document.querySelectorAll('.booking-flow-step').forEach(step => step.style.display = 'none');
+      document.getElementById('booking-step-success').style.display = 'block';
+      document.getElementById('step-node-4').classList.add('done');
+      showToast("Booking completed successfully!", "success");
+    } else {
+      showToast(data.message || "Booking Failed", "error");
+    }
+  } catch (err) {
+    showToast("Server error during booking", "error");
+  }
 }
 
 function updateStepNodes(activeStepIndex) {
@@ -619,7 +637,7 @@ function toggleLoginMethod(val) {
   document.getElementById('otpInputContainer').style.display = 'none';
 }
 
-function handleAuthSubmit(event) {
+async function handleAuthSubmit(event) {
   event.preventDefault();
   const loginMethod = document.getElementById('loginTypeSelect').value;
   
@@ -633,20 +651,26 @@ function handleAuthSubmit(event) {
       showToast("OTP Verification Code Sent to Mobile", "success");
     } else {
       const otpCode = document.getElementById('authOtp').value;
-      if (otpCode === '1234') {
-        const mobile = document.getElementById('authMobile').value;
-        const isAdmin = (mobile === '9876543210');
+      const mobile = document.getElementById('authMobile').value;
+      
+      try {
+        const res = await fetch('/api/v1/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ method: 'otp', otp: otpCode, mobile })
+        });
         
-        userSession = {
-          mobile,
-          name: isAdmin ? "System Admin" : "Atharva K.",
-          role: isAdmin ? "admin" : "user"
-        };
-        updateAuthUI();
-        showSection(isAdmin ? 'admin' : 'dashboard');
-        showToast("Login Successful", "success");
-      } else {
-        showToast("Invalid OTP. Try 1234", "error");
+        const data = await res.json();
+        if (data.success) {
+          userSession = data.user;
+          updateAuthUI();
+          showSection(userSession.role === 'admin' ? 'admin' : 'dashboard');
+          showToast("Login Successful", "success");
+        } else {
+          showToast(data.message || "Login Failed", "error");
+        }
+      } catch (err) {
+        showToast("Server error during login", "error");
       }
     }
   } else {
@@ -654,34 +678,55 @@ function handleAuthSubmit(event) {
     const password = document.getElementById('authPassword').value;
     
     if (email && password.length >= 4) {
-      userSession = {
-        mobile: "9938210398",
-        name: "Atharva K.",
-        role: "user"
-      };
-      updateAuthUI();
-      showSection('dashboard');
-      showToast("Signed In via Email", "success");
+      try {
+        const res = await fetch('/api/v1/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ method: 'email', email, password })
+        });
+        
+        const data = await res.json();
+        if (data.success) {
+          userSession = data.user;
+          updateAuthUI();
+          showSection('dashboard');
+          showToast("Signed In via Email", "success");
+        } else {
+          showToast(data.message || "Login Failed", "error");
+        }
+      } catch (err) {
+        showToast("Server error during login", "error");
+      }
     } else {
       showToast("Verification Error", "error");
     }
   }
 }
 
-function handleRegistrationSubmit(event) {
+async function handleRegistrationSubmit(event) {
   event.preventDefault();
   const name = document.getElementById('regName').value;
   const mobile = document.getElementById('regMobile').value;
   
-  userSession = {
-    mobile,
-    name,
-    role: "user"
-  };
-  
-  showToast("Account created successfully", "success");
-  updateAuthUI();
-  showSection('dashboard');
+  try {
+    const res = await fetch('/api/v1/auth/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, mobile })
+    });
+    
+    const data = await res.json();
+    if (data.success) {
+      userSession = data.user;
+      showToast("Account created successfully", "success");
+      updateAuthUI();
+      showSection('dashboard');
+    } else {
+      showToast(data.message || "Registration Failed", "error");
+    }
+  } catch (err) {
+    showToast("Server error during registration", "error");
+  }
 }
 
 function updateAuthUI() {
@@ -712,10 +757,7 @@ function switchDashboardTab(tabName, el) {
   document.getElementById(`dash-${tabName}`).style.display = 'block';
   
   el.parentElement.querySelectorAll('.panel-menu-item').forEach(btn => btn.classList.remove('active'));
-  el.classList.add('active');
-}
-
-function renderDashboard() {
+  el.classasync function renderDashboard() {
   if (!userSession) {
     showSection('login');
     alert("Authentication required. Please sign in first.");
@@ -724,78 +766,92 @@ function renderDashboard() {
   
   document.getElementById('dashboardGreeting').innerText = `Namaskar, ${userSession.name} (${userSession.mobile})`;
   
-  const ticketCont = document.getElementById('dashboardTicketsList');
-  ticketCont.innerHTML = myBookings.map(t => `
-    <div class="bus-card">
-      <div class="bus-info">
-        <h3>${t.from} ➔ ${t.to}</h3>
-        <p style="color:var(--text-secondary); font-size:0.9rem;">Journey Date: ${t.date} | Seats: ${t.seats.join(', ')}</p>
-        <span class="bus-tag">${t.pnr}</span>
-      </div>
-      <div>
-        <small style="color:var(--text-secondary);">Bus ID</small>
-        <h4>${t.busNo}</h4>
-      </div>
-      <div>
-        <small style="color:var(--text-secondary);">Total Paid</small>
-        <h4>₹${t.fare}</h4>
-      </div>
-      <div>
-        <span style="background:rgba(16,185,129,0.1); color:var(--seat-avail); padding:0.25rem 0.6rem; border-radius:6px; font-weight:bold;">${t.status}</span>
-        ${t.status === 'Active' ? `<button class="btn-secondary" style="margin-top:0.5rem; display:block; width:100%; font-size:0.8rem; padding:0.3rem;" onclick="cancelTicketSim('${t.pnr}')">Cancel</button>` : ''}
-      </div>
-    </div>
-  `).join('');
+  try {
+    const res = await fetch(`/api/v1/users/${userSession.mobile}/dashboard`);
+    const data = await res.json();
+    
+    const dbBookings = data.bookings || [];
+    const dbPasses = data.passes || [];
+    const dbComplaints = data.complaints || [];
 
-  const passCont = document.getElementById('dashboardPassesList');
-  passCont.innerHTML = myPasses.map(p => `
-    <div class="bus-card">
-      <div class="bus-info">
-        <h3>${p.type}</h3>
-        <p style="color:var(--text-secondary); font-size:0.85rem;">Holder: ${p.name} | Verified Proof: ${p.proof}</p>
-        <span class="bus-tag">${p.id}</span>
+    const ticketCont = document.getElementById('dashboardTicketsList');
+    ticketCont.innerHTML = dbBookings.map(t => `
+      <div class="bus-card">
+        <div class="bus-info">
+          <h3>${t.from} ➔ ${t.to}</h3>
+          <p style="color:var(--text-secondary); font-size:0.9rem;">Journey Date: ${t.date} | Seats: ${t.seats.join(', ')}</p>
+          <span class="bus-tag">${t.pnr}</span>
+        </div>
+        <div>
+          <small style="color:var(--text-secondary);">Bus ID</small>
+          <h4>${t.busNo}</h4>
+        </div>
+        <div>
+          <small style="color:var(--text-secondary);">Total Paid</small>
+          <h4>₹${t.fare}</h4>
+        </div>
+        <div>
+          <span style="background:rgba(16,185,129,0.1); color:var(--seat-avail); padding:0.25rem 0.6rem; border-radius:6px; font-weight:bold;">${t.status}</span>
+          ${t.status === 'Active' ? `<button class="btn-secondary" style="margin-top:0.5rem; display:block; width:100%; font-size:0.8rem; padding:0.3rem;" onclick="cancelTicketSim('${t.pnr}')">Cancel</button>` : ''}
+        </div>
       </div>
-      <div class="qr-placeholder" style="margin:0;">
-        <svg width="60" height="60" viewBox="0 0 100 100" fill="black">
-          <rect x="0" y="0" width="30" height="30"/>
-          <rect x="70" y="0" width="30" height="30"/>
-          <rect x="0" y="70" width="30" height="30"/>
-          <rect x="40" y="40" width="20" height="20"/>
-        </svg>
-      </div>
-      <div style="text-align:right;">
-        <span style="background:rgba(16,185,129,0.1); color:var(--seat-avail); padding:0.25rem 0.6rem; border-radius:6px; font-weight:bold;">${p.status}</span>
-      </div>
-    </div>
-  `).join('');
+    `).join('');
 
-  const compCont = document.getElementById('dashboardComplaintsList');
-  compCont.innerHTML = myComplaints.map(c => `
-    <div class="bus-card" style="border-left: 4px solid var(--primary);">
-      <div class="bus-info">
-        <h3>${c.category}</h3>
-        <p style="color:var(--text-secondary); font-size:0.85rem;">${c.desc}</p>
-        <span class="bus-tag">${c.id}</span>
+    const passCont = document.getElementById('dashboardPassesList');
+    passCont.innerHTML = dbPasses.map(p => `
+      <div class="bus-card">
+        <div class="bus-info">
+          <h3>${p.type}</h3>
+          <p style="color:var(--text-secondary); font-size:0.85rem;">Holder: ${p.name} | Verified Proof: ${p.proof}</p>
+          <span class="bus-tag">${p.id}</span>
+        </div>
+        <div class="qr-placeholder" style="margin:0;">
+          <svg width="60" height="60" viewBox="0 0 100 100" fill="black">
+            <rect x="0" y="0" width="30" height="30"/>
+            <rect x="70" y="0" width="30" height="30"/>
+            <rect x="0" y="70" width="30" height="30"/>
+            <rect x="40" y="40" width="20" height="20"/>
+          </svg>
+        </div>
+        <div style="text-align:right;">
+          <span style="background:rgba(16,185,129,0.1); color:var(--seat-avail); padding:0.25rem 0.6rem; border-radius:6px; font-weight:bold;">${p.status}</span>
+        </div>
       </div>
-      <div>
-        <small style="color:var(--text-secondary);">Target Vehicle</small>
-        <p style="font-weight:bold;">${c.busNo || 'N/A'}</p>
-      </div>
-      <div style="text-align:right;">
-        <span style="background:rgba(251,191,36,0.1); color:var(--primary); padding:0.25rem 0.6rem; border-radius:6px; font-weight:bold;">${c.status}</span>
-      </div>
-    </div>
-  `).join('');
+    `).join('');
 
-  const favCont = document.getElementById('dashboardFavoritesList');
-  favCont.innerHTML = favoriteRoutes.map(route => `
-    <div class="bus-card" style="padding:1rem;">
-      <div>
-        <strong>${route.from} to ${route.to}</strong>
+    const compCont = document.getElementById('dashboardComplaintsList');
+    compCont.innerHTML = dbComplaints.map(c => `
+      <div class="bus-card" style="border-left: 4px solid var(--primary);">
+        <div class="bus-info">
+          <h3>${c.category}</h3>
+          <p style="color:var(--text-secondary); font-size:0.85rem;">${c.desc}</p>
+          <span class="bus-tag">${c.id}</span>
+        </div>
+        <div>
+          <small style="color:var(--text-secondary);">Target Vehicle</small>
+          <p style="font-weight:bold;">${c.busNo || 'N/A'}</p>
+        </div>
+        <div style="text-align:right;">
+          <span style="background:rgba(251,191,36,0.1); color:var(--primary); padding:0.25rem 0.6rem; border-radius:6px; font-weight:bold;">${c.status}</span>
+        </div>
       </div>
-      <div style="text-align:right;">
-        <button class="btn-primary" style="font-size:0.8rem; padding:0.4rem 0.8rem;" onclick="bookPopularRoute('${route.from}', '${route.to}')">Book</button>
+    `).join('');
+
+    const favCont = document.getElementById('dashboardFavoritesList');
+    favCont.innerHTML = favoriteRoutes.map(route => `
+      <div class="bus-card" style="padding:1rem;">
+        <div>
+          <strong>${route.from} to ${route.to}</strong>
+        </div>
+        <div style="text-align:right;">
+          <button class="btn-primary" style="font-size:0.8rem; padding:0.4rem 0.8rem;" onclick="bookPopularRoute('${route.from}', '${route.to}')">Book</button>
+        </div>
       </div>
+    `).join('');
+  } catch (err) {
+    showToast("Failed to fetch dashboard data", "error");
+  }
+}
     </div>
   `).join('');
 
