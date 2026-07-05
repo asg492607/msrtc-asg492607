@@ -1,0 +1,138 @@
+:root {
+  --color-primary: hsl(210, 100%, 50%); /* Vibrant Blue */
+  --color-primary-dark: hsl(210, 100%, 40%);
+  --color-background: hsl(0, 0%, 98%);
+  --color-surface: hsl(0, 0%, 100%);
+  --color-text: hsl(220, 20%, 20%);
+  --color-text-light: hsl(220, 20%, 40%);
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --transition-speed: 0.2s;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  background-color: var(--color-background);
+  color: var(--color-text);
+  line-height: 1.5;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Header */
+.header {
+  background-color: var(--color-surface);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo {
+  font-weight: 800;
+  font-size: 1.5rem;
+  color: var(--color-primary);
+  letter-spacing: -0.5px;
+}
+
+.header nav a {
+  margin-left: 2rem;
+  text-decoration: none;
+  color: var(--color-text);
+  font-weight: 500;
+  transition: color var(--transition-speed);
+}
+
+.header nav a:hover {
+  color: var(--color-primary);
+}
+
+/* Main Content */
+main {
+  flex: 1;
+}
+
+/* Hero Section */
+.hero {
+  background: linear-gradient(135deg, hsl(210, 100%, 95%), hsl(210, 50%, 90%));
+  padding: 6rem 2rem;
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: 3.5rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  letter-spacing: -1px;
+  color: var(--color-text);
+}
+
+.hero p {
+  font-size: 1.2rem;
+  color: var(--color-text-light);
+  margin-bottom: 3rem;
+}
+
+/* Search Box */
+.search-box {
+  background: var(--color-surface);
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  display: inline-flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.search-box input {
+  padding: 0.75rem 1rem;
+  border: 1px solid hsl(0, 0%, 80%);
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: inherit;
+  outline: none;
+  transition: border-color var(--transition-speed);
+}
+
+.search-box input:focus {
+  border-color: var(--color-primary);
+}
+
+/* Buttons */
+.btn-primary {
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color var(--transition-speed), transform var(--transition-speed);
+}
+
+.btn-primary:hover {
+  background-color: var(--color-primary-dark);
+  transform: translateY(-1px);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 2rem;
+  background-color: var(--color-surface);
+  color: var(--color-text-light);
+  font-size: 0.9rem;
+  border-top: 1px solid hsl(0, 0%, 90%);
+}
