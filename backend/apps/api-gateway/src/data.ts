@@ -1,5 +1,5 @@
-export // Expanded MSRTC Database, Information pages, and Translations
-const MSRTC_DATA = {
+// Expanded MSRTC Database, Information pages, and Translations
+export const MSRTC_DATA = {
   locations: [
     "Pune",
     "Mumbai",
