@@ -8,6 +8,7 @@ export function SeatMap({ layout, selectedSeatIds, onToggleSeat }: { layout: Sea
     let bg = '#fff';
     let border = '1px solid #ccc';
     let cursor = 'pointer';
+    let color = 'inherit';
 
     if (isSelected) {
       bg = 'var(--color-primary)'; color = 'white'; border = '1px solid var(--color-primary-dark)';
