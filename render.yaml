@@ -3,7 +3,7 @@ services:
   # 1. API Gateway (Backend serving static frontend)
   # ---------------------------------------------------------
   - type: web
-    name: msrtc-api-gateway
+    name: msrtc-passenger-web
     env: node
     region: singapore
     plan: free
