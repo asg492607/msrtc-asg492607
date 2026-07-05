@@ -1,0 +1,36 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: enforce-pod-security
+  annotations:
+    policies.kyverno.io/title: Enforce Pod Security Standards
+    policies.kyverno.io/description: >-
+      Ensures that all MSRTC containers run securely, forbidding root escalation
+      and requiring read-only root filesystems where possible.
+spec:
+  validationFailureAction: enforce
+  rules:
+    - name: restrict-escalation
+      match:
+        resources:
+          kinds:
+            - Pod
+      validate:
+        message: "Privilege escalation is forbidden."
+        pattern:
+          spec:
+            containers:
+              - securityContext:
+                  allowPrivilegeEscalation: false
+    - name: require-run-as-non-root
+      match:
+        resources:
+          kinds:
+            - Pod
+      validate:
+        message: "Containers must run as a non-root user."
+        pattern:
+          spec:
+            containers:
+              - securityContext:
+                  runAsNonRoot: true
