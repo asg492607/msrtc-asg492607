@@ -26,4 +26,6 @@ export interface ValidationResult {
   passengerName?: string;
   seatNumber?: string;
   message: string;
+  passId?: string;
+  validUntil?: string;
 }

@@ -63,6 +63,20 @@ export const conductorApi = {
   },
 
   validate: {
+    pass: async (passId: string) => {
+      await new Promise(r => setTimeout(r, 500));
+      if (passId.startsWith('PASS')) {
+        return {
+          valid: true,
+          passId,
+          passengerName: 'Suresh Pawar',
+          validUntil: '2026-07-31',
+          message: 'Monthly Pass valid — Board allowed'
+        };
+      }
+      return { valid: false, message: 'Invalid or expired pass' };
+    },
+
     ticket: async (qrData: string) => {
       await new Promise(r => setTimeout(r, 600));
       // Simulate validation — any valid-looking PNR succeeds
