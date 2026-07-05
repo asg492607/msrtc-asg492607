@@ -76,6 +76,39 @@ export const apiClient = {
       return { success: true, bookingId: `BKG-${Math.floor(Math.random() * 1000000)}` };
     }
   },
+
+  payment: {
+    initiate: async (bookingId: string, method: string) => {
+      console.log('Initiating payment for', bookingId, method);
+      await new Promise(r => setTimeout(r, 500));
+      return { paymentIntentId: `PI-${Date.now()}` };
+    },
+    // Simulating webhook polling
+    getStatus: async (bookingId: string) => {
+      console.log('Polling payment status for', bookingId);
+      // In a real app, this queries the backend which listens to razorpay webhooks
+      // For this demo, we use localStorage to mock backend state changes made by the simulator
+      const status = localStorage.getItem(`mock_payment_${bookingId}`);
+      if (status === 'SUCCESS') return { status: 'CONFIRMED', pnr: `PNR${Math.floor(Math.random()*100000)}` };
+      if (status === 'FAILED') return { status: 'FAILED' };
+      return { status: 'PENDING' };
+    }
+  },
+  ticket: {
+    get: async (pnr: string) => {
+      console.log('Fetching ticket', pnr);
+      await new Promise(r => setTimeout(r, 500));
+      return {
+        pnr,
+        status: 'CONFIRMED',
+        source: 'Mumbai', destination: 'Pune',
+        departureTime: '2026-07-10T08:00:00Z',
+        busType: 'Shivneri',
+        seats: ['1', '2'],
+        passengers: [{ name: 'John Doe', age: 30, gender: 'MALE' }]
+      };
+    }
+  },
   auth: {
     login: async (phone: string, otp: string) => {
       console.log('Verifying OTP', phone, otp);
