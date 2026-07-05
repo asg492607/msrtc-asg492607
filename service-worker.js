@@ -1,9 +1,9 @@
-const CACHE_NAME = 'msrtc-cache-v2';
+const CACHE_NAME = 'msrtc-cache-v3';
 const urlsToCache = [
   '/',
   '/index.html',
-  '/style.css',
-  '/app.js',
+  '/style.v2.css',
+  '/app.v2.js',
   '/msrtc_new_logo.png',
   '/offline.html'
 ];
