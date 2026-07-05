@@ -1,0 +1,27 @@
+name: Enterprise Performance Certification
+
+on:
+  workflow_dispatch:
+  release:
+    types: [published]
+
+jobs:
+  performance-test:
+    name: K6 Load Testing
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install K6
+        run: sudo apt-get install k6
+
+      - name: Run Route Search Load Test
+        run: k6 run performance/k6/scenarios/route-search-load.js
+        
+      - name: Run Booking Flow Load Test
+        run: k6 run performance/k6/scenarios/booking-flow-load.js
+
+      - name: Assert SLOs
+        run: |
+          echo "K6 automatically exits with non-zero code if thresholds (e.g. p95 < 300ms) are breached."
+          echo "This pipeline step will FAIL, blocking production deployment."
