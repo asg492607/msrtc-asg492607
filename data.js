@@ -1,10 +1,11 @@
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.getRegistrations().then(function(registrations) {
-    for (let registration of registrations) {
-      registration.unregister();
+    if (registrations.length > 0) {
+      let unregisters = registrations.map(reg => reg.unregister());
+      Promise.all(unregisters).then(() => {
+        window.location.reload(true);
+      });
     }
-  }).then(() => {
-    window.location.reload(true);
   });
 }
 window.MSRTC_DATA = {
