@@ -1,0 +1,40 @@
+name: MSRTC CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Run Linter
+      run: npx turbo run lint
+
+    - name: Run Unit Tests
+      run: npx turbo run test
+
+  docker-build:
+    needs: lint-and-test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+    - uses: actions/checkout@v3
+    
+    # In a real pipeline, we would matrix this across all 20 services
+    - name: Build API Gateway Docker Image
+      run: |
+        docker build --build-arg SERVICE=api-gateway -t msrtc/api-gateway:${{ github.sha }} .
+        # docker push msrtc/api-gateway:${{ github.sha }}
