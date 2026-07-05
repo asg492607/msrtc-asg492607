@@ -64,7 +64,7 @@ export default function SeatSelectionPage() {
       )}
 
       <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '2rem', alignItems: 'start' }}>
-        <SeatMap layout={layout} selectedSeatIds={selectedSeats.map(s => s.id)} onToggleSeat={handleToggleSeat} />
+        <SeatMap layout={layout as any} selectedSeatIds={selectedSeats.map(s => s.id)} onToggleSeat={handleToggleSeat} />
         <FareSummary selectedSeats={selectedSeats} onProceed={handleProceed} isLocking={lockMutation.isPending} />
       </div>
     </div>
