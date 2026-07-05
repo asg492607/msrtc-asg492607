@@ -1,0 +1,18 @@
+export const ServiceRegistry = {
+  'auth': 'http://localhost:3001',
+  'booking': 'http://localhost:3002',
+  'seat': 'http://localhost:3003',
+  'route': 'http://localhost:3004',
+  'payment': 'http://localhost:3005',
+  'ticket': 'http://localhost:3006',
+  'gps': 'http://localhost:3007',
+  'notification': 'http://localhost:3008',
+  'complaint': 'http://localhost:3009',
+  'pass': 'http://localhost:3010',
+  'parcel': 'http://localhost:3011',
+  'crew': 'http://localhost:3014',
+  'depot': 'http://localhost:3015',
+  'maintenance': 'http://localhost:3016',
+  'finance': 'http://localhost:3017',
+  'hq': 'http://localhost:3018',
+};
