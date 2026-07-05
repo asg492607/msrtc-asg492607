@@ -3,10 +3,11 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "nest build",
-    "start": "nest start",
-    "start:dev": "nest start --watch",
-    "start:prod": "node dist/main"
+    "build": "npx nest build",
+    "postinstall": "npm run build",
+    "start": "node dist/main.js",
+    "start:dev": "npx nest start --watch",
+    "start:prod": "node dist/main.js"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
@@ -19,11 +20,11 @@
     "class-transformer": "^0.5.1",
     "opossum": "^7.1.0",
     "@nestjs/throttler": "^5.0.0",
-    "cache-manager": "^5.2.3"
+    "cache-manager": "^5.2.3",
+    "@nestjs/cli": "^10.0.0",
+    "typescript": "^5.0.0"
   },
   "devDependencies": {
-    "@nestjs/cli": "^10.0.0",
-    "typescript": "^5.0.0",
     "@types/opossum": "^6.2.1"
   }
 }
