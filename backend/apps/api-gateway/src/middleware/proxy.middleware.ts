@@ -20,7 +20,7 @@ export class ProxyMiddleware implements NestMiddleware {
             [`^/api/${serviceName}`]: '/api/v1', // Assuming microservices use /api/v1
           },
         });
-        return proxy(req, res, next);
+        return (proxy as any)(req, res, next);
       }
     }
     

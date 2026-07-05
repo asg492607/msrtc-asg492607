@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
-import { ServiceRegistry } from './service-registry';
+import { ServiceRegistry } from '../service-registry';
 import { firstValueFrom } from 'rxjs';
 
 @Injectable()

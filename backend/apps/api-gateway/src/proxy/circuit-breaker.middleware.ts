@@ -51,7 +51,7 @@ export class CircuitBreakerProxyMiddleware implements NestMiddleware {
           return new Promise((resolve, reject) => {
             // http-proxy-middleware acts on the response stream directly
             // For a robust breaker, we listen to proxy events
-            proxy(req, res, (err: any) => {
+            (proxy as any)(req, res, (err: any) => {
                if (err) return reject(err);
                resolve(true);
             });
