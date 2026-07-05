@@ -13,6 +13,8 @@
     "@nestjs/swagger": "^7.0.0",
     "@msrtc/database": "workspace:*",
     "class-validator": "^0.14.0",
-    "class-transformer": "^0.5.1"
+    "class-transformer": "^0.5.1",
+    "@msrtc/kafka": "workspace:*",
+    "@msrtc/redis": "workspace:*"
   }
 }

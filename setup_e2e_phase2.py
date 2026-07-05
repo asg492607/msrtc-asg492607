@@ -1,4 +1,9 @@
-import { Injectable, OnModuleInit } from '@nestjs/common';
+import os
+
+base_dir = r"C:\Users\Atharva\OneDrive\Desktop\msrtc\backend\apps"
+
+# 1. Booking Service (Consume Payment, Publish Confirmed)
+booking_svc = """import { Injectable, OnModuleInit } from '@nestjs/common';
 import { EventBusService, ConsumerService, Topics, EventEnvelope } from '@msrtc/kafka';
 import { LockService, CacheKeys } from '@msrtc/redis';
 
@@ -52,3 +57,42 @@ export class BookingService implements OnModuleInit {
     await this.lockService.release(key, 'tok-abc');
   }
 }
+"""
+with open(os.path.join(base_dir, "booking-service/src/booking/booking.service.ts"), "w", encoding="utf-8") as f: f.write(booking_svc)
+
+
+# 2. Ticket Service (Consume Booking Confirmed)
+ticket_svc = """import { Injectable, OnModuleInit } from '@nestjs/common';
+import { EventBusService, ConsumerService, Topics, EventEnvelope } from '@msrtc/kafka';
+
+@Injectable()
+export class TicketService implements OnModuleInit {
+  constructor(
+    private eventBus: EventBusService,
+    private consumer: ConsumerService
+  ) {}
+
+  onModuleInit() {
+    this.consumer.handleEvent(Topics.BOOKING, null as any, async (envelope: EventEnvelope) => {
+      if (envelope.payload.type === 'booking.confirmed') {
+        await this.generateTicket(envelope.payload);
+      }
+    });
+  }
+
+  async generateTicket(bookingData: any) {
+    console.log(`Generating QR and Ticket for Booking: ${bookingData.bookingId}`);
+    
+    // Publish Ticket Generated Event
+    await this.eventBus.publish(Topics.TICKET, {
+      type: 'ticket.generated',
+      ticketId: 'TKT-' + bookingData.bookingId,
+      passenger: bookingData.passenger,
+      // ...
+    });
+  }
+}
+"""
+with open(os.path.join(base_dir, "ticket-service/src/ticket/ticket.service.ts"), "w", encoding="utf-8") as f: f.write(ticket_svc)
+
+print("E2E Phase 2 Orchestration Scaffolded (Booking Consumer, Ticket Consumer)")

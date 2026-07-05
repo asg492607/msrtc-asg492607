@@ -11,6 +11,8 @@
     "@nestjs/common": "^10.0.0",
     "@nestjs/core": "^10.0.0",
     "@nestjs/swagger": "^7.0.0",
-    "@msrtc/database": "workspace:*"
+    "@msrtc/database": "workspace:*",
+    "@msrtc/kafka": "workspace:*",
+    "@msrtc/redis": "workspace:*"
   }
 }
