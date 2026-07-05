@@ -1,4 +1,5 @@
 'use client';
+import { Suspense } from 'react';
 import { useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useSeatLayout } from '../../../features/seats/hooks/useSeatLayout';
@@ -8,7 +9,7 @@ import { FareSummary } from '../../../features/seats/components/FareSummary';
 import { Timer } from '../../../features/seats/components/Timer';
 import { Seat } from '../../../features/seats/types';
 
-export default function SeatSelectionPage() {
+function SeatSelectionPageContent() {
   const searchParams = useSearchParams();
   const tripId = searchParams.get('tripId') || '';
   const router = useRouter();
@@ -68,5 +69,13 @@ export default function SeatSelectionPage() {
         <FareSummary selectedSeats={selectedSeats} onProceed={handleProceed} isLocking={lockMutation.isPending} />
       </div>
     </div>
+  );
+}
+
+export default function SeatSelectionPage() {
+  return (
+    <Suspense fallback={<div style={{ padding: '2rem' }}>Loading seat selection...</div>}>
+      <SeatSelectionPageContent />
+    </Suspense>
   );
 }

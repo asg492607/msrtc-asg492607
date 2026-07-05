@@ -1,9 +1,10 @@
 'use client';
+import { Suspense } from 'react';
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { apiClient } from '../../lib/api/client';
 
-export default function TrackingPage() {
+function TrackingPageContent() {
   const params = useSearchParams();
   const tripId = params.get('tripId') || 'TRIP-MOCK-001';
   const [pos, setPos] = useState<any>(null);
@@ -75,5 +76,13 @@ export default function TrackingPage() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function TrackingPage() {
+  return (
+    <Suspense fallback={<div style={{ padding: '2rem' }}>Loading tracking data...</div>}>
+      <TrackingPageContent />
+    </Suspense>
   );
 }

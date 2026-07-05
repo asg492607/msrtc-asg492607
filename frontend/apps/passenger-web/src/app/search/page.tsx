@@ -1,10 +1,11 @@
 'use client';
+import { Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { SearchForm } from '../../features/search/components/SearchForm';
 import { useRouteSearch } from '../../features/search/api/useRouteSearch';
 import { TripCard } from '../../features/search/components/TripCard';
 
-export default function SearchPage() {
+function SearchPageContent() {
   const searchParams = useSearchParams();
   const source = searchParams.get('source') || '';
   const destination = searchParams.get('destination') || '';
@@ -30,5 +31,13 @@ export default function SearchPage() {
         <TripCard key={trip.id} trip={trip} />
       ))}
     </div>
+  );
+}
+
+export default function SearchPage() {
+  return (
+    <Suspense fallback={<div style={{ padding: '2rem' }}>Loading search...</div>}>
+      <SearchPageContent />
+    </Suspense>
   );
 }

@@ -1,4 +1,5 @@
 'use client';
+import { Suspense } from 'react';
 import { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { PassengerForm } from '../../../features/booking/components/PassengerForm';
@@ -9,7 +10,7 @@ import { PassengerInput, ContactDetailsInput } from '../../../features/booking/t
 import { validatePassenger, validateContact } from '../../../features/booking/schemas/validation';
 import { Timer } from '../../../features/seats/components/Timer';
 
-export default function PassengerDetailsPage() {
+function PassengerDetailsPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const tripId = searchParams.get('tripId') || 'TRIP-MOCK';
@@ -82,5 +83,13 @@ export default function PassengerDetailsPage() {
         />
       </div>
     </div>
+  );
+}
+
+export default function PassengerDetailsPage() {
+  return (
+    <Suspense fallback={<div style={{ padding: '2rem' }}>Loading passenger details...</div>}>
+      <PassengerDetailsPageContent />
+    </Suspense>
   );
 }

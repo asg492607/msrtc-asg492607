@@ -1,10 +1,11 @@
 'use client';
+import { Suspense } from 'react';
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { PaymentGatewaySimulator } from '../../../features/payment/components/PaymentGatewaySimulator';
 import { usePaymentStatus } from '../../../features/payment/hooks/usePaymentStatus';
 
-export default function PaymentPage() {
+function PaymentPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const bookingId = searchParams.get('bookingId') || '';
@@ -54,5 +55,13 @@ export default function PaymentPage() {
 
       {showGateway && <PaymentGatewaySimulator bookingId={bookingId} onCancel={() => setShowGateway(false)} />}
     </div>
+  );
+}
+
+export default function PaymentPage() {
+  return (
+    <Suspense fallback={<div style={{ padding: '2rem' }}>Loading payment details...</div>}>
+      <PaymentPageContent />
+    </Suspense>
   );
 }
