@@ -1,0 +1,17 @@
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: booking-service-auth
+  namespace: msrtc-prod
+spec:
+  selector:
+    matchLabels:
+      app: booking-service
+  action: ALLOW
+  rules:
+  - from:
+    - source:
+        principals: ["cluster.local/ns/msrtc-prod/sa/api-gateway"]
+    to:
+    - operation:
+        methods: ["GET", "POST"]
