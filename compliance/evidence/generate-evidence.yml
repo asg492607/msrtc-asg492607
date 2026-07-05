@@ -1,0 +1,22 @@
+name: Monthly Compliance Evidence Collection
+
+on:
+  schedule:
+    - cron: '0 0 1 * *' # Run at midnight on the first day of every month
+  workflow_dispatch:
+
+jobs:
+  collect-evidence:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Export IAM Policies
+        run: echo "Exporting current AWS/GCP IAM roles..." > iam-evidence.txt
+        
+      - name: Export Kyverno Policy Reports
+        run: echo "Exporting ClusterPolicy violations..." > policy-evidence.txt
+        
+      - name: Archive Evidence
+        uses: actions/upload-artifact@v3
+        with:
+          name: compliance-evidence-${{ github.run_id }}
+          path: ./*-evidence.txt

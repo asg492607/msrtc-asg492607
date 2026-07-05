@@ -1,0 +1,18 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: require-mtls-injection
+spec:
+  validationFailureAction: enforce
+  rules:
+  - name: check-istio-injection
+    match:
+      resources:
+        kinds:
+        - Namespace
+    validate:
+      message: "All namespaces must have istio-injection=enabled for mTLS."
+      pattern:
+        metadata:
+          labels:
+            istio-injection: enabled
