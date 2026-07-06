@@ -1,7 +1,15 @@
 // MSRTC State and Logic Engine
 let currentLang = 'en';
 let fontSizeState = 2; 
-let userSession = null; 
+let userSession = null;
+try {
+  const savedSession = localStorage.getItem('msrtc_session');
+  if (savedSession) {
+    userSession = JSON.parse(savedSession);
+  }
+} catch (e) {
+  console.error('Failed to parse session from localStorage', e);
+}
 let activeSection = 'home';
 let currentSearchBuses = [];
 let currentSelectedBus = null;
@@ -19,7 +27,12 @@ window.addEventListener('DOMContentLoaded', async () => {
     const res = await fetch('/api/v1/data/all');
     MSRTC_DATA = await res.json();
     
+    // Initialize UI
     renderAnnouncements();
+    updateAuthUI();
+    if (userSession) {
+      // If user is already logged in, they can stay on the current section or go to dashboard
+    }
     renderNews();
     renderCarouselRoute();
     renderAboutSection();
@@ -650,6 +663,7 @@ async function handleAuthSubmit(event) {
         const data = await res.json();
         if (data.success) {
           userSession = data.user;
+          localStorage.setItem('msrtc_session', JSON.stringify(userSession));
           updateAuthUI();
           showSection(userSession.role === 'admin' ? 'admin' : 'dashboard');
           showToast("Login Successful", "success");
@@ -675,6 +689,7 @@ async function handleAuthSubmit(event) {
         const data = await res.json();
         if (data.success) {
           userSession = data.user;
+          localStorage.setItem('msrtc_session', JSON.stringify(userSession));
           updateAuthUI();
           showSection('dashboard');
           showToast("Signed In via Email", "success");
@@ -701,11 +716,11 @@ async function handleRegistrationSubmit(event) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, mobile })
     });
-    
-    const data = await res.json();
-    if (data.success) {
-      userSession = data.user;
-      showToast("Account created successfully", "success");
+        const data = await res.json();
+        if (data.success) {
+          userSession = data.user;
+          localStorage.setItem('msrtc_session', JSON.stringify(userSession));
+          showToast("Account created successfully", "success");
       updateAuthUI();
       showSection('dashboard');
     } else {
@@ -733,6 +748,7 @@ function updateAuthUI() {
 
 function handleLogout() {
   userSession = null;
+  localStorage.removeItem('msrtc_session');
   updateAuthUI();
   showSection('home');
   showToast("Logged Out Successfully", "success");
@@ -873,18 +889,35 @@ function showPassApplicationForm() {
   document.getElementById('passAppFormContainer').style.display = 'block';
 }
 
-function submitPassApplication(event) {
+async function submitPassApplication(event) {
   event.preventDefault();
+  if (!userSession) return showToast("Please login first", "error");
+  
   const name = document.getElementById('passName').value;
   const type = document.getElementById('passType').value;
   const proof = document.getElementById('passIdProof').value;
-  const newPassId = "PASS-S" + Math.floor(100 + Math.random() * 900);
   
-  myPasses.push({ id: newPassId, name, type, proof: `Aadhaar: ${proof}`, status: "Approved" });
-  document.getElementById('passAppFormContainer').style.display = 'none';
-  document.getElementById('passAppForm').reset();
-  renderDashboard();
-  showToast("New smart pass issued", "success");
+  try {
+    const res = await fetch('/api/v1/passes', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        mobile: userSession.mobile,
+        passType: type,
+        duration: "1 Month",
+        startFrom: new Date().toISOString().split('T')[0]
+      })
+    });
+    
+    if (res.ok) {
+      document.getElementById('passAppFormContainer').style.display = 'none';
+      document.getElementById('passAppForm').reset();
+      renderDashboard();
+      showToast("New smart pass issued", "success");
+    }
+  } catch (e) {
+    showToast("Failed to apply for pass", "error");
+  }
 }
 
 // Saved Passengers Actions
@@ -916,18 +949,35 @@ function showComplaintForm() {
   document.getElementById('complaintFormContainer').style.display = 'block';
 }
 
-function submitGrievance(event) {
+async function submitGrievance(event) {
   event.preventDefault();
+  if (!userSession) return showToast("Please login first", "error");
+  
   const category = document.getElementById('compCategory').value;
   const busNo = document.getElementById('compBusNo').value;
   const desc = document.getElementById('compDesc').value;
-  const compId = "COMP-" + Math.floor(100 + Math.random() * 900);
   
-  myComplaints.push({ id: compId, category, busNo, desc, status: "Pending" });
-  document.getElementById('complaintFormContainer').style.display = 'none';
-  document.getElementById('complaintForm').reset();
-  renderDashboard();
-  showToast("Grievance registered in database", "success");
+  try {
+    const res = await fetch('/api/v1/complaints', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        mobile: userSession.mobile,
+        category: category,
+        description: desc,
+        pnr: busNo
+      })
+    });
+    
+    if (res.ok) {
+      document.getElementById('complaintFormContainer').style.display = 'none';
+      document.getElementById('complaintForm').reset();
+      renderDashboard();
+      showToast("Grievance registered in database", "success");
+    }
+  } catch (e) {
+    showToast("Failed to file grievance", "error");
+  }
 }
 
 // Parcel calculator & trackers
@@ -961,34 +1011,38 @@ function handleParcelBooking(event) {
   showToast("Parcel booked successfully", "success");
 }
 
-function trackParcel() {
+async function trackParcel() {
   const trackId = document.getElementById('parcelTrackId').value.trim();
-  const matchedParcel = allParcels.find(p => p.id.toLowerCase() === trackId.toLowerCase());
-  
   const resultDiv = document.getElementById('parcelTrackResult');
-  if (!matchedParcel) {
+  
+  if (!trackId) return;
+  
+  try {
+    const res = await fetch(`/api/v1/parcels/${trackId}`);
+    if (!res.ok) throw new Error('Not found');
+    
+    const matchedParcel = await res.json();
+    
+    resultDiv.style.display = 'block';
+    document.getElementById('pTrackStatusHeader').innerText = `Status: ${matchedParcel.status.toUpperCase()}`;
+    document.getElementById('pTrackDetails').innerText = matchedParcel.timeline ? matchedParcel.timeline.map(t => `${t.status} at ${t.location}`).join(' -> ') : 'In Transit';
+    
+    document.querySelectorAll('.tracker-node').forEach(node => node.classList.remove('active'));
+    document.getElementById('p-node-booked').classList.add('active');
+    
+    if (matchedParcel.status.toLowerCase() === 'dispatched' || matchedParcel.status.toLowerCase() === 'in transit' || matchedParcel.status.toLowerCase() === 'delivered') {
+      document.getElementById('p-node-dispatched').classList.add('active');
+    }
+    if (matchedParcel.status.toLowerCase() === 'in transit' || matchedParcel.status.toLowerCase() === 'delivered') {
+      document.getElementById('p-node-transit').classList.add('active');
+    }
+    if (matchedParcel.status.toLowerCase() === 'delivered') {
+      document.getElementById('p-node-delivered').classList.add('active');
+    }
+  } catch (err) {
     resultDiv.innerHTML = `<p style="color:var(--primary);">No parcel records matching ID: ${trackId}</p>`;
     resultDiv.style.display = 'block';
-    return;
   }
-  
-  resultDiv.style.display = 'block';
-  document.getElementById('pTrackStatusHeader').innerText = `Status: ${matchedParcel.status.toUpperCase()}`;
-  document.getElementById('pTrackDetails').innerText = matchedParcel.details;
-  
-  document.querySelectorAll('.tracker-node').forEach(node => node.classList.remove('active'));
-  document.getElementById('p-node-booked').classList.add('active');
-  
-  if (matchedParcel.status === 'dispatched' || matchedParcel.status === 'transit' || matchedParcel.status === 'delivered') {
-    document.getElementById('p-node-dispatched').classList.add('active');
-  }
-  if (matchedParcel.status === 'transit' || matchedParcel.status === 'delivered') {
-    document.getElementById('p-node-transit').classList.add('active');
-  }
-  if (matchedParcel.status === 'delivered') {
-    document.getElementById('p-node-delivered').classList.add('active');
-  }
-  showToast("Parcel details loaded", "success");
 }
 
 // Schedule board filtering

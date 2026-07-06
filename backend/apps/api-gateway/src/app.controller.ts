@@ -7,6 +7,7 @@ const users = new Map<string, any>();
 const bookings = new Map<string, any[]>();
 const passes = new Map<string, any[]>();
 const complaints = new Map<string, any[]>();
+const parcels = new Map<string, any>();
 
 @Controller('api/v1')
 export class AppController {
@@ -24,34 +25,56 @@ export class AppController {
   // ----------------------------------------------------
   @Get('buses')
   getBuses(@Query('from') from: string, @Query('to') to: string, @Query('date') date: string) {
-    return [
+    // Dynamic logic for generating buses based on input
+    const origin = from || 'Pune';
+    const destination = to || 'Mumbai';
+    
+    // Generate some deterministic but dynamic-looking results based on the route
+    const isLongRoute = origin.length + destination.length > 12;
+    
+    const results = [
       {
-        id: "MSR-7731",
+        id: `MSR-${Math.floor(1000 + Math.random() * 8000)}`,
         name: "Shivneri AC Volvo",
         type: "shivneri",
-        from: from || "Pune",
-        to: to || "Mumbai",
+        from: origin,
+        to: destination,
         dept: "06:30 AM",
-        arr: "10:00 AM",
-        duration: "3h 30m",
-        distance: "155 km",
-        baseFare: 550,
+        arr: isLongRoute ? "02:30 PM" : "10:00 AM",
+        duration: isLongRoute ? "8h 00m" : "3h 30m",
+        distance: isLongRoute ? "450 km" : "155 km",
+        baseFare: isLongRoute ? 1200 : 550,
         runsOn: "Daily"
       },
       {
-        id: "MSR-4209",
+        id: `MSR-${Math.floor(1000 + Math.random() * 8000)}`,
         name: "Shivshahi Sleeper",
         type: "shivshahi",
-        from: from || "Pune",
-        to: to || "Mumbai",
+        from: origin,
+        to: destination,
         dept: "08:15 AM",
-        arr: "12:15 PM",
-        duration: "4h 00m",
-        distance: "155 km",
-        baseFare: 420,
+        arr: isLongRoute ? "05:15 PM" : "12:15 PM",
+        duration: isLongRoute ? "9h 00m" : "4h 00m",
+        distance: isLongRoute ? "450 km" : "155 km",
+        baseFare: isLongRoute ? 950 : 420,
+        runsOn: "Daily"
+      },
+      {
+        id: `MSR-${Math.floor(1000 + Math.random() * 8000)}`,
+        name: "Lal Pari (Ordinary)",
+        type: "ordinary",
+        from: origin,
+        to: destination,
+        dept: "10:00 AM",
+        arr: isLongRoute ? "08:00 PM" : "02:30 PM",
+        duration: isLongRoute ? "10h 00m" : "4h 30m",
+        distance: isLongRoute ? "450 km" : "155 km",
+        baseFare: isLongRoute ? 400 : 180,
         runsOn: "Daily"
       }
     ];
+    
+    return results;
   }
 
   // ----------------------------------------------------
@@ -165,5 +188,83 @@ export class AppController {
     bookings.set(body.mobile, userBookings);
     
     return { success: true, booking };
+  }
+
+  // ----------------------------------------------------
+  // PASSES
+  // ----------------------------------------------------
+  @Post('passes')
+  applyPass(@Body() body: { mobile: string, passType: string, duration: string, startFrom: string }) {
+    if (!users.has(body.mobile)) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    }
+    
+    const pass = {
+      id: "PASS" + Math.floor(100000 + Math.random() * 900000),
+      type: body.passType,
+      duration: body.duration,
+      startFrom: body.startFrom,
+      status: "Processing",
+      createdAt: new Date().toISOString()
+    };
+    
+    const userPasses = passes.get(body.mobile) || [];
+    userPasses.unshift(pass);
+    passes.set(body.mobile, userPasses);
+    
+    return { success: true, pass };
+  }
+
+  // ----------------------------------------------------
+  // COMPLAINTS
+  // ----------------------------------------------------
+  @Post('complaints')
+  fileComplaint(@Body() body: { mobile: string, category: string, description: string, pnr?: string }) {
+    if (!users.has(body.mobile)) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    }
+    
+    const complaint = {
+      id: "GRV" + Math.floor(10000 + Math.random() * 90000),
+      category: body.category,
+      description: body.description,
+      pnr: body.pnr,
+      status: "Open",
+      createdAt: new Date().toISOString()
+    };
+    
+    const userComplaints = complaints.get(body.mobile) || [];
+    userComplaints.unshift(complaint);
+    complaints.set(body.mobile, userComplaints);
+    
+    return { success: true, complaint };
+  }
+
+  // ----------------------------------------------------
+  // PARCELS
+  // ----------------------------------------------------
+  @Get('parcels/:id')
+  trackParcel(@Param('id') id: string) {
+    if (parcels.has(id)) {
+      return parcels.get(id);
+    }
+    
+    // Mock response for any parcel ID
+    const mockParcel = {
+      id: id,
+      status: 'In Transit',
+      origin: 'Mumbai Central',
+      destination: 'Pune Swargate',
+      currentLocation: 'Lonavala Hub',
+      estimatedDelivery: 'Tomorrow, 10:00 AM',
+      timeline: [
+        { status: 'Booked', time: 'Yesterday, 04:00 PM', location: 'Mumbai Central' },
+        { status: 'Dispatched', time: 'Yesterday, 08:30 PM', location: 'Mumbai Central' },
+        { status: 'In Transit', time: 'Today, 02:15 AM', location: 'Lonavala Hub' }
+      ]
+    };
+    
+    parcels.set(id, mockParcel);
+    return mockParcel;
   }
 }
