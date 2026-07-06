@@ -609,6 +609,22 @@ function downloadTicketPDF() {
   showToast("Ticket PDF Download Started", "success");
 }
 
+async function cancelTicketSim(pnr) {
+  if (confirm("Are you sure you want to cancel ticket " + pnr + "?")) {
+    try {
+      const res = await fetch(`/api/v1/bookings/${pnr}`, { method: 'DELETE' });
+      if (res.ok) {
+        showToast("Ticket Cancelled", "success");
+        renderDashboard();
+      } else {
+        showToast("Failed to cancel ticket", "error");
+      }
+    } catch (e) {
+      showToast("Error cancelling ticket", "error");
+    }
+  }
+}
+
 // Authentication Tabs
 function toggleAuthTab(mode) {
   const loginForm = document.getElementById('loginFormContainer');
@@ -1119,7 +1135,7 @@ function switchAdminTab(tabName, el) {
   el.classList.add('active');
 }
 
-function renderAdminPortal() {
+async function renderAdminPortal() {
   if (!userSession || userSession.role !== 'admin') {
     showSection('login');
     alert("Admin privileges required. Sign in with mobile number '9876543210'.");
@@ -1156,22 +1172,33 @@ function renderAdminPortal() {
   `).join('');
 
   const grievanceList = document.getElementById('adminComplaintsList');
-  grievanceList.innerHTML = myComplaints.map(c => `
-    <div class="bus-card" style="padding:1rem;">
-      <div>
-        <strong>${c.id}</strong> | ${c.category}
-        <p style="font-size:0.85rem;">Description: ${c.desc}</p>
-      </div>
-      <div><small>Bus: ${c.busNo || 'N/A'}</small></div>
-      <div style="text-align:right;">
-        <select onchange="updateComplaintStatus('${c.id}', this.value)" style="background:var(--bg-primary); border:1px solid var(--border); color:var(--text-primary); padding:0.25rem; border-radius:4px;">
-          <option value="Pending" ${c.status === 'Pending' ? 'selected' : ''}>Pending</option>
-          <option value="In Progress" ${c.status === 'In Progress' ? 'selected' : ''}>In Progress</option>
-          <option value="Resolved" ${c.status === 'Resolved' ? 'selected' : ''}>Resolved</option>
-        </select>
-      </div>
-    </div>
-  `).join('');
+  grievanceList.innerHTML = '<p>Loading complaints...</p>';
+  try {
+    const res = await fetch('/api/v1/admin/complaints');
+    const allComplaints = await res.json();
+    if (allComplaints.length === 0) {
+      grievanceList.innerHTML = '<p>No complaints found.</p>';
+    } else {
+      grievanceList.innerHTML = allComplaints.map(c => `
+        <div class="bus-card" style="padding:1rem;">
+          <div>
+            <strong>${c.id}</strong> | ${c.category}
+            <p style="font-size:0.85rem;">Description: ${c.description || c.desc}</p>
+          </div>
+          <div><small>User: ${c.userMobile}</small><br><small>PNR: ${c.pnr || 'N/A'}</small></div>
+          <div style="text-align:right;">
+            <select onchange="updateComplaintStatus('${c.id}', this.value)" style="background:var(--bg-primary); border:1px solid var(--border); color:var(--text-primary); padding:0.25rem; border-radius:4px;">
+              <option value="Open" ${c.status === 'Open' ? 'selected' : ''}>Open</option>
+              <option value="In Progress" ${c.status === 'In Progress' ? 'selected' : ''}>In Progress</option>
+              <option value="Resolved" ${c.status === 'Resolved' ? 'selected' : ''}>Resolved</option>
+            </select>
+          </div>
+        </div>
+      `).join('');
+    }
+  } catch(e) {
+    grievanceList.innerHTML = '<p style="color:var(--primary);">Failed to load complaints.</p>';
+  }
 
   const tendersList = document.getElementById('adminTenderList');
   tendersList.innerHTML = MSRTC_DATA.tenders.map(t => `
@@ -1250,10 +1277,18 @@ function handleNewTender(event) {
   showToast("Tender notice published", "success");
 }
 
-function updateComplaintStatus(compId, val) {
-  myComplaints = myComplaints.map(c => c.id === compId ? { ...c, status: val } : c);
-  showToast(`Grievance status changed to ${val}`, "success");
-  renderAdminPortal();
+async function updateComplaintStatus(compId, val) {
+  try {
+    const res = await fetch(`/api/v1/admin/complaints/${compId}/resolve`, {
+      method: 'PUT'
+    });
+    if (res.ok) {
+      showToast(`Grievance status changed to ${val}`, "success");
+      renderAdminPortal();
+    }
+  } catch (e) {
+    showToast(`Failed to update grievance status`, "error");
+  }
 }
 
 // Info Pages Renderers

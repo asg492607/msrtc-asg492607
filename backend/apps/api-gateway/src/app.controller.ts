@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Query, Param, HttpException, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body, Query, Param, HttpException, HttpStatus } from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
 import { MSRTC_DATA } from './data';
 
@@ -266,5 +266,86 @@ export class AppController {
     
     parcels.set(id, mockParcel);
     return mockParcel;
+  }
+  // ----------------------------------------------------
+  // BOOKING CANCELLATION
+  // ----------------------------------------------------
+  @Delete('bookings/:pnr')
+  cancelBooking(@Param('pnr') pnr: string) {
+    let cancelled = false;
+    // Iterate over all users' bookings
+    for (const [mobile, userBookings] of bookings.entries()) {
+      const booking = userBookings.find(b => b.pnr === pnr);
+      if (booking) {
+        booking.status = 'Cancelled';
+        cancelled = true;
+        break;
+      }
+    }
+    
+    if (!cancelled) {
+      throw new HttpException('Booking not found', HttpStatus.NOT_FOUND);
+    }
+    return { success: true, message: 'Booking cancelled successfully' };
+  }
+
+  // ----------------------------------------------------
+  // ADMIN PORTAL ENDPOINTS
+  // ----------------------------------------------------
+  @Get('admin/bookings')
+  getAllBookings() {
+    const all = [];
+    for (const [mobile, userBookings] of bookings.entries()) {
+      all.push(...userBookings.map(b => ({ ...b, userMobile: mobile })));
+    }
+    return all.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  }
+
+  @Get('admin/complaints')
+  getAllComplaints() {
+    const all = [];
+    for (const [mobile, userComplaints] of complaints.entries()) {
+      all.push(...userComplaints.map(c => ({ ...c, userMobile: mobile })));
+    }
+    return all.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  }
+
+  @Get('admin/passes')
+  getAllPasses() {
+    const all = [];
+    for (const [mobile, userPasses] of passes.entries()) {
+      all.push(...userPasses.map(p => ({ ...p, userMobile: mobile })));
+    }
+    return all.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  }
+
+  @Put('admin/complaints/:id/resolve')
+  resolveComplaint(@Param('id') id: string) {
+    let updated = false;
+    for (const [mobile, userComplaints] of complaints.entries()) {
+      const comp = userComplaints.find(c => c.id === id);
+      if (comp) {
+        comp.status = 'Resolved';
+        updated = true;
+        break;
+      }
+    }
+    if (!updated) throw new HttpException('Complaint not found', HttpStatus.NOT_FOUND);
+    return { success: true };
+  }
+
+  @Put('admin/passes/:id/status')
+  updatePassStatus(@Param('id') id: string, @Body('status') status: string) {
+    let updated = false;
+    for (const [mobile, userPasses] of passes.entries()) {
+      const pass = userPasses.find(p => p.id === id);
+      if (pass) {
+        pass.status = status;
+        updated = true;
+        break;
+      }
+    }
+    if (!updated) throw new HttpException('Pass not found', HttpStatus.NOT_FOUND);
+    return { success: true };
   }
 }
