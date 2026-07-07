@@ -1279,8 +1279,10 @@ function handleNewTender(event) {
 
 async function updateComplaintStatus(compId, val) {
   try {
-    const res = await fetch(`/api/v1/admin/complaints/${compId}/resolve`, {
-      method: 'PUT'
+    const res = await fetch(`/api/v1/admin/complaints/${compId}/status`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: val })
     });
     if (res.ok) {
       showToast(`Grievance status changed to ${val}`, "success");

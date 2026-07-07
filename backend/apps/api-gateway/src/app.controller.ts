@@ -319,18 +319,20 @@ export class AppController {
     return all.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
   }
 
-  @Put('admin/complaints/:id/resolve')
-  resolveComplaint(@Param('id') id: string) {
+  @Put('admin/complaints/:id/status')
+  updateComplaintStatus(@Param('id') id: string, @Body('status') status: string) {
     let updated = false;
     for (const [mobile, userComplaints] of complaints.entries()) {
-      const comp = userComplaints.find(c => c.id === id);
-      if (comp) {
-        comp.status = 'Resolved';
+      const complaint = userComplaints.find(c => c.id === id);
+      if (complaint) {
+        complaint.status = status;
         updated = true;
         break;
       }
     }
-    if (!updated) throw new HttpException('Complaint not found', HttpStatus.NOT_FOUND);
+    if (!updated) {
+      throw new HttpException('Complaint not found', HttpStatus.NOT_FOUND);
+    }
     return { success: true };
   }
 
