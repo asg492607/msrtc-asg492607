@@ -118,7 +118,8 @@ export class AppController {
           id: uuidv4(),
           name: body.mobile === '9876543210' ? 'System Admin' : 'Guest User',
           mobile: body.mobile,
-          role: body.mobile === '9876543210' ? 'admin' : 'user'
+          role: body.mobile === '9876543210' ? 'admin' : 'user',
+          walletBalance: 1500
         };
         users.set(body.mobile, user);
         bookings.set(body.mobile, []);
@@ -136,7 +137,8 @@ export class AppController {
         id: uuidv4(),
         name: 'Email User',
         mobile: '9938210398',
-        role: 'user'
+        role: 'user',
+        walletBalance: 1500
       };
       if (!users.has('9938210398')) {
         users.set('9938210398', user);
@@ -154,7 +156,14 @@ export class AppController {
     if (!users.has(mobile)) {
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     }
+    const user = users.get(mobile);
     return {
+      user: {
+        id: user.id,
+        name: user.name,
+        mobile: user.mobile,
+        walletBalance: user.walletBalance || 0
+      },
       bookings: bookings.get(mobile) || [],
       passes: passes.get(mobile) || [],
       complaints: complaints.get(mobile) || []
@@ -187,7 +196,16 @@ export class AppController {
     userBookings.unshift(booking);
     bookings.set(body.mobile, userBookings);
     
-    return { success: true, booking };
+    const user = users.get(body.mobile);
+    if (body.paymentMethod === 'wallet') {
+      if (user.walletBalance < body.fare) {
+        throw new HttpException('Insufficient wallet balance', HttpStatus.BAD_REQUEST);
+      }
+      user.walletBalance -= body.fare;
+      users.set(body.mobile, user);
+    }
+    
+    return { success: true, booking, newWalletBalance: user.walletBalance };
   }
 
   // ----------------------------------------------------
@@ -273,13 +291,26 @@ export class AppController {
   @Delete('bookings/:pnr')
   cancelBooking(@Param('pnr') pnr: string) {
     let cancelled = false;
+    let refundedAmount = 0;
+    let targetMobile = null;
+    
     // Iterate over all users' bookings
     for (const [mobile, userBookings] of bookings.entries()) {
       const booking = userBookings.find(b => b.pnr === pnr);
-      if (booking) {
+      if (booking && booking.status === 'Active') {
         booking.status = 'Cancelled';
         cancelled = true;
+        refundedAmount = booking.fare;
+        targetMobile = mobile;
         break;
+      }
+    }
+    
+    if (cancelled && targetMobile) {
+      const user = users.get(targetMobile);
+      if (user) {
+        user.walletBalance = (user.walletBalance || 0) + refundedAmount;
+        users.set(targetMobile, user);
       }
     }
     
@@ -317,6 +348,23 @@ export class AppController {
       all.push(...userPasses.map(p => ({ ...p, userMobile: mobile })));
     }
     return all.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  }
+
+  @Put('admin/passes/:id/status')
+  updatePassStatus(@Param('id') id: string, @Body('status') status: string) {
+    let updated = false;
+    for (const [mobile, userPasses] of passes.entries()) {
+      const pass = userPasses.find(p => p.id === id);
+      if (pass) {
+        pass.status = status;
+        updated = true;
+        break;
+      }
+    }
+    if (!updated) {
+      throw new HttpException('Pass not found', HttpStatus.NOT_FOUND);
+    }
+    return { success: true };
   }
 
   @Put('admin/complaints/:id/status')

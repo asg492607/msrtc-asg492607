@@ -14,6 +14,7 @@
   <meta name="theme-color" content="#FF6B00">
   <link rel="apple-touch-icon" href="msrtc_new_logo.png">
   <link rel="stylesheet" href="style.v2.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body data-theme="light" class="text-scale-2">
 
@@ -69,6 +70,7 @@
           <a href="#" onclick="changeFontSize(); return false;">A (Normal Font)</a>
           <a href="#" onclick="changeFontSize(); return false;">A+ (Increase Font)</a>
           <a href="#" onclick="toggleHighContrast(); return false;">🌓 High Contrast</a>
+          <a href="#" onclick="toggleDarkMode(); return false;">🌙 Dark Mode</a>
           <a href="#" onclick="alert('Screen reader instructions activated'); return false;">🔊 Screen Reader</a>
         </div>
       </div>
@@ -600,11 +602,11 @@
                 <input type="text" id="promoCodeInput" placeholder="E.g. DISCO50">
                 <button type="button" class="btn-secondary" onclick="applyPromoCode()">Apply</button>
               </div>
-            </div>
 
             <div class="form-group" style="margin-bottom:1rem;">
               <label for="paymentMethod">Select Payment Method</label>
               <select id="paymentMethod" onchange="togglePaymentInputs(this.value)">
+                <option value="wallet">MSRTC E-Wallet</option>
                 <option value="upi">UPI (GPay / PhonePe / BHIM)</option>
                 <option value="card">Credit / Debit Card</option>
                 <option value="netbanking">Net Banking</option>
@@ -871,7 +873,13 @@
 
     <!-- 6. User Dashboard View -->
     <section id="view-dashboard" class="view-section">
-      <h3 style="margin-bottom: 1.5rem;" id="dashboardGreeting">Passenger Dashboard</h3>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 1.5rem;">
+        <h3 id="dashboardGreeting">Passenger Dashboard</h3>
+        <div style="background:var(--primary); color:white; padding: 0.5rem 1rem; border-radius: 20px; font-weight:bold; display:flex; align-items:center; gap:0.5rem;">
+          <span>E-Wallet:</span>
+          <span id="walletBalanceDisplay">₹0</span>
+        </div>
+      </div>
       
       <div class="panel-layout">
         <div class="panel-sidebar">
@@ -1030,6 +1038,7 @@
           <div class="panel-menu-item active" onclick="switchAdminTab('bus-manage', this)">Manage Fleet</div>
           <div class="panel-menu-item" onclick="switchAdminTab('route-manage', this)">Manage Routes</div>
           <div class="panel-menu-item" onclick="switchAdminTab('complaints-manage', this)">Grievance Pipeline</div>
+          <div class="panel-menu-item" onclick="switchAdminTab('passes-manage', this)">Pass Management</div>
           <div class="panel-menu-item" onclick="switchAdminTab('tenders-manage', this)">Tenders & News</div>
           <div class="panel-menu-item" onclick="switchAdminTab('reports-manage', this)">Analytical Reports</div>
         </div>
@@ -1104,6 +1113,11 @@
           <div id="admin-complaints-manage" class="admin-tab-content" style="display:none;">
             <h4>All Grievances Filed</h4>
             <div class="bus-list" id="adminComplaintsList" style="margin-top: 1.5rem;"></div>
+          </div>
+
+          <div id="admin-passes-manage" class="admin-tab-content" style="display:none;">
+            <h4>Passenger Pass Applications</h4>
+            <div class="bus-list" id="adminPassesList" style="margin-top: 1.5rem;"></div>
           </div>
 
           <div id="admin-tenders-manage" class="admin-tab-content" style="display:none;">
@@ -1262,6 +1276,7 @@
       <button class="acc-panel-btn" onclick="changeFontSize('increase')">🔠 A+ Larger</button>
       <button class="acc-panel-btn" onclick="changeFontSize('decrease')">🔡 A- Smaller</button>
       <button class="acc-panel-btn" onclick="toggleHighContrast()">🌓 Contrast</button>
+      <button class="acc-panel-btn" onclick="toggleDarkMode()">🌙 Dark Mode</button>
       <button class="acc-panel-btn" onclick="toggleVoiceInput()">🎤 Voice</button>
       <button class="acc-panel-btn" onclick="alert('Screen reader activated')">📣 Screen Reader</button>
     </div>

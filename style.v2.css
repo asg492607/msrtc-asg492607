@@ -24,6 +24,20 @@
   --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.04), 0 4px 6px -2px rgba(0,0,0,0.02);
 }
 
+[data-theme="dark"] {
+  --primary: #FF7B00;
+  --primary-hover: #FFA24C;
+  --secondary: #90CAF9;
+  --accent: #FFB300;
+  
+  --bg-primary: #121212;
+  --bg-secondary: #1E1E1E;
+  --bg-hover: #2D2D2D;
+  --text-primary: #E0E0E0;
+  --text-secondary: #A0A0A0;
+  --border: #333333;
+}
+
 /* Accessibility high contrast */
 [data-theme="high-contrast"] {
   --primary: #000000;

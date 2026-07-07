@@ -114,6 +114,13 @@ function toggleHighContrast() {
   showToast("Contrast Theme Toggled", "success");
 }
 
+function toggleDarkMode() {
+  const body = document.body;
+  const current = body.getAttribute('data-theme');
+  body.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
+  showToast("Dark Mode Toggled", "success");
+}
+
 function changeFontSize() {
   const body = document.body;
   body.classList.remove('text-scale-1', 'text-scale-2', 'text-scale-3');
@@ -542,6 +549,8 @@ async function completeBooking(event) {
   if (discountApplied) basePrice = Math.round(basePrice * 0.5);
   const total = basePrice + Math.round(basePrice * 0.05);
   
+  const paymentMethod = document.getElementById('paymentMethod').value;
+  
   const payload = {
     mobile: userSession.mobile,
     from: currentSelectedBus.from,
@@ -549,7 +558,8 @@ async function completeBooking(event) {
     busNo: currentSelectedBus.id,
     seats: [...selectedSeats],
     date: document.getElementById('searchDate').value,
-    fare: total
+    fare: total,
+    paymentMethod: paymentMethod
   };
   
   try {
@@ -575,6 +585,10 @@ async function completeBooking(event) {
       document.getElementById('booking-step-success').style.display = 'block';
       document.getElementById('step-node-4').classList.add('done');
       showToast("Booking completed successfully!", "success");
+      
+      if (data.newWalletBalance !== undefined) {
+        document.getElementById('walletBalanceDisplay').innerText = `₹${data.newWalletBalance}`;
+      }
     } else {
       showToast(data.message || "Booking Failed", "error");
     }
@@ -795,6 +809,10 @@ async function renderDashboard() {
     const dbBookings = data.bookings || [];
     const dbPasses = data.passes || [];
     const dbComplaints = data.complaints || [];
+    
+    if (data.user && data.user.walletBalance !== undefined) {
+      document.getElementById('walletBalanceDisplay').innerText = `₹${data.user.walletBalance}`;
+    }
 
     const ticketCont = document.getElementById('dashboardTicketsList');
     ticketCont.innerHTML = dbBookings.map(t => `
@@ -808,10 +826,7 @@ async function renderDashboard() {
           <small style="color:var(--text-secondary);">Bus ID</small>
           <h4>${t.busNo}</h4>
         </div>
-        <div>
-          <small style="color:var(--text-secondary);">Total Paid</small>
-          <h4>₹${t.fare}</h4>
-        </div>
+        <div id="qr-ticket-${t.pnr}" style="margin: 0 1rem;"></div>
         <div>
           <span style="background:rgba(16,185,129,0.1); color:var(--seat-avail); padding:0.25rem 0.6rem; border-radius:6px; font-weight:bold;">${t.status}</span>
           ${t.status === 'Active' ? `<button class="btn-secondary" style="margin-top:0.5rem; display:block; width:100%; font-size:0.8rem; padding:0.3rem;" onclick="cancelTicketSim('${t.pnr}')">Cancel</button>` : ''}
@@ -827,19 +842,30 @@ async function renderDashboard() {
           <p style="color:var(--text-secondary); font-size:0.85rem;">Holder: ${p.name} | Verified Proof: ${p.proof}</p>
           <span class="bus-tag">${p.id}</span>
         </div>
-        <div class="qr-placeholder" style="margin:0;">
-          <svg width="60" height="60" viewBox="0 0 100 100" fill="black">
-            <rect x="0" y="0" width="30" height="30"/>
-            <rect x="70" y="0" width="30" height="30"/>
-            <rect x="0" y="70" width="30" height="30"/>
-            <rect x="40" y="40" width="20" height="20"/>
-          </svg>
-        </div>
+        <div id="qr-pass-${p.id}" style="margin: 0 1rem;"></div>
         <div style="text-align:right;">
           <span style="background:rgba(16,185,129,0.1); color:var(--seat-avail); padding:0.25rem 0.6rem; border-radius:6px; font-weight:bold;">${p.status}</span>
         </div>
       </div>
     `).join('');
+
+    // Generate real QR codes using qrcode.js
+    if (typeof QRCode !== 'undefined') {
+      dbBookings.forEach(t => {
+        new QRCode(document.getElementById(`qr-ticket-${t.pnr}`), {
+          text: `https://msrtc.gov.in/verify?pnr=${t.pnr}`,
+          width: 64,
+          height: 64
+        });
+      });
+      dbPasses.forEach(p => {
+        new QRCode(document.getElementById(`qr-pass-${p.id}`), {
+          text: `https://msrtc.gov.in/verify?pass=${p.id}`,
+          width: 64,
+          height: 64
+        });
+      });
+    }
 
     const compCont = document.getElementById('dashboardComplaintsList');
     compCont.innerHTML = dbComplaints.map(c => `
@@ -1200,6 +1226,37 @@ async function renderAdminPortal() {
     grievanceList.innerHTML = '<p style="color:var(--primary);">Failed to load complaints.</p>';
   }
 
+  const passList = document.getElementById('adminPassesList');
+  if (passList) {
+    passList.innerHTML = '<p>Loading passes...</p>';
+    try {
+      const res = await fetch('/api/v1/admin/passes');
+      const allPasses = await res.json();
+      if (allPasses.length === 0) {
+        passList.innerHTML = '<p>No pass applications found.</p>';
+      } else {
+        passList.innerHTML = allPasses.map(p => `
+          <div class="bus-card" style="padding:1rem;">
+            <div>
+              <strong>${p.id}</strong> | ${p.type}
+              <p style="font-size:0.85rem;">Holder: ${p.name || 'User'} | Duration: ${p.duration}</p>
+            </div>
+            <div><small>User: ${p.userMobile}</small><br><small>Start: ${p.startFrom}</small></div>
+            <div style="text-align:right;">
+              <select onchange="updatePassStatus('${p.id}', this.value)" style="background:var(--bg-primary); border:1px solid var(--border); color:var(--text-primary); padding:0.25rem; border-radius:4px;">
+                <option value="Processing" ${p.status === 'Processing' ? 'selected' : ''}>Processing</option>
+                <option value="Approved" ${p.status === 'Approved' ? 'selected' : ''}>Approved</option>
+                <option value="Rejected" ${p.status === 'Rejected' ? 'selected' : ''}>Rejected</option>
+              </select>
+            </div>
+          </div>
+        `).join('');
+      }
+    } catch(e) {
+      passList.innerHTML = '<p style="color:var(--primary);">Failed to load passes.</p>';
+    }
+  }
+
   const tendersList = document.getElementById('adminTenderList');
   tendersList.innerHTML = MSRTC_DATA.tenders.map(t => `
     <div class="bus-card" style="padding:1rem;">
@@ -1290,6 +1347,22 @@ async function updateComplaintStatus(compId, val) {
     }
   } catch (e) {
     showToast(`Failed to update grievance status`, "error");
+  }
+}
+
+async function updatePassStatus(passId, val) {
+  try {
+    const res = await fetch(`/api/v1/admin/passes/${passId}/status`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: val })
+    });
+    if (res.ok) {
+      showToast(`Pass status changed to ${val}`, "success");
+      renderAdminPortal();
+    }
+  } catch (e) {
+    showToast(`Failed to update pass status`, "error");
   }
 }
 
