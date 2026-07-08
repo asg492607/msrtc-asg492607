@@ -62,15 +62,21 @@
 .text-scale-2 { font-size: 1rem; }
 .text-scale-3 { font-size: 1.15rem; }
 
-html, body {
-  max-width: 100%;
-  overflow-x: hidden;
+/* Global Base */
+* {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
-* {
-  box-sizing: border-box;
+@keyframes slideUpFade {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInScale {
+  0% { opacity: 0; transform: scale(0.97); }
+  100% { opacity: 1; transform: scale(1); }
 }
 
 body {
@@ -818,16 +824,14 @@ main {
 
 .view-section {
   display: none;
+  padding: 3rem 1.5rem;
+  max-width: 1300px;
+  margin: 0 auto;
+  animation: fadeInScale 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .view-section.active {
   display: block;
-  animation: fadeIn 0.3s ease-out;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
 }
 
 /* Bus Cards Grid */
@@ -841,13 +845,26 @@ main {
   background: var(--bg-secondary);
   border: 1px solid var(--border);
   border-radius: 12px;
-  padding: 1.25rem 1.5rem;
+  padding: 1.5rem;
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 1fr;
   align-items: center;
-  gap: 1.5rem;
-  box-shadow: var(--shadow);
+  gap: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.2s ease;
+  animation: slideUpFade 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
+.bus-card:hover {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: var(--shadow-md);
+  border-color: rgba(255, 94, 0, 0.3);
+}
+
+.bus-card:nth-child(1) { animation-delay: 0.05s; }
+.bus-card:nth-child(2) { animation-delay: 0.1s; }
+.bus-card:nth-child(3) { animation-delay: 0.15s; }
+.bus-card:nth-child(4) { animation-delay: 0.2s; }
 
 /* Seat Selection View */
 .seat-selection-layout {

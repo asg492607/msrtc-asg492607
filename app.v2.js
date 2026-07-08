@@ -816,7 +816,7 @@ async function renderDashboard() {
 
     const ticketCont = document.getElementById('dashboardTicketsList');
     ticketCont.innerHTML = dbBookings.map(t => `
-      <div class="bus-card">
+      <div class="bus-card" id="ticket-${t.pnr}">
         <div class="bus-info">
           <h3>${t.from} ➔ ${t.to}</h3>
           <p style="color:var(--text-secondary); font-size:0.9rem;">Journey Date: ${t.date} | Seats: ${t.seats.join(', ')}</p>
@@ -827,16 +827,17 @@ async function renderDashboard() {
           <h4>${t.busNo}</h4>
         </div>
         <div id="qr-ticket-${t.pnr}" style="margin: 0 1rem;"></div>
-        <div>
+        <div style="text-align:right;">
           <span style="background:rgba(16,185,129,0.1); color:var(--seat-avail); padding:0.25rem 0.6rem; border-radius:6px; font-weight:bold;">${t.status}</span>
           ${t.status === 'Active' ? `<button class="btn-secondary" style="margin-top:0.5rem; display:block; width:100%; font-size:0.8rem; padding:0.3rem;" onclick="cancelTicketSim('${t.pnr}')">Cancel</button>` : ''}
+          ${t.status === 'Active' ? `<button class="btn-primary" style="margin-top:0.5rem; display:block; width:100%; font-size:0.8rem; padding:0.3rem;" onclick="downloadTicketPDF('ticket-${t.pnr}')">Download PDF</button>` : ''}
         </div>
       </div>
     `).join('');
 
     const passCont = document.getElementById('dashboardPassesList');
     passCont.innerHTML = dbPasses.map(p => `
-      <div class="bus-card">
+      <div class="bus-card" id="pass-${p.id}">
         <div class="bus-info">
           <h3>${p.type}</h3>
           <p style="color:var(--text-secondary); font-size:0.85rem;">Holder: ${p.name} | Verified Proof: ${p.proof}</p>
@@ -845,6 +846,7 @@ async function renderDashboard() {
         <div id="qr-pass-${p.id}" style="margin: 0 1rem;"></div>
         <div style="text-align:right;">
           <span style="background:rgba(16,185,129,0.1); color:var(--seat-avail); padding:0.25rem 0.6rem; border-radius:6px; font-weight:bold;">${p.status}</span>
+          ${p.status === 'Approved' ? `<button class="btn-primary" style="margin-top:0.5rem; display:block; width:100%; font-size:0.8rem; padding:0.3rem;" onclick="downloadTicketPDF('pass-${p.id}')">Download PDF</button>` : ''}
         </div>
       </div>
     `).join('');
@@ -916,6 +918,25 @@ async function renderDashboard() {
       </div>
     </div>
   `).join('');
+}
+
+function downloadTicketPDF(elementId) {
+  const element = document.getElementById(elementId);
+  if (!element) return;
+  const opt = {
+    margin:       0.5,
+    filename:     `${elementId}.pdf`,
+    image:        { type: 'jpeg', quality: 0.98 },
+    html2canvas:  { scale: 2 },
+    jsPDF:        { unit: 'in', format: 'letter', orientation: 'landscape' }
+  };
+  
+  if (typeof html2pdf !== 'undefined') {
+    html2pdf().set(opt).from(element).save();
+    showToast("PDF Download Started", "success");
+  } else {
+    showToast("PDF generator not loaded", "error");
+  }
 }
 
 function cancelTicketSim(pnr) {
@@ -1081,6 +1102,43 @@ async function trackParcel() {
     if (matchedParcel.status.toLowerCase() === 'delivered') {
       document.getElementById('p-node-delivered').classList.add('active');
     }
+    
+    // Live Map Simulation
+    const mapDiv = document.getElementById('liveMap');
+    mapDiv.style.display = 'block';
+    
+    if (typeof L !== 'undefined') {
+      if (!window.liveMapInstance) {
+        window.liveMapInstance = L.map('liveMap').setView([18.5204, 73.8567], 7);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(window.liveMapInstance);
+      }
+      
+      // Add fake markers for demo
+      const m1 = L.marker([18.9690, 72.8205]).addTo(window.liveMapInstance).bindPopup("Mumbai Central").openPopup();
+      const m2 = L.marker([18.5204, 73.8567]).addTo(window.liveMapInstance).bindPopup("Pune Swargate");
+      
+      const latlngs = [
+        [18.9690, 72.8205],
+        [18.7500, 73.3000], // lonavala roughly
+        [18.5204, 73.8567]
+      ];
+      
+      if (window.liveMapPolyline) window.liveMapPolyline.remove();
+      window.liveMapPolyline = L.polyline(latlngs, {color: '#FF6B00', weight: 4}).addTo(window.liveMapInstance);
+      window.liveMapInstance.fitBounds(window.liveMapPolyline.getBounds());
+      
+      // Moving bus marker
+      if (window.busMarker) window.busMarker.remove();
+      const busIcon = L.divIcon({
+        html: '<div style="background:#FF6B00; border-radius:50%; width:20px; height:20px; border:2px solid white; display:flex; justify-content:center; align-items:center; font-size:10px;">🚌</div>',
+        className: '',
+        iconSize: [20, 20]
+      });
+      window.busMarker = L.marker([18.7500, 73.3000], {icon: busIcon}).addTo(window.liveMapInstance).bindPopup("Current Location");
+    }
+    
   } catch (err) {
     resultDiv.innerHTML = `<p style="color:var(--primary);">No parcel records matching ID: ${trackId}</p>`;
     resultDiv.style.display = 'block';

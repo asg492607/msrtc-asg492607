@@ -1,4 +1,6 @@
-import { Controller, Get, Post, Put, Delete, Body, Query, Param, HttpException, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body, Query, Param, HttpException, HttpStatus, OnModuleInit } from '@nestjs/common';
+import * as fs from 'fs';
+import * as path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 import { MSRTC_DATA } from './data';
 
@@ -8,6 +10,51 @@ const bookings = new Map<string, any[]>();
 const passes = new Map<string, any[]>();
 const complaints = new Map<string, any[]>();
 const parcels = new Map<string, any>();
+
+const DB_PATH = path.join(process.cwd(), 'database.json');
+
+function mapToObject(map: Map<string, any>) {
+  const obj = {};
+  for (const [k,v] of map) { obj[k] = v; }
+  return obj;
+}
+
+function objectToMap(obj: any, map: Map<string, any>) {
+  map.clear();
+  for (const k of Object.keys(obj)) { map.set(k, obj[k]); }
+}
+
+function saveData() {
+  try {
+    const data = {
+      users: mapToObject(users),
+      bookings: mapToObject(bookings),
+      passes: mapToObject(passes),
+      complaints: mapToObject(complaints),
+      parcels: mapToObject(parcels)
+    };
+    fs.writeFileSync(DB_PATH, JSON.stringify(data, null, 2));
+  } catch (e) {
+    console.error('Error saving data:', e);
+  }
+}
+
+function loadData() {
+  if (fs.existsSync(DB_PATH)) {
+    try {
+      const fileData = fs.readFileSync(DB_PATH, 'utf-8');
+      const data = JSON.parse(fileData);
+      if (data.users) objectToMap(data.users, users);
+      if (data.bookings) objectToMap(data.bookings, bookings);
+      if (data.passes) objectToMap(data.passes, passes);
+      if (data.complaints) objectToMap(data.complaints, complaints);
+      if (data.parcels) objectToMap(data.parcels, parcels);
+    } catch (e) {
+      console.error('Failed to parse database.json', e);
+    }
+  }
+}
+loadData();
 
 @Controller('api/v1')
 export class AppController {
@@ -125,6 +172,7 @@ export class AppController {
         bookings.set(body.mobile, []);
         passes.set(body.mobile, []);
         complaints.set(body.mobile, []);
+        saveData();
       }
       return { success: true, user };
     } else {
@@ -143,6 +191,7 @@ export class AppController {
       if (!users.has('9938210398')) {
         users.set('9938210398', user);
         bookings.set('9938210398', []);
+        saveData();
       }
       return { success: true, user };
     }
@@ -205,6 +254,7 @@ export class AppController {
       users.set(body.mobile, user);
     }
     
+    saveData();
     return { success: true, booking, newWalletBalance: user.walletBalance };
   }
 
@@ -230,6 +280,7 @@ export class AppController {
     userPasses.unshift(pass);
     passes.set(body.mobile, userPasses);
     
+    saveData();
     return { success: true, pass };
   }
 
@@ -255,6 +306,7 @@ export class AppController {
     userComplaints.unshift(complaint);
     complaints.set(body.mobile, userComplaints);
     
+    saveData();
     return { success: true, complaint };
   }
 
@@ -317,6 +369,7 @@ export class AppController {
     if (!cancelled) {
       throw new HttpException('Booking not found', HttpStatus.NOT_FOUND);
     }
+    saveData();
     return { success: true, message: 'Booking cancelled successfully' };
   }
 
@@ -364,6 +417,7 @@ export class AppController {
     if (!updated) {
       throw new HttpException('Pass not found', HttpStatus.NOT_FOUND);
     }
+    saveData();
     return { success: true };
   }
 
@@ -381,6 +435,7 @@ export class AppController {
     if (!updated) {
       throw new HttpException('Complaint not found', HttpStatus.NOT_FOUND);
     }
+    saveData();
     return { success: true };
   }
 
